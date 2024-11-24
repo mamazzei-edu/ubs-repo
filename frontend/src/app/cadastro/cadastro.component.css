@@ -1,0 +1,50 @@
+
+.row {
+    margin-bottom: 20px; 
+  }
+  
+  
+
+  .form-floating label {
+    font-weight: bold; 
+  }
+  
+
+  input:focus, select:focus {
+    border-color: #5cb85c; 
+    box-shadow: 0 0 5px rgba(92, 184, 92, 0.5);
+  }
+  
+ 
+  button {
+    margin-top: 20px;
+  }
+  
+  
+  @media (max-width: 768px) {
+    .form-floating.col-md-6 {
+      width: 100%; 
+    }
+}
+  
+    .form-floating.col-md-4 {
+      width: 100%; 
+  }
+  .row {
+    margin-bottom: 20px;
+  }
+  
+  .form-floating {
+    margin-bottom: 15px;
+  }
+  
+  h4 {
+    margin-top: 30px;
+    color: #4CAF50; 
+  }
+  
+  small.text-danger {
+    display: block;
+    margin-top: 5px;
+  }
+  
