@@ -1,1 +1,56 @@
-<p>lista works!</p>
+<br> <br>
+<!-- Pesquisa -->
+<div class="row">
+  <div class="col-9">
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Digite para pesquisar..."
+      [(ngModel)]="termoBusca"
+    >
+  </div>
+  <div class="col-3">
+    <button
+      (click)="pesquisar();"
+      class="btn btn-success">
+      <i class="bi bi-search"></i> <!-- Ícone de lupa -->
+    </button>
+  </div>
+</div>
+ 
+<!-- Mensagem de alerta -->
+<div
+  class="alert alert-warning mt-3"
+  *ngIf="mensagem && mensagem.length > 0">
+  {{ mensagem }}
+</div>
+ 
+<br><br>
+ 
+<!-- Tabela de resultados -->
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Código</th>
+      <th>Nome</th>
+      <th>Documento</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of lista">
+      <td>{{ item.codigo }}</td>
+      <td>{{ item.nome }}</td>
+      <td>{{ item.documento }}</td>
+      <td>
+        <!-- Botões de ação -->
+        <button class="btn btn-primary btn-sm" (click)="editar(item)">
+          Editar
+        </button>
+        <button class="btn btn-danger btn-sm" (click)="remover(item.codigo)">
+          Remover
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
