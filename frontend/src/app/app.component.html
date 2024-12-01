@@ -1,10 +1,40 @@
-<div class="container">
-  <h1>E-SUS</h1>
-  <a href="./lista " class = "btn btn-outline-info">Ver lista</a>
-  <a href= "./cadastro/ " class = "btn btn-outline-success">Cadastro Novo</a>
-  <a href= "./upload/ " class = "btn btn-outline-danger">Carregar Ficha</a>
+<!-- Navbar -->
+<nav *ngIf="exibirCabecalho" class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container">
+    <a class="navbar-brand" href="#">UBS Geraldo de Paula</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link active" href="#">Início</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Serviços</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Contato</a>
+        </li>
+      </ul>
+      <a href="#" class="btn btn-light ms-3">Entrar</a>
+    </div>
+  </div>
+</nav>
 
-  <router-outlet />
+<!-- Pesquisa e Tabela -->
+<div *ngIf="exibirCabecalho" class="container mt-4">
+  <!-- A estrutura da pesquisa e tabela vem aqui -->
 </div>
+
+<!-- Conteúdo da tela (dependendo da rota) -->
+<router-outlet></router-outlet>
+
+<!-- Rodapé (sempre visível) -->
+<footer class="bg-dark text-white mt-4">
+  <div class="container py-3">
+    <p class="mb-0 text-center">© 2024 UBS Geraldo de Paula. Todos os direitos reservados.</p>
+  </div>
+</footer>
 
 

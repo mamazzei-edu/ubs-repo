@@ -1,0 +1,86 @@
+/* Estilo para o campo de pesquisa */
+.row .form-control {
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Botão de pesquisa */
+  .row .btn-success {
+    width: 20%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    background-color: #25405e;
+    border: none;
+    border-radius: 0.5rem;
+    transition: background-color 0.3s ease;
+  }
+  
+  .row .btn-success:hover {
+    background-color: #25405e;
+  }
+  
+  /* Alerta de mensagem */
+  .alert-warning {
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+    background-color: #fff3cd;
+    border: 1px solid #ffeeba;
+    border-radius: 0.5rem;
+    color: #856404;
+  }
+  
+  /* Tabela */
+  .table-striped {
+    background-color: #ffffff;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    border: 1px solid #dee2e6;
+  }
+  
+  .table-striped thead th {
+    background-color: #f8f9fa;
+    text-align: center;
+    font-weight: bold;
+    color: #212529;
+  }
+  
+  .table-striped tbody tr:hover {
+    background-color: #f1f3f5;
+  }
+  
+  .table-striped tbody td {
+    vertical-align: middle;
+    text-align: center;
+  }
+  
+  /* Botões de ação */
+  .table-striped .btn-primary {
+    background-color: #007bff;
+    border: none;
+    border-radius: 0.25rem;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    transition: background-color 0.3s ease;
+  }
+  
+  .table-striped .btn-primary:hover {
+    background-color: #0056b3;
+  }
+  
+  .table-striped .btn-danger {
+    background-color: #dc3545;
+    border: none;
+    border-radius: 0.25rem;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    transition: background-color 0.3s ease;
+  }
+  
+  .table-striped .btn-danger:hover {
+    background-color: #bd2130;
+  }
+  

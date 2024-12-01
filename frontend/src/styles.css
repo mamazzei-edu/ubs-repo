@@ -1,1 +1,104 @@
-/* You can add global styles to this file, and also import other style files */
+/* Custom CSS for UBS Landing Page */
+
+/* Navbar */
+.navbar {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .navbar-brand {
+    font-weight: bold;
+    font-size: 1.5rem;
+  }
+  
+  .nav-link {
+    font-size: 1rem;
+  }
+  
+  .btn-light {
+    font-weight: bold;
+  }
+  
+  /* Hero Section */
+  section.bg-primary {
+    background: linear-gradient(135deg, #25405e, #192b3d);
+    padding: 4rem 0;
+  }
+  
+  section.bg-primary h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+  
+  section.bg-primary p {
+    font-size: 1.2rem;
+    max-width: 600px;
+    margin: 0 auto 2rem auto;
+  }
+  
+  section.bg-primary img {
+    border: 5px solid white;
+    border-radius: 10px;
+    margin-top: 2rem;
+  }
+  
+  /* Services Section */
+  .card {
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  
+  .card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+  }
+  
+  .card-title {
+    font-weight: bold;
+    font-size: 1.2rem;
+  }
+  
+  .card-text {
+    font-size: 1rem;
+    color: #555;
+  }
+  
+  /* Footer */
+  footer {
+    background-color: #343a40;
+    padding: 2rem 0;
+  }
+  
+  footer h5 {
+    font-size: 1.3rem;
+    font-weight: bold;
+  }
+  
+  footer p, footer a {
+    font-size: 1rem;
+    color: #bbb;
+  }
+  
+  footer a:hover {
+    text-decoration: underline;
+    color: #fff;
+  }
+  
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    section.bg-primary h1 {
+      font-size: 2rem;
+    }
+  
+    section.bg-primary p {
+      font-size: 1rem;
+    }
+  
+    .card {
+      margin-bottom: 1.5rem;
+    }
+  
+    footer {
+      text-align: center;
+    }
+  }
+  

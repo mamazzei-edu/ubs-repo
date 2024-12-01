@@ -10,8 +10,8 @@ row {
   
 
   input:focus, select:focus {
-    border-color: #5cb85c; 
-    box-shadow: 0 0 5px rgba(92, 184, 92, 0.5);
+    border-color: #25405e; 
+    box-shadow: 0 0 5px #4f81b9;
   }
   
  
@@ -39,7 +39,7 @@ row {
   
   h4 {
     margin-top: 30px;
-    color: #4CAF50; 
+    color:#4f81b9; 
   }
   
   small.text-danger {

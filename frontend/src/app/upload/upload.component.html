@@ -1,6 +1,8 @@
-<p>upload works!</p>
-
-<form method = "post" action = "http://localhost:8080/arquivos">
-    <input type="file" class="file-upload">
-    <input type="submit" value=" Enviar ">
-</form>
+<form method="post" action="http://localhost:8080/arquivos" class="upload-form">
+    <div class="mb-3">
+      <label for="file-upload" class="form-label">Selecione um arquivo</label>
+      <input type="file" class="form-control file-upload" id="file-upload" name="file">
+    </div>
+    <button type="submit" class="btn btn-primary btn-upload">Enviar</button>
+  </form>
+  
