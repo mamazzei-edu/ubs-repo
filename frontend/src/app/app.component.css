@@ -1,0 +1,128 @@
+/* Navbar Styles */
+.navbar {
+    background-color: #007bff; /* Azul escuro para o fundo */
+  }
+  
+  .navbar .navbar-brand {
+    font-size: 1.75rem;
+    font-weight: bold;
+    color: white;
+  }
+  
+  .navbar-toggler {
+    border-color: white;
+  }
+  
+  .navbar-toggler-icon {
+    background-color: white;
+  }
+  
+  .navbar-nav .nav-link {
+    color: white;
+    font-size: 1.1rem;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  
+  .navbar-nav .nav-link:hover {
+    color: #ffcc00; /* Cor amarela para o hover */
+  }
+  
+  .navbar-nav .nav-link.active {
+    color: #ffcc00;
+  }
+  
+  .navbar .btn {
+    font-weight: bold;
+    border-radius: 30px; /* Botões mais arredondados */
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .navbar .btn-light {
+    background-color: #f8f9fa;
+    color: #007bff;
+  }
+  
+  .navbar .btn-light:hover {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .navbar .navbar-collapse {
+    justify-content: flex-end; /* Alinha os itens à direita */
+  }
+  
+  /* Container - E-SUS Section */
+  .container {
+    padding: 40px 15px;
+  }
+  
+  .container h1 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  /* Botões E-SUS */
+  .container .btn {
+    display: inline-block;
+    margin: 10px;
+    font-size: 1.2rem;
+    padding: 12px 25px;
+    border-radius: 30px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .container .btn-outline-info {
+    color: #17a2b8;
+    border: 2px solid #17a2b8;
+  }
+  
+  .container .btn-outline-info:hover {
+    background-color: #17a2b8;
+    color: white;
+  }
+  
+  .container .btn-outline-success {
+    color: #28a745;
+    border: 2px solid #28a745;
+  }
+  
+  .container .btn-outline-success:hover {
+    background-color: #28a745;
+    color: white;
+  }
+  
+  .container .btn-outline-danger {
+    color: #dc3545;
+    border: 2px solid #dc3545;
+  }
+  
+  .container .btn-outline-danger:hover {
+    background-color: #dc3545;
+    color: white;
+  }
+  
+  /* Responsividade para telas pequenas */
+  @media (max-width: 768px) {
+    .navbar-nav {
+      text-align: center;
+      width: 100%;
+    }
+  
+    .navbar-nav .nav-link {
+      padding: 10px 0;
+    }
+  
+    .container h1 {
+      font-size: 2rem;
+    }
+  
+    .container .btn {
+      font-size: 1rem;
+      padding: 10px 20px;
+    }
+  }
+  

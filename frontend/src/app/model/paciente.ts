@@ -3,7 +3,7 @@ export class Paciente {
     public codigo: number = 0;
  
     // Informações pessoais
-    public nome: string = ''; // Nome completo
+    public nomeCompleto: string = ''; // Nome completo
     public nomeSocial?: string; // Nome social (opcional)
     public nomeMae?: string; // Nome da mãe (opcional)
     public nomePai?: string; // Nome do pai (opcional)
@@ -21,9 +21,9 @@ export class Paciente {
     public frequentaEscola?: 'Sim' | 'Não'; // Frequenta escola (opcional)
  
     // Dados de contato
-    public celular: string = ''; // Celular
-    public residencial?: string; // Telefone residencial (opcional)
-    public email: string = ''; // Email
+    public contatoCelular: string = ''; // Celular
+    public contatoResidencial?: string; // Telefone residencial (opcional)
+    public contatoEmail: string = ''; // Email
  
     constructor(init?: Partial<Paciente>) {
       Object.assign(this, init);
@@ -33,12 +33,12 @@ export class Paciente {
   // Exemplo de utilização
   const pacienteExemplo = new Paciente({
     codigo: 1,
-    nome: 'João Silva',
+    nomeCompleto: 'João Silva',
     dataNascimento: new Date('2000-01-01'),
     sexo: 'Masculino',
     nacionalidade: 'Brasileira',
     municipioNascimento: 'São Paulo',
     racaCor: 'Parda',
-    celular: '11987654321',
-    email: 'joao.silva@example.com',
+    contatoCelular: '11987654321',
+    contatoEmail: 'joao.silva@example.com',
   })

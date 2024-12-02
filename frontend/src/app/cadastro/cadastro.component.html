@@ -1,21 +1,18 @@
-
-<p>Cadastro de Paciente</p>
-
 <div class="container">
-  <!--  Informações Pessoais -->
+  <!-- Informações Pessoais -->
   <h4>Informações Pessoais</h4>
   <hr>
   <div class="row">
     <!-- Nome completo -->
     <div class="form-floating col-md-6">
-      <input id="nome" class="form-control" type="text" required />
+      <input id="nome" class="form-control" type="text" [(ngModel)]="paciente.nomeCompleto" required />
       <label for="nome">Nome completo do paciente:</label>
-      <small *ngIf="!nomeCompleto" class="text-danger">Campo obrigatório.</small>
+      <small *ngIf="!paciente.nomeCompleto" class="text-danger">Campo obrigatório.</small>
     </div>
 
     <!-- Nome social -->
     <div class="form-floating col-md-6">
-      <input id="nomeSocial" class="form-control" type="text"  />
+      <input id="nomeSocial" class="form-control" type="text" [(ngModel)]="paciente.nomeSocial" />
       <label for="nomeSocial">Nome social do paciente:</label>
     </div>
   </div>
@@ -23,38 +20,38 @@
   <div class="row mt-3">
     <!-- Nome da mãe -->
     <div class="form-floating col-md-6">
-      <input id="nomeMae" class="form-control" type="text"  />
+      <input id="nomeMae" class="form-control" type="text" [(ngModel)]="paciente.nomeMae" />
       <label for="nomeMae">Nome da mãe (se existente):</label>
     </div>
 
     <!-- Nome do pai -->
     <div class="form-floating col-md-6">
-      <input id="nomePai" class="form-control" type="text" />
+      <input id="nomePai" class="form-control" type="text" [(ngModel)]="paciente.nomePai" />
       <label for="nomePai">Nome do pai (se existente):</label>
     </div>
   </div>
 
-  <!--  Dados de Nascimento -->
+  <!-- Dados de Nascimento -->
   <h4>Dados de Nascimento</h4>
   <hr>
   <div class="row mt-3">
     <!-- Data de nascimento -->
     <div class="form-floating col-md-6">
-      <input id="dataNascimento" class="form-control" type="date"  required />
+      <input id="dataNascimento" class="form-control" type="date" [(ngModel)]="paciente.dataNascimento" required />
       <label for="dataNascimento">Data de nascimento:</label>
-      <small *ngIf="!dataNascimento" class="text-danger">Campo obrigatório.</small>
+      <small *ngIf="!paciente.dataNascimento" class="text-danger">Campo obrigatório.</small>
     </div>
 
     <!-- Sexo -->
     <div class="form-floating col-md-6">
-      <select id="sexo" class="form-control" required>
+      <select id="sexo" class="form-control" [(ngModel)]="paciente.sexo" required>
         <option value="" disabled selected>Selecione...</option>
         <option value="Masculino">Masculino</option>
         <option value="Feminino">Feminino</option>
         <option value="Outro">Outro</option>
       </select>
       <label for="sexo">Sexo:</label>
-      <small *ngIf="!sexo" class="text-danger">Campo obrigatório.</small>
+      <small *ngIf="!paciente.sexo" class="text-danger">Campo obrigatório.</small>
     </div>
   </div>
 
@@ -64,26 +61,26 @@
   <div class="row mt-3">
     <!-- Nacionalidade -->
     <div class="form-floating col-md-6">
-      <input id="nacionalidade" class="form-control" type="text" required />
+      <input id="nacionalidade" class="form-control" type="text" [(ngModel)]="paciente.nacionalidade" required />
       <label for="nacionalidade">Nacionalidade:</label>
-      <small *ngIf="!nacionalidade" class="text-danger">Campo obrigatório.</small>
+      <small *ngIf="!paciente.nacionalidade" class="text-danger">Campo obrigatório.</small>
     </div>
 
     <!-- Município de nascimento -->
     <div class="form-floating col-md-6">
-      <input id="municipioNascimento" class="form-control" type="text" required />
+      <input id="municipioNascimento" class="form-control" type="text" [(ngModel)]="paciente.municipioNascimento" required />
       <label for="municipioNascimento">Município de nascimento:</label>
-      <small *ngIf="!municipioNascimento" class="text-danger">Campo obrigatório.</small>
+      <small *ngIf="!paciente.municipioNascimento" class="text-danger">Campo obrigatório.</small>
     </div>
   </div>
 
-  <!--  Outros Dados -->
+  <!-- Outros Dados -->
   <h4>Outros Dados</h4>
   <hr>
   <div class="row mt-3">
     <!-- Raça/Cor -->
     <div class="form-floating col-md-6">
-      <select id="racaCor" class="form-control"  required>
+      <select id="racaCor" class="form-control" [(ngModel)]="paciente.racaCor" required>
         <option value="" disabled selected>Selecione...</option>
         <option value="Branca">Branca</option>
         <option value="Preta">Preta</option>
@@ -92,12 +89,12 @@
         <option value="Indígena">Indígena</option>
       </select>
       <label for="racaCor">Raça/Cor:</label>
-      <small *ngIf="!racaCor" class="text-danger">Campo obrigatório.</small>
+      <small *ngIf="!paciente.racaCor" class="text-danger">Campo obrigatório.</small>
     </div>
 
     <!-- Frequenta escola -->
     <div class="form-floating col-md-6">
-      <select id="frequentaEscola" class="form-control" >
+      <select id="frequentaEscola" class="form-control" [(ngModel)]="paciente.frequentaEscola">
         <option value="" disabled selected>Selecione...</option>
         <option value="Sim">Sim</option>
         <option value="Não">Não</option>
@@ -112,22 +109,24 @@
   <div class="row mt-3">
     <!-- Celular -->
     <div class="form-floating col-md-4">
-      <input id="celular" class="form-control" type="tel"  required />
+      <input id="celular" class="form-control" type="tel" [(ngModel)]="paciente.contatoCelular" required />
       <label for="celular">Celular:</label>
-      <small *ngIf="!contatoCelular" class="text-danger">Campo obrigatório.</small>
+      <small *ngIf="!paciente.contatoCelular" class="text-danger">Campo obrigatório.</small>
     </div>
 
     <!-- Residencial -->
     <div class="form-floating col-md-4">
-      <input id="residencial" class="form-control" type="tel" />
+      <input id="residencial" class="form-control" type="tel" [(ngModel)]="paciente.contatoResidencial" />
       <label for="residencial">Telefone Residencial:</label>
     </div>
 
     <!-- Email -->
     <div class="form-floating col-md-4">
-      <input id="email" class="form-control" type="email" required />
+      <input id="email" class="form-control" type="email" [(ngModel)]="paciente.contatoEmail" required />
       <label for="email">Email:</label>
-      <small *ngIf="!contatoEmail" class="text-danger">Campo obrigatório.</small>
+      <small *ngIf="!paciente.contatoEmail" class="text-danger">Campo obrigatório.</small>
     </div>
   </div>
+
+  <button (click)="gravar();">Gravar</button>
 </div>

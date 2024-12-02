@@ -1,29 +1,4 @@
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-  <div class="container">
-    <a class="navbar-brand" href="#">UBS Geraldo de Paula</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item">
-          <a class="nav-link active" href="#">Início</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Serviços</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Contato</a>
-        </li>
-      </ul>
-      <a href="#" class="btn btn-light ms-3">Entrar</a>
-    </div>
-  </div>
-</nav>
 
-<!-- Conteúdo da pesquisa e tabela -->
-<!-- Coloque isso abaixo do menu para exibir somente na tela principal -->
 <div class="container mt-4">
   <div class="row mb-3">
     <div class="col-md-9">
@@ -44,14 +19,14 @@
     </div>
   </div>
 
-  <!-- Mensagem de alerta -->
+
   <div
     class="alert alert-warning mt-3"
     *ngIf="mensagem && mensagem.length > 0">
     {{ mensagem }}
   </div>
 
-  <!-- Tabela de resultados -->
+
   <div class="card">
     <div class="card-header bg-primary text-white">
       <h5 class="mb-0">Resultados da Pesquisa</h5>
@@ -89,5 +64,3 @@
     </div>
   </div>
 </div>
-
-<!-- Isso vai garantir que o layout de pesquisa e a tabela só apareçam na tela principal -->
