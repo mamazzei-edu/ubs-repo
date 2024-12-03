@@ -1,5 +1,5 @@
 export class Paciente {
-    // Identificador do paciente
+    
     public codigo: number = 0;
  
     // Informações pessoais

@@ -10,5 +10,5 @@ export const routes: Routes = [
     {path : "cadastro", component : CadastroComponent},
     {path : "lista", component :ListaComponent},
     {path : "upload" , component : UploadComponent},
-    {path : '', redirectTo: '/cadastro', pathMatch: 'full' } 
+    {path : " " , component : ListaComponent } 
 ];

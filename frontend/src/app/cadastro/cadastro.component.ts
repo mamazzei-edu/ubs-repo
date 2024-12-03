@@ -1,7 +1,7 @@
 import { PacienteService } from "../service/paciente.service";
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common'; // Para usar ngIf, ngFor
-import { FormsModule } from '@angular/forms'; // Para usar ngModel
+import { CommonModule } from '@angular/common'; 
+import { FormsModule } from '@angular/forms'; 
 import { Paciente } from '../model/paciente';
 
 @Component({
@@ -9,7 +9,8 @@ import { Paciente } from '../model/paciente';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './cadastro.component.html',
-  styleUrl: './cadastro.component.css'
+  styleUrl: './cadastro.component.css',
+  providers : [PacienteService]
 })
 
 export class CadastroComponent {

@@ -16,7 +16,7 @@ export class ListaComponent {
     { codigo: 1, nome: 'João', documento: '123456789' },
     { codigo: 2, nome: 'Maria', documento: '987654321' },
     { codigo: 3, nome: 'Pedro', documento: '1122334455' }
-  ]; // Exemplo de lista de dados
+  ]; 
  
   constructor() {}
  
