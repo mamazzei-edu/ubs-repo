@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms'; 
 import { Paciente } from '../model/paciente';
 
+
 @Component({
   selector: 'app-cadastro',
   standalone: true,
@@ -15,12 +16,9 @@ import { Paciente } from '../model/paciente';
 
 export class CadastroComponent {
   public paciente = new Paciente();
-  // Dados do paciente
+ mensagem: string = '';
 
 
-  mensagem: string = '';
-
-  // Injeção do serviço
   constructor(private service: PacienteService) {}
 
   // Método para gravar o paciente

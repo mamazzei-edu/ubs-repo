@@ -19,7 +19,7 @@ public class PacienteController {
     @Autowired
     PacienteRepository bd;
  
-    @PostMapping("api/paciente")
+    @PostMapping("/api/paciente")
     public String gravar(@RequestBody PacienteEntity obj){
         bd.save(obj);
         return "paciente gravado com sucesso";

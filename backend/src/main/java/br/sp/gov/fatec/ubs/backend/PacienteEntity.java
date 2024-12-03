@@ -8,6 +8,7 @@ public class PacienteEntity {
     @Id
     private int codigo;
     private String NomeCompleto;
+    private String nomeSocial;
     private String NomeMae;
     private String NomePai;
     private String DataNascimento;
