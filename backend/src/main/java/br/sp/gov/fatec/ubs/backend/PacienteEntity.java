@@ -1,11 +1,12 @@
 package br.sp.gov.fatec.ubs.backend;
  
 import jakarta.persistence.Entity;
+
 import jakarta.persistence.Id;
  
 @Entity(name="paciente")
 public class PacienteEntity {
-    @Id
+     @Id 
     private int codigo;
     private String NomeCompleto;
     private String nomeSocial;
