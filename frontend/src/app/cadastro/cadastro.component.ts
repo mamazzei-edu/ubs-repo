@@ -21,7 +21,7 @@ export class CadastroComponent {
 
   constructor(private service: PacienteService) {}
 
-  // Método para gravar o paciente
+
   public gravar() {
     this.service.gravar(this.paciente).subscribe({
       next: (data) => {
@@ -31,27 +31,12 @@ export class CadastroComponent {
         this.mensagem = "Ocorreu um erro, tente mais tarde.";
       }
     });
-    //this.limpar();
+   
   }
 
 
-  // Método para limpar o formulário
-  public limpar() {
-    this.paciente = {
-      codigo : 0,
-      nomeCompleto: '',
-      nomeSocial: '',
-      nomeMae: '',
-      nomePai: '',
-      dataNascimento: new Date,
-      sexo: 'Masculino',
-      nacionalidade: '',
-      municipioNascimento: '',
-      racaCor: 'Parda',
-      frequentaEscola: 'Sim',
-      contatoCelular: '',
-      contatoResidencial: '',
-      contatoEmail: ''
-    };
+  
+
+    
   }
-}
+

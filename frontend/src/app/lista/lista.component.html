@@ -1,64 +1,25 @@
-
 <div class="container mt-4">
-  <div class="row mb-3">
-    <div class="col-md-9">
-      <input
-        type="text"
-        class="form-control"
-        placeholder="Digite para pesquisar..."
-        [(ngModel)]="termoBusca"
-      >
-    </div>
-    <div class="col-md-3 text-end">
-      <button
-        (click)="pesquisar();"
-        class="btn btn-success w-100">
-        <i class="bi bi-search"></i>
-        Pesquisar
-      </button>
-    </div>
-  </div>
-
-
-  <div
-    class="alert alert-warning mt-3"
-    *ngIf="mensagem && mensagem.length > 0">
-    {{ mensagem }}
-  </div>
-
-
+  <div class="alert alert-warning" *ngIf="mensagem">{{ mensagem }}</div>
   <div class="card">
     <div class="card-header bg-primary text-white">
       <h5 class="mb-0">Resultados da Pesquisa</h5>
     </div>
     <div class="card-body">
       <table class="table table-striped table-hover">
-        <thead class="table-primary">
+        <thead>
           <tr>
             <th>Código</th>
             <th>Nome</th>
             <th>Documento</th>
-            <th>Ações</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of lista">
-            <td>{{ item.codigo }}</td>
-            <td>{{ item.nome }}</td>
-            <td>{{ item.documento }}</td>
-            <td>
-              <!-- Botões de ação -->
-              <button class="btn btn-primary btn-sm me-2" (click)="editar(item)">
-                <i class="bi bi-pencil"></i> Editar
-              </button>
-              <button class="btn btn-danger btn-sm" (click)="remover(item.codigo)">
-                <i class="bi bi-trash"></i> Remover
-              </button>
-            </td>
+          <tr *ngFor="let paciente of pacientes">
+            <td>{{ paciente.codigo }}</td>
+            <td>{{ paciente.nomeCompleto }}</td>
+            <td>{{ paciente.dataNascimento }}</td>
           </tr>
-          <tr *ngIf="lista.length === 0">
-            <td colspan="4" class="text-center">Nenhum resultado encontrado.</td>
-          </tr>
+         
         </tbody>
       </table>
     </div>

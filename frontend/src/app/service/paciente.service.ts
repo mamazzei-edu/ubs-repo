@@ -14,8 +14,8 @@ export class PacienteService {
 
   }
   
-listar() : Observable<Object>{
-  return this.http.get("http://localhost:8091/api/paciente");
-}
- 
+
+  listar(): Observable<Paciente[]> {
+    return this.http.get<Paciente[]>('http://localhost:8091/api/paciente'); 
+  }
 }

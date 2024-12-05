@@ -49,7 +49,7 @@ public class PacienteController {
     }
  
     @GetMapping("/api/paciente")
-    public List<PacienteEntity>listar(){
+    public Iterable<PacienteEntity>listar(){
         return bd.findAll();
 }
  
