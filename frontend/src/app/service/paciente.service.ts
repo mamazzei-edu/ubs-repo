@@ -16,4 +16,8 @@ export class PacienteService {
     return this.http.post<Paciente>('http://localhost:8090/pacientes', obj);
   }
 
+  public listar(): Observable<Paciente[]> {
+    return this.http.get<Paciente[]>('http://localhost:8090/pacientes');
+  }
+
 }
