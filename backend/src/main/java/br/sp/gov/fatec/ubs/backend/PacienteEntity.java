@@ -1,39 +1,38 @@
 package br.sp.gov.fatec.ubs.backend;
  
 import jakarta.persistence.Entity;
-
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
  
 @Entity(name="paciente")
 public class PacienteEntity {
      @Id 
+     @GeneratedValue(strategy = GenerationType.AUTO)
     private int codigo;
-    private String NomeCompleto;
+    private String nomeCompleto;
     private String nomeSocial;
-    private String NomeMae;
-    private String NomePai;
-    private String DataNascimento;
-    private String Sexo;
-    private String Nacioalidade;
-    private String MunicipioNascimento;
-    private String Ra;
-    private String SituacaoFamiliar;
-    private String FrequentaEscola;
-    private String EstabelecimentoVeiculo;
-    private String EstabelecimentoCadastro;
-    private String Deficiente;
-    private String Visual;
-    private String Auditiva;
-    private String Motora;
-    private String Intelectual;
-    private String TelefoneCelular;
-    private String TelefoneResidencial;
-    private String TelefoneComercial;
-    private String Contato;
-    private String Email;
-   
-   
- 
+    private String nomeMae;
+    private String nomePai;
+    private String dataNascimento;
+    private String sexo;
+    private String nacioalidade;
+    private String municipioNascimento;
+    private String ra;
+    private String situacaoFamiliar;
+    private String frequentaEscola;
+    private String estabelecimentoVeiculo;
+    private String estabelecimentoCadastro;
+    private String deficiente;
+    private String visual;
+    private String auditiva;
+    private String motora;
+    private String intelectual;
+    private String telefoneCelular;
+    private String telefoneResidencial;
+    private String telefoneComercial;
+    private String contato;
+    private String email;
     public int getCodigo() {
         return codigo;
     }
@@ -41,130 +40,145 @@ public class PacienteEntity {
         this.codigo = codigo;
     }
     public String getNomeCompleto() {
-        return NomeCompleto;
+        return nomeCompleto;
     }
     public void setNomeCompleto(String nomeCompleto) {
-        NomeCompleto = nomeCompleto;
+        this.nomeCompleto = nomeCompleto;
+    }
+    public String getNomeSocial() {
+        return nomeSocial;
+    }
+    public void setNomeSocial(String nomeSocial) {
+        this.nomeSocial = nomeSocial;
     }
     public String getNomeMae() {
-        return NomeMae;
+        return nomeMae;
     }
     public void setNomeMae(String nomeMae) {
-        NomeMae = nomeMae;
+        this.nomeMae = nomeMae;
     }
     public String getNomePai() {
-        return NomePai;
+        return nomePai;
     }
     public void setNomePai(String nomePai) {
-        NomePai = nomePai;
+        this.nomePai = nomePai;
     }
     public String getDataNascimento() {
-        return DataNascimento;
+        return dataNascimento;
     }
     public void setDataNascimento(String dataNascimento) {
-        DataNascimento = dataNascimento;
+        this.dataNascimento = dataNascimento;
     }
     public String getSexo() {
-        return Sexo;
+        return sexo;
     }
     public void setSexo(String sexo) {
-        Sexo = sexo;
+        this.sexo = sexo;
     }
     public String getNacioalidade() {
-        return Nacioalidade;
+        return nacioalidade;
     }
     public void setNacioalidade(String nacioalidade) {
-        Nacioalidade = nacioalidade;
+        this.nacioalidade = nacioalidade;
     }
     public String getMunicipioNascimento() {
-        return MunicipioNascimento;
+        return municipioNascimento;
     }
     public void setMunicipioNascimento(String municipioNascimento) {
-        MunicipioNascimento = municipioNascimento;
+        this.municipioNascimento = municipioNascimento;
     }
     public String getRa() {
-        return Ra;
+        return ra;
     }
     public void setRa(String ra) {
-        Ra = ra;
+        this.ra = ra;
     }
     public String getSituacaoFamiliar() {
-        return SituacaoFamiliar;
+        return situacaoFamiliar;
     }
     public void setSituacaoFamiliar(String situacaoFamiliar) {
-        SituacaoFamiliar = situacaoFamiliar;
+        this.situacaoFamiliar = situacaoFamiliar;
     }
     public String getFrequentaEscola() {
-        return FrequentaEscola;
+        return frequentaEscola;
     }
     public void setFrequentaEscola(String frequentaEscola) {
-        FrequentaEscola = frequentaEscola;
+        this.frequentaEscola = frequentaEscola;
     }
     public String getEstabelecimentoVeiculo() {
-        return EstabelecimentoVeiculo;
+        return estabelecimentoVeiculo;
     }
     public void setEstabelecimentoVeiculo(String estabelecimentoVeiculo) {
-        EstabelecimentoVeiculo = estabelecimentoVeiculo;
+        this.estabelecimentoVeiculo = estabelecimentoVeiculo;
     }
     public String getEstabelecimentoCadastro() {
-        return EstabelecimentoCadastro;
+        return estabelecimentoCadastro;
     }
     public void setEstabelecimentoCadastro(String estabelecimentoCadastro) {
-        EstabelecimentoCadastro = estabelecimentoCadastro;
+        this.estabelecimentoCadastro = estabelecimentoCadastro;
     }
     public String getDeficiente() {
-        return Deficiente;
+        return deficiente;
     }
     public void setDeficiente(String deficiente) {
-        Deficiente = deficiente;
+        this.deficiente = deficiente;
     }
     public String getVisual() {
-        return Visual;
+        return visual;
     }
     public void setVisual(String visual) {
-        Visual = visual;
+        this.visual = visual;
     }
     public String getAuditiva() {
-        return Auditiva;
+        return auditiva;
     }
     public void setAuditiva(String auditiva) {
-        Auditiva = auditiva;
+        this.auditiva = auditiva;
     }
     public String getMotora() {
-        return Motora;
+        return motora;
     }
     public void setMotora(String motora) {
-        Motora = motora;
+        this.motora = motora;
     }
     public String getIntelectual() {
-        return Intelectual;
+        return intelectual;
     }
     public void setIntelectual(String intelectual) {
-        Intelectual = intelectual;
+        this.intelectual = intelectual;
     }
     public String getTelefoneCelular() {
-        return TelefoneCelular;
+        return telefoneCelular;
     }
     public void setTelefoneCelular(String telefoneCelular) {
-        TelefoneCelular = telefoneCelular;
+        this.telefoneCelular = telefoneCelular;
     }
     public String getTelefoneResidencial() {
-        return TelefoneResidencial;
+        return telefoneResidencial;
     }
     public void setTelefoneResidencial(String telefoneResidencial) {
-        TelefoneResidencial = telefoneResidencial;
+        this.telefoneResidencial = telefoneResidencial;
     }
     public String getTelefoneComercial() {
-        return TelefoneComercial;
+        return telefoneComercial;
     }
     public void setTelefoneComercial(String telefoneComercial) {
-        TelefoneComercial = telefoneComercial;
+        this.telefoneComercial = telefoneComercial;
     }
     public String getContato() {
-        return Contato;
+        return contato;
     }
     public void setContato(String contato) {
-        Contato = contato;
+        this.contato = contato;
     }
+    public String getEmail() {
+        return email;
+    }
+    public void setEmail(String email) {
+        email = email;
+    }
+   
+   
+ 
    
 }

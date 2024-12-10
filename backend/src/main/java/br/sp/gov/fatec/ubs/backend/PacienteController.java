@@ -36,13 +36,13 @@ public class PacienteController {
  
     }
  
-    @DeleteMapping("api/paciente/{codigo}")
+    @DeleteMapping("/api/paciente/{codigo}")
     public String remover(@PathVariable long codigo){
         bd.deleteById(codigo);
         return "paciente" + codigo + "removido com sucesso";
     }
  
-    @PutMapping("api/paciente")
+    @PutMapping("/api/paciente")
     public String alterar(@RequestBody PacienteEntity obj){
     bd.save(obj);
     return "Paciente alterado com sucesso";
