@@ -11,6 +11,7 @@
             <th>Código</th>
             <th>Nome</th>
             <th>Documento</th>
+            <th>Ações</th> <!-- Coluna para os botões de editar e remover -->
           </tr>
         </thead>
         <tbody>
@@ -18,8 +19,15 @@
             <td>{{ paciente.codigo }}</td>
             <td>{{ paciente.nomeCompleto }}</td>
             <td>{{ paciente.dataNascimento }}</td>
+            <td>
+              <!-- Botão Editar -->
+<button class="btn btn-warning" (click)="editar(paciente.codigo ?? 0)">Editar</button>
+
+<!-- Botão Remover -->
+<button class="btn btn-danger" (click)="remover(paciente.codigo ?? 0)">Remover</button>
+
+            </td>
           </tr>
-         
         </tbody>
       </table>
     </div>

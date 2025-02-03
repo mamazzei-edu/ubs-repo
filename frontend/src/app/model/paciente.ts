@@ -1,4 +1,7 @@
 export class Paciente {
+  id(id: any, paciente: Paciente) {
+    throw new Error('Method not implemented.');
+  }
   // Informações pessoais
   public codigo?: number; // Código do paciente
   public nomeCompleto: string = ''; // Nome completo
