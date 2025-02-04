@@ -1,159 +1,148 @@
-<p>CADASTRE A FICHA DO PACIENTE ABAIXO:</p>
- <!-- Commit funcionou -->
+<div class="container" style="border: 1px solid black;">
+  <h1>Cadastro de Paciente</h1>
 
-<div class="container">
-
- 
-  <h4>Informações Pessoais</h4>
-  <hr>
-  <div class="row">
-    <div class="form-floating col-md-6">
-      <input id="nome" class="form-control" type="text" required />
-      <label for="nome">Nome completo do paciente:</label>
-      <small *ngIf="!nomeCompleto" class="text-danger">Campo obrigatório.</small>
+  <!-- Formulário para cadastrar um paciente -->
+  <form (ngSubmit)="salvarPaciente()">
+    <!-- Informações Pessoais -->
+    <div class="form-group">
+      <label for="nomeCompleto">Nome Completo</label>
+      <input type="text" id="nomeCompleto" class="form-control" [(ngModel)]="nomeCompleto" name="nomeCompleto" />
     </div>
 
-    <div class="form-floating col-md-6">
-      <input id="nomeSocial" class="form-control" type="text" />
-      <label for="nomeSocial">Nome social do paciente:</label>
-    </div>
-  </div>
-
-  <div class="row mt-3">
-    <div class="form-floating col-md-6">
-      <input id="nomeMae" class="form-control" type="text" />
-      <label for="nomeMae">Nome da mãe (se existente):</label>
+    <div class="form-group">
+      <label for="nomeSocial">Nome Social</label>
+      <input type="text" id="nomeSocial" class="form-control" [(ngModel)]="nomeSocial" name="nomeSocial" />
     </div>
 
-    <div class="form-floating col-md-6">
-      <input id="nomePai" class="form-control" type="text" />
-      <label for="nomePai">Nome do pai (se existente):</label>
-    </div>
-  </div>
-
-  
-  <h4>Dados de Nascimento</h4>
-  <hr>
-  <div class="row mt-3">
-    <div class="form-floating col-md-6">
-      <input id="dataNascimento" class="form-control" type="date" required />
-      <label for="dataNascimento">Data de nascimento:</label>
-      <small *ngIf="!dataNascimento" class="text-danger">Campo obrigatório.</small>
+    <div class="form-group">
+      <label for="nomeMae">Nome da Mãe</label>
+      <input type="text" id="nomeMae" class="form-control" [(ngModel)]="nomeMae" name="nomeMae" />
     </div>
 
-    <div class="form-floating col-md-6">
-      <select id="sexo" class="form-control" required>
-        <option value="" disabled selected>Selecione...</option>
-        <option value="Masculino">Masculino</option>
-        <option value="Feminino">Feminino</option>
-        <option value="Outro">Outro</option>
+    <div class="form-group">
+      <label for="nomePai">Nome do Pai</label>
+      <input type="text" id="nomePai" class="form-control" [(ngModel)]="nomePai" name="nomePai" />
+    </div>
+
+    <div class="form-group">
+      <label for="cpf">CPF</label>
+      <input type="number" id="cpf" class="form-control" [(ngModel)]="cpf" name="cpf" />
+    </div>
+
+    <div class="form-group">
+      <label for="dataNascimento">Data de Nascimento</label>
+      <input type="date" id="dataNascimento" class="form-control" [(ngModel)]="dataNascimento" name="dataNascimento" />
+    </div>
+
+    <div class="form-group">
+      <label for="sexo">Sexo</label>
+      <select id="sexo" class="form-control" [(ngModel)]="sexo" name="sexo">
+        <option value="">Selecione</option>
+        <option value="M">Masculino</option>
+        <option value="F">Feminino</option>
+        <option value="O">Outro</option>
       </select>
-      <label for="sexo">Sexo:</label>
-      <small *ngIf="!sexo" class="text-danger">Campo obrigatório.</small>
-    </div>
-  </div>
-
-  
-  <h4>Localidade</h4>
-  <hr>
-  <div class="row mt-3">
-    <div class="form-floating col-md-6">
-      <input id="nacionalidade" class="form-control" type="text" required />
-      <label for="nacionalidade">Nacionalidade:</label>
-      <small *ngIf="!nacionalidade" class="text-danger">Campo obrigatório.</small>
     </div>
 
-    <div class="form-floating col-md-6">
-      <input id="municipioNascimento" class="form-control" type="text" required />
-      <label for="municipioNascimento">Município de nascimento:</label>
-      <small *ngIf="!municipioNascimento" class="text-danger">Campo obrigatório.</small>
-    </div>
-  </div>
-
- 
-  <h4>Outros Dados</h4>
-  <hr>
-  <div class="row mt-3">
-    <div class="form-floating col-md-6">
-      <select id="racaCor" class="form-control" required>
-        <option value="" disabled selected>Selecione...</option>
-        <option value="Branca">Branca</option>
-        <option value="Preta">Preta</option>
-        <option value="Parda">Parda</option>
-        <option value="Amarela">Amarela</option>
-        <option value="Indígena">Indígena</option>
-      </select>
-      <label for="racaCor">Raça/Cor:</label>
-      <small *ngIf="!racaCor" class="text-danger">Campo obrigatório.</small>
+    <!-- Localidade -->
+    <div class="form-group">
+      <label for="nacionalidade">Nacionalidade</label>
+      <input type="text" id="nacionalidade" class="form-control" [(ngModel)]="nacionalidade" name="nacionalidade" />
     </div>
 
-    <div class="form-floating col-md-6">
-      <select id="frequentaEscola" class="form-control">
-        <option value="" disabled selected>Selecione...</option>
+    <div class="form-group">
+      <label for="municipioNascimento">Município de Nascimento</label>
+      <input type="text" id="municipioNascimento" class="form-control" [(ngModel)]="municipioNascimento" name="municipioNascimento" />
+    </div>
+
+    <!-- Dados Complementares -->
+    <div class="form-group">
+      <label for="racaCor">Raça/Cor</label>
+      <input type="text" id="racaCor" class="form-control" [(ngModel)]="racaCor" name="racaCor" />
+    </div>
+
+    <div class="form-group">
+      <label for="frequentaEscola">Frequenta Escola</label>
+      <select id="frequentaEscola" class="form-control" [(ngModel)]="frequentaEscola" name="frequentaEscola">
+        <option value="">Selecione</option>
         <option value="Sim">Sim</option>
         <option value="Não">Não</option>
       </select>
-      <label for="frequentaEscola">Frequenta escola:</label>
+    </div>
+
+    <div class="form-group">
+      <label for="escolaridade">Escolaridade</label>
+      <input type="text" id="escolaridade" class="form-control" [(ngModel)]="escolaridade" name="escolaridade" />
+    </div>
+
+    <div class="form-group">
+      <label for="situacaoFamiliar">Situação Familiar</label>
+      <input type="text" id="situacaoFamiliar" class="form-control" [(ngModel)]="situacaoFamiliar" name="situacaoFamiliar" />
+    </div>
+
+    <div class="form-group">
+      <label for="vinculoEstabelecimento">Vínculo com Estabelecimento</label>
+      <input type="text" id="vinculoEstabelecimento" class="form-control" [(ngModel)]="vinculoEstabelecimento" name="vinculoEstabelecimento" />
+    </div>
+
+    <div class="form-group">
+      <label for="deficiencia">Deficiência</label>
+      <input type="text" id="deficiencia" class="form-control" [(ngModel)]="deficiencia" name="deficiencia" />
+    </div>
+
+    <!-- Contato -->
+    <div class="form-group">
+      <label for="contatoCelular">Contato Celular</label>
+      <input type="text" id="contatoCelular" class="form-control" [(ngModel)]="contatoCelular" name="contatoCelular" />
+    </div>
+
+    <div class="form-group">
+      <label for="contatoResidencial">Contato Residencial</label>
+      <input type="text" id="contatoResidencial" class="form-control" [(ngModel)]="contatoResidencial" name="contatoResidencial" />
+    </div>
+
+    <div class="form-group">
+      <label for="contatoComercial">Contato Comercial</label>
+      <input type="text" id="contatoComercial" class="form-control" [(ngModel)]="contatoComercial" name="contatoComercial" />
+    </div>
+
+    <div class="form-group">
+      <label for="contatoEmail">E-mail</label>
+      <input type="email" id="contatoEmail" class="form-control" [(ngModel)]="contatoEmail" name="contatoEmail" />
+    </div>
+
+    <button type="submit" class="btn btn-success mt-3">Salvar Paciente</button>
+  </form>
+
+  <div 
+  class="modal fade" 
+  tabindex="-1" 
+  [class.show]="isModalVisible" 
+  [style.display]="isModalVisible ? 'block' : 'none'" 
+  (click)="closeModal()">
+  <div 
+    class="modal-dialog" 
+    (click)="$event.stopPropagation()"> <!-- Impede o clique na modal de fechá-la -->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Mensagem</h5>
+        <button 
+          type="button" 
+          class="btn-close" 
+          (click)="closeModal()" 
+          aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Paciente salvo com sucesso!</p>
+      </div>
+      <div class="modal-footer">
+        <button 
+          type="button" 
+          class="btn btn-secondary" 
+          (click)="closeModal()">Fechar</button>
+      </div>
     </div>
   </div>
-
-  <div class="row mt-3">
-    <div class="form-floating col-md-6">
-      <input id="escolaridade" class="form-control" type="text" />
-      <label for="escolaridade">Escolaridade:</label>
-    </div>
-
-    <div class="form-floating col-md-6">
-      <input id="situacaoFamiliar" class="form-control" type="text" />
-      <label for="situacaoFamiliar">Situação Familiar:</label>
-    </div>
-  </div>
-
-  <div class="row mt-3">
-    <div class="form-floating col-md-6">
-      <select id="deficiencia" class="form-control">
-        <option value="" disabled selected>Selecione...</option>
-        <option value="Visual">Visual</option>
-        <option value="Auditiva">Auditiva</option>
-        <option value="Motora">Motora</option>
-        <option value="Intelectual">Intelectual</option>
-      </select>
-      <label for="deficiencia">Deficiência:</label>
-    </div>
-  </div>
-
- 
-  <h4>Dados de Contato</h4>
-  <hr>
-  <div class="row mt-3">
-    <div class="form-floating col-md-4">
-      <input id="celular" class="form-control" type="tel" required />
-      <label for="celular">Celular:</label>
-      <small *ngIf="!contatoCelular" class="text-danger">Campo obrigatório.</small>
-    </div>
-
-    <div class="form-floating col-md-4">
-      <input id="residencial" class="form-control" type="tel" />
-      <label for="residencial">Telefone Residencial:</label>
-    </div>
-
-    <div class="form-floating col-md-4">
-      <input id="comercial" class="form-control" type="tel" />
-      <label for="comercial">Telefone Comercial:</label>
-    </div>
-  </div>
-
-  <div class="row mt-3">
-    <div class="form-floating col-md-6">
-      <input id="email" class="form-control" type="email" required />
-      <label for="email">Email:</label>
-      <small *ngIf="!contatoEmail" class="text-danger">Campo obrigatório.</small>
-    </div>
-
-    <div class="form-floating col-md-6">
-      <input id="cpf" class="form-control" type="text" />
-      <label for="cpf">CPF (se existente):</label>
-    </div>
-  </div>
+</div>
 
 </div>

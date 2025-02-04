@@ -34,7 +34,7 @@ export class AppComponent {
       dataNascimento: this.dataNascimento
     };
 
-    this.http.post('http://localhost:8081/api/pacientes', paciente).subscribe({
+    this.http.post('http://localhost:8090/api/pacientes', paciente).subscribe({
       next: (data) => {
         console.log('Paciente salvo com sucesso:', data);
       },

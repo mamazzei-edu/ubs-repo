@@ -40,5 +40,53 @@ public class PacienteController {
         }
     }
 
-    // Outros endpoints para atualização ou exclusão de pacientes podem ser adicionados conforme necessário
+    // Endpoint para excluir paciente
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> excluirPaciente(@PathVariable Long id) {
+        Optional<Paciente> paciente = pacienteService.buscarPacientePorId(id);
+        if (paciente.isPresent()) {
+            pacienteService.excluirPaciente(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    // Endpoint para atualizar um paciente
+    @PutMapping("/{id}")
+    public ResponseEntity<Paciente> atualizarPaciente(
+            @PathVariable Long id, @RequestBody Paciente pacienteAtualizado) {
+        Optional<Paciente> pacienteOpt = pacienteService.buscarPacientePorId(id);
+
+        if (pacienteOpt.isPresent()) {
+            Paciente paciente = pacienteOpt.get();
+
+            // Atualizando os campos
+            paciente.setNomeCompleto(pacienteAtualizado.getNomeCompleto());
+            paciente.setNomeSocial(pacienteAtualizado.getNomeSocial());
+            paciente.setNomeMae(pacienteAtualizado.getNomeMae());
+            paciente.setNomePai(pacienteAtualizado.getNomePai());
+            paciente.setDataNascimento(pacienteAtualizado.getDataNascimento());
+            paciente.setSexo(pacienteAtualizado.getSexo());
+            paciente.setNacionalidade(pacienteAtualizado.getNacionalidade());
+            paciente.setMunicipioNascimento(pacienteAtualizado.getMunicipioNascimento());
+            paciente.setRacaCor(pacienteAtualizado.getRacaCor());
+            paciente.setFrequentaEscola(pacienteAtualizado.getFrequentaEscola());
+            paciente.setEscolaridade(pacienteAtualizado.getEscolaridade());
+            paciente.setSituacaoFamiliar(pacienteAtualizado.getSituacaoFamiliar());
+            paciente.setVinculoEstabelecimento(pacienteAtualizado.getVinculoEstabelecimento());
+            paciente.setDeficiencia(pacienteAtualizado.getDeficiencia());
+            paciente.setContatoCelular(pacienteAtualizado.getContatoCelular());
+            paciente.setContatoResidencial(pacienteAtualizado.getContatoResidencial());
+            paciente.setContatoComercial(pacienteAtualizado.getContatoComercial());
+            paciente.setContatoEmail(pacienteAtualizado.getContatoEmail());
+            paciente.setCpf(pacienteAtualizado.getCpf());
+            // Atualize outros campos conforme necessário...
+
+            Paciente pacienteAtualizadoSalvo = pacienteService.salvarPaciente(paciente);
+            return new ResponseEntity<>(pacienteAtualizadoSalvo, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 }
