@@ -7,7 +7,6 @@ import { Paciente } from '../model/paciente';
   providedIn: 'root'
 })
 export class PacienteService {
-
   constructor(private http: HttpClient) { }
 
   // Método para listar todos os pacientes

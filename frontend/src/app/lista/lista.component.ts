@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';  // 🔹 Importação necessária para [(ngModel)]
 import { Paciente } from '../model/paciente';
-import { PacienteService } from '../service/paciente.service';  // Certifique-se de que o serviço está correto
+import { PacienteService } from '../service/paciente.service';
 
 @Component({
   selector: 'app-lista',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],  // 🔹 Adicionado FormsModule
   templateUrl: './lista.component.html',
   styleUrls: ['./lista.component.css'],
   providers: [PacienteService]
@@ -14,7 +15,8 @@ import { PacienteService } from '../service/paciente.service';  // Certifique-se
 export class ListaComponent {
   mensagem: string = "";
   pacientes: Paciente[] = [];
-  pacienteEdicao!: Paciente;
+  pacienteSelecionado: Paciente | null = null;  // 🔹 Armazena o paciente em edição
+  Paciente!: number;
 
   constructor(private service: PacienteService) {
     this.listar();
@@ -23,45 +25,66 @@ export class ListaComponent {
   listar() {
     this.service.listar().subscribe({
       next: (data) => { this.pacientes = data; },
-      error: (msg) => { this.mensagem = "Ocorreu um erro"; }
+      error: () => { this.mensagem = "Ocorreu um erro ao carregar os pacientes."; }
     });
   }
 
- // Método de edição
- editar(codigo: number) {
-  if (codigo === 0) {
-    console.error('Código inválido');
-    return;
+  // 🔹 Método para buscar e editar paciente
+  editar(codigo: number) {
+    this.service.buscarPorCodigo(codigo).subscribe({
+      next: (paciente: Paciente) => {
+        console.log('Paciente encontrado:', paciente);
+        this.pacienteSelecionado = { ...paciente }; // 🔹 Removeu id desnecessário
+      },
+      error: (erro) => {
+        console.error('Erro ao carregar os dados do paciente:', erro);
+      }
+    });
   }
-
-  this.service.buscarPorCodigo(codigo).subscribe({
-    next: (paciente: Paciente) => {
-      // Aqui você pode configurar a lógica de exibição dos dados do paciente
-      // Exemplo: redirecionando para um formulário de edição ou exibindo um modal.
-      console.log('Paciente para editar:', paciente);
-      this.pacienteEdicao = paciente; // Armazenando o paciente para edição, se necessário
-    },
-    error: () => {
-      this.mensagem = 'Erro ao carregar os dados do paciente';
-    }
-  });
-}
-
-
-// Método de remoção
-remover(codigo: number) {
-  if (confirm('Tem certeza que deseja remover este paciente?')) {
-    this.service.remover(codigo).subscribe({
+  
+  
+// Método para salvar as edições
+salvarEdicao() {
+  if (this.pacienteSelecionado) {
+    this.service.updatePaciente(this.pacienteSelecionado.codigo, this.pacienteSelecionado).subscribe({
       next: () => {
-        this.mensagem = 'Paciente removido com sucesso!';
-        this.listar();  // Atualiza a lista após remoção
+        console.log(`Paciente ${this.pacienteSelecionado?.codigo} atualizado com sucesso`);
+        this.mensagem = 'Paciente atualizado com sucesso!';
+        this.pacienteSelecionado = null; // Fecha o formulário de edição
+        this.listar();  // Atualiza a lista com os novos dados
       },
       error: () => {
-        this.mensagem = 'Erro ao remover paciente';
+        this.mensagem = "Erro ao atualizar o paciente.";
       }
     });
   }
 }
 
+
+  // 🔹 Método para cancelar a edição
+  cancelarEdicao() {
+    this.pacienteSelecionado = null;  // Fecha o painel de edição sem salvar
+  }
+
+  // 🔹 Método para remover paciente
+  remover(codigo: number) {
+    if (!codigo) {
+      console.error('Código inválido para remoção');
+      return;
+    }
+
+    if (confirm('Tem certeza que deseja remover este paciente?')) {
+      this.service.remover(codigo).subscribe({
+        next: () => {
+          console.log(`Paciente ${codigo} removido com sucesso`);
+          this.mensagem = 'Paciente removido com sucesso!';
+          this.listar();  // Atualiza a lista após remoção
+        },
+        error: (erro) => {
+          console.error('Erro ao remover paciente:', erro);
+          this.mensagem = 'Erro ao remover paciente';
         }
-    
+      });
+    }
+  }
+}

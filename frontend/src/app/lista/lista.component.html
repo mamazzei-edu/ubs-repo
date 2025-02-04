@@ -1,5 +1,6 @@
 <div class="container mt-4">
   <div class="alert alert-warning" *ngIf="mensagem">{{ mensagem }}</div>
+
   <div class="card">
     <div class="card-header bg-primary text-white">
       <h5 class="mb-0">Resultados da Pesquisa</h5>
@@ -10,26 +11,86 @@
           <tr>
             <th>Código</th>
             <th>Nome</th>
-            <th>Documento</th>
-            <th>Ações</th> <!-- Coluna para os botões de editar e remover -->
+            <th>Data de Nascimento</th>
+            <th>Sexo</th>
+            <th>Nacionalidade</th>
+            <th>Contato</th>
+            <th>Ações</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let paciente of pacientes">
             <td>{{ paciente.codigo }}</td>
             <td>{{ paciente.nomeCompleto }}</td>
-            <td>{{ paciente.dataNascimento }}</td>
+            <td>{{ paciente.dataNascimento | date: 'dd/MM/yyyy' }}</td>
+            <td>{{ paciente.sexo }}</td>
+            <td>{{ paciente.nacionalidade || 'Não informado' }}</td>
+            <td>{{ paciente.contatoCelular || 'Não informado' }}</td>
             <td>
               <!-- Botão Editar -->
-<button class="btn btn-warning" (click)="editar(paciente.codigo ?? 0)">Editar</button>
+              <button class="btn btn-warning btn-sm me-2"
+                      *ngIf="paciente.codigo"
+                      (click)="editar(Paciente)">
+                Editar
+              </button>
 
-<!-- Botão Remover -->
-<button class="btn btn-danger" (click)="remover(paciente.codigo ?? 0)">Remover</button>
-
+              <!-- Botão Remover -->
+              <button class="btn btn-danger btn-sm"
+                      *ngIf="paciente.codigo"
+                      (click)="remover(paciente.codigo)">
+                Remover
+              </button>
             </td>
           </tr>
         </tbody>
       </table>
+    </div>
+  </div>
+
+  <!-- Painel de Edição do Paciente -->
+  <div *ngIf="pacienteSelecionado" class="card mt-4">
+    <div class="card-header bg-info text-white">
+      <h5 class="mb-0">Editar Paciente</h5>
+    </div>
+    <div class="card-body">
+      <div class="mb-3">
+        <label class="form-label">Nome Completo</label>
+        <input class="form-control" [(ngModel)]="pacienteSelecionado.nomeCompleto">
+      </div>
+      
+      <div class="mb-3">
+        <label class="form-label">Nome Social</label>
+        <input class="form-control" [(ngModel)]="pacienteSelecionado.nomeSocial">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Data de Nascimento</label>
+        <input type="date" class="form-control" [(ngModel)]="pacienteSelecionado.dataNascimento">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Sexo</label>
+        <select class="form-control" [(ngModel)]="pacienteSelecionado.sexo">
+          <option value="Masculino">Masculino</option>
+          <option value="Feminino">Feminino</option>
+          <option value="Outro">Outro</option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Nacionalidade</label>
+        <input class="form-control" [(ngModel)]="pacienteSelecionado.nacionalidade">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Contato Celular</label>
+        <input class="form-control" [(ngModel)]="pacienteSelecionado.contatoCelular">
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <button class="btn btn-success me-2" (click)="salvarEdicao()">Salvar</button>
+      <button class="btn btn-secondary" (click)="cancelarEdicao()">Cancelar</button>
     </div>
   </div>
 </div>

@@ -1,8 +1,8 @@
 export class Paciente {
-  id(id: any, paciente: Paciente) {
-    throw new Error('Method not implemented.');
-  }
+ 
   // Informações pessoais
+  pacienteSelecionado?: Paciente;
+
   public codigo?: number; // Código do paciente
   public nomeCompleto: string = ''; // Nome completo
   public nomeSocial?: string; // Nome social (opcional)
@@ -34,6 +34,8 @@ export class Paciente {
   public contatoComercial?: string; // Telefone comercial (opcional)
   public contatoEmail: string = ''; // Email
 
+
+  
   constructor(init?: Partial<Paciente>) {
     Object.assign(this, init); 
   }
