@@ -1,7 +1,7 @@
 import { PacienteService } from "../service/paciente.service";
 import { CommonModule } from '@angular/common'; 
 import { FormsModule } from '@angular/forms'; 
-import { Paciente } from '../model/paciente';
+import { Paciente } from '../model/paciente.model';
 import { Component } from "@angular/core";
 
 

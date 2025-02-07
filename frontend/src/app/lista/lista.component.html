@@ -20,17 +20,17 @@
         </thead>
         <tbody>
           <tr *ngFor="let paciente of pacientes">
-            <td>{{ paciente.codigo }}</td>
-            <td>{{ paciente.nomeCompleto }}</td>
-            <td>{{ paciente.dataNascimento | date: 'dd/MM/yyyy' }}</td>
-            <td>{{ paciente.sexo }}</td>
+            <td>{{ paciente.codigo || '-' }}</td>
+            <td>{{ paciente.nomeCompleto || 'Não informado' }}</td>
+            <td>{{ paciente.dataNascimento ? (paciente.dataNascimento | date: 'dd/MM/yyyy') : 'Não informado' }}</td>
+            <td>{{ paciente.sexo || 'Não informado' }}</td>
             <td>{{ paciente.nacionalidade || 'Não informado' }}</td>
             <td>{{ paciente.contatoCelular || 'Não informado' }}</td>
             <td>
               <!-- Botão Editar -->
               <button class="btn btn-warning btn-sm me-2"
                       *ngIf="paciente.codigo"
-                      (click)="editar(Paciente)">
+                      (click)="editar(paciente.codigo)">
                 Editar
               </button>
 
@@ -55,7 +55,7 @@
     <div class="card-body">
       <div class="mb-3">
         <label class="form-label">Nome Completo</label>
-        <input class="form-control" [(ngModel)]="pacienteSelecionado.nomeCompleto">
+        <input class="form-control" [(ngModel)]="pacienteSelecionado.nomeCompleto" required>
       </div>
       
       <div class="mb-3">

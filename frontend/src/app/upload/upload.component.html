@@ -1,8 +1,20 @@
-<form method="post" action="http://localhost:8080/arquivos" class="upload-form">
-    <div class="mb-3">
-      <label for="file-upload" class="form-label">Selecione um arquivo</label>
-      <input type="file" class="form-control file-upload" id="file-upload" name="file">
-    </div>
-    <button type="submit" class="btn btn-primary btn-upload">Enviar</button>
-  </form>
+<div>
+  <h2>Upload de Arquivo</h2>
   
+  <!-- Formulário de upload -->
+  <input type="file" (change)="onFileSelected($event)" />
+  <button (click)="uploadFile()">Enviar</button>
+
+  <!-- Mensagem de status -->
+  <p>{{ mensagem }}</p>
+
+  <!-- Exibindo os dados do paciente após upload -->
+  <div *ngIf="paciente">
+    <h3>Ficha do Paciente</h3>
+    
+    <p><strong>Nome Completo:</strong> {{ paciente.nomeCompleto }}</p>
+    <p><strong>Data de Nascimento:</strong> {{ paciente.dataNascimento | date }}</p>
+    <p><strong>Sexo:</strong> {{ paciente.sexo }}</p>
+    <!-- Adicione mais campos conforme necessário -->
+  </div>
+</div>

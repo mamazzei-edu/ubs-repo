@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Paciente } from '../model/paciente';
+import { Paciente } from '../model/paciente.model';
 
 @Injectable({
   providedIn: 'root'
@@ -30,8 +30,8 @@ export class PacienteService {
   }
 
   // Método para remover um paciente
-  remover(codigo: number): Observable<void> {
-    return this.http.delete<void>(`http://localhost:8091/api/paciente/${codigo}`);
+  remover(codigo: number): Observable<{ mensagem: string }> {
+    return this.http.delete<{ mensagem: string }>(`http://localhost:8091/api/paciente/${codigo}`);
   }
 
   // Método para buscar um paciente por ID (se necessário)

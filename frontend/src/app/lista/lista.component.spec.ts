@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ListaComponent } from './lista.component';
 import { PacienteService } from '../service/paciente.service';
 import { of } from 'rxjs';  // Importando o 'of' para criar a resposta mockada
-import { Paciente } from '../model/paciente';
+import { Paciente } from '../model/paciente.model';
 
 describe('ListaComponent', () => {
   let component: ListaComponent;
