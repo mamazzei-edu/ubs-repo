@@ -1,20 +1,15 @@
-<div>
-  <h2>Upload de Arquivo</h2>
-  
-  <!-- Formulário de upload -->
-  <input type="file" (change)="onFileSelected($event)" />
-  <button (click)="uploadFile()">Enviar</button>
+<div class="container">
+  <h2>Carregar Ficha do Paciente</h2>
+  <input type="file" (change)="onFileSelected($event)" accept=".pdf">
+  <button (click)="uploadFile()" [disabled]="!selectedFile">Enviar</button>
+  <input type="file" (change)="uploadFicha(123, $event)" />
 
-  <!-- Mensagem de status -->
-  <p>{{ mensagem }}</p>
-
-  <!-- Exibindo os dados do paciente após upload -->
-  <div *ngIf="paciente">
-    <h3>Ficha do Paciente</h3>
-    
-    <p><strong>Nome Completo:</strong> {{ paciente.nomeCompleto }}</p>
-    <p><strong>Data de Nascimento:</strong> {{ paciente.dataNascimento | date }}</p>
-    <p><strong>Sexo:</strong> {{ paciente.sexo }}</p>
-    <!-- Adicione mais campos conforme necessário -->
+  <div *ngIf="extractedData">
+    <h3>Dados Extraídos:</h3>
+    <ul>
+      <li *ngFor="let item of extractedData | keyvalue">
+        <strong>{{ item.key }}:</strong> {{ item.value }}
+      </li>
+    </ul>
   </div>
 </div>

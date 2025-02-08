@@ -43,11 +43,11 @@ export class ListaComponent {
   salvarEdicao() {
     if (this.pacienteSelecionado) {
       const codigoPaciente = this.pacienteSelecionado.codigo ?? 0;
-
+  
       this.service.updatePaciente(codigoPaciente, this.pacienteSelecionado).subscribe({
-        next: () => {
-          console.log(`Paciente ${codigoPaciente} atualizado com sucesso`);
-          this.mensagem = 'Paciente atualizado com sucesso!';
+        next: (response: { mensagem: string; }) => {  // Agora response é { mensagem: string }
+          console.log(response.mensagem);
+          this.mensagem = response.mensagem; // Exibe a mensagem na interface
           this.pacienteSelecionado = null;
           this.listar();
         },
@@ -57,6 +57,7 @@ export class ListaComponent {
       });
     }
   }
+  
 
   cancelarEdicao() {
     this.pacienteSelecionado = null;  

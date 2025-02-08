@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Paciente } from '../model/paciente.model';
@@ -7,35 +7,50 @@ import { Paciente } from '../model/paciente.model';
   providedIn: 'root'
 })
 export class PacienteService {
-  constructor(private http: HttpClient) { }
+  updatePaciente(codigoPaciente: number, pacienteSelecionado: Paciente) {
+    throw new Error('Method not implemented.');
+  }
+  private apiUrl = 'http://localhost:8091/api/paciente'; // Definir uma variável base para a URL
 
-  // Método para listar todos os pacientes
+  constructor(private http: HttpClient) {}
+
+  // 🔹 Listar todos os pacientes
   listar(): Observable<Paciente[]> {
-    return this.http.get<Paciente[]>('http://localhost:8091/api/paciente'); 
+    return this.http.get<Paciente[]>(this.apiUrl);
   }
 
-  // Método para gravar (criar) um novo paciente
-  public gravar(obj: Paciente): Observable<Paciente> {
-    return this.http.post<Paciente>('http://localhost:8091/api/paciente', obj);
+  // 🔹 Criar um novo paciente
+  gravar(paciente: Paciente): Observable<Paciente> {
+    return this.http.post<Paciente>(this.apiUrl, paciente);
   }
 
-  // Método para buscar um paciente por código (ID)
+  // 🔹 Buscar um paciente por código (ID)
   buscarPorCodigo(codigo: number): Observable<Paciente> {
-    return this.http.get<Paciente>(`http://localhost:8091/api/paciente/${codigo}`);
+    return this.http.get<Paciente>(`${this.apiUrl}/${codigo}`);
   }
 
-  // Método para atualizar os dados de um paciente
-  updatePaciente(id: number, paciente: Paciente): Observable<Paciente> {
-    return this.http.put<Paciente>(`http://localhost:8091/api/paciente/${id}`, paciente);
+  // 🔹 Atualizar os dados de um paciente
+  atualizar(id: number, paciente: Paciente): Observable<{ mensagem: string }> {
+    return this.http.put<{ mensagem: string }>('http://localhost:8091/api/paciente', paciente);
   }
+  
 
-  // Método para remover um paciente
+  // 🔹 Remover um paciente
   remover(codigo: number): Observable<{ mensagem: string }> {
-    return this.http.delete<{ mensagem: string }>(`http://localhost:8091/api/paciente/${codigo}`);
+    return this.http.delete<{ mensagem: string }>(`${this.apiUrl}/${codigo}`);
   }
 
-  // Método para buscar um paciente por ID (se necessário)
-  getPaciente(id: number): Observable<Paciente> {
-    return this.http.get<Paciente>(`http://localhost:8091/api/paciente/${id}`);
+  // 🔹 Upload de ficha em PDF
+  uploadFicha(codigo: number, file: File): Observable<{ mensagem: string }> {
+    const formData: FormData = new FormData();
+    formData.append('file', file);
+
+    const headers = new HttpHeaders(); // Removendo o `Content-Type`, pois `FormData` já define corretamente.
+
+    return this.http.post<{ mensagem: string }>(
+      `${this.apiUrl}/${codigo}/upload-ficha`,
+      formData,
+      { headers }
+    );
   }
 }
