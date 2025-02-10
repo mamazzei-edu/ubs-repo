@@ -7,9 +7,10 @@ import { Paciente } from '../model/paciente.model';
   providedIn: 'root'
 })
 export class PacienteService {
-  updatePaciente(codigoPaciente: number, pacienteSelecionado: Paciente) {
-    throw new Error('Method not implemented.');
-  }
+  updatePaciente(codigo: number, paciente: Paciente): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/pacientes/${codigo}`, paciente);
+}
+
   private apiUrl = 'http://localhost:8091/api/paciente'; // Definir uma variável base para a URL
 
   constructor(private http: HttpClient) {}
@@ -45,7 +46,7 @@ export class PacienteService {
     const formData: FormData = new FormData();
     formData.append('file', file);
 
-    const headers = new HttpHeaders(); // Removendo o `Content-Type`, pois `FormData` já define corretamente.
+    const headers = new HttpHeaders(); 
 
     return this.http.post<{ mensagem: string }>(
       `${this.apiUrl}/${codigo}/upload-ficha`,

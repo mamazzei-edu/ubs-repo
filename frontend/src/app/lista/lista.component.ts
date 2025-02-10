@@ -45,9 +45,9 @@ export class ListaComponent {
       const codigoPaciente = this.pacienteSelecionado.codigo ?? 0;
   
       this.service.updatePaciente(codigoPaciente, this.pacienteSelecionado).subscribe({
-        next: (response: { mensagem: string; }) => {  // Agora response é { mensagem: string }
+        next: (response: { mensagem: string; }) => {  
           console.log(response.mensagem);
-          this.mensagem = response.mensagem; // Exibe a mensagem na interface
+          this.mensagem = response.mensagem; 
           this.pacienteSelecionado = null;
           this.listar();
         },
