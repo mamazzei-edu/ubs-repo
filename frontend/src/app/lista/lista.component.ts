@@ -16,6 +16,7 @@ export class ListaComponent {
   mensagem: string = "";
   pacientes: Paciente[] = [];
   pacienteSelecionado: Paciente | null = null;  
+  http: any;
 
   constructor(private service: PacienteService) {
     this.listar();
@@ -40,22 +41,12 @@ export class ListaComponent {
     });
   }
 
-  salvarEdicao() {
-    if (this.pacienteSelecionado) {
-      const codigoPaciente = this.pacienteSelecionado.codigo ?? 0;
-  
-      this.service.updatePaciente(codigoPaciente, this.pacienteSelecionado).subscribe({
-        next: (response: { mensagem: string; }) => {  
-          console.log(response.mensagem);
-          this.mensagem = response.mensagem; 
-          this.pacienteSelecionado = null;
-          this.listar();
-        },
-        error: () => {
-          this.mensagem = "Erro ao atualizar o paciente.";
-        }
+  salvarEdicao(paciente: Paciente) {
+    this.http.put(`http://localhost:8091/api/paciente/${paciente.codigo}`, paciente)
+    .subscribe({
+        next: () => console.log('Paciente atualizado com sucesso!'),
+        error: (err: any) => console.error('Erro ao atualizar paciente:', err)
       });
-    }
   }
   
 
@@ -71,9 +62,9 @@ export class ListaComponent {
   
     if (confirm('Tem certeza que deseja remover este paciente?')) {
       this.service.remover(codigo).subscribe({
-        next: (response) => {  // response agora é do tipo { mensagem: string }
-          console.log(response.mensagem);  // Exibe a mensagem retornada pela API
-          this.mensagem = response.mensagem;  // Atualiza a mensagem na interface
+        next: (response) => {  
+          console.log(response.mensagem);  
+          this.mensagem = response.mensagem; 
           this.listar();
         },
         error: (erro) => {

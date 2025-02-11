@@ -12,9 +12,6 @@
             <th>Código</th>
             <th>Nome</th>
             <th>Data de Nascimento</th>
-            <th>Sexo</th>
-            <th>Nacionalidade</th>
-            <th>Contato</th>
             <th>Ações</th>
           </tr>
         </thead>
@@ -23,9 +20,7 @@
             <td>{{ paciente.codigo || '-' }}</td>
             <td>{{ paciente.nomeCompleto || 'Não informado' }}</td>
             <td>{{ paciente.dataNascimento ? (paciente.dataNascimento | date: 'dd/MM/yyyy') : 'Não informado' }}</td>
-            <td>{{ paciente.sexo || 'Não informado' }}</td>
-            <td>{{ paciente.nacionalidade || 'Não informado' }}</td>
-            <td>{{ paciente.contatoCelular || 'Não informado' }}</td>
+        
             <td>
               <!-- Botão Editar -->
               <button class="btn btn-warning btn-sm me-2"
@@ -89,7 +84,7 @@
     </div>
 
     <div class="card-footer">
-      <button class="btn btn-success me-2" (click)="salvarEdicao()">Salvar</button>
+      <button class="btn btn-success me-2" (click)="salvarEdicao(paciente)">Salvar</button>
       <button class="btn btn-secondary" (click)="cancelarEdicao()">Cancelar</button>
     </div>
   </div>
