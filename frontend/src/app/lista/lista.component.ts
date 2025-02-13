@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http'; // 🔥 Importe o HttpClient
 import { Paciente } from '../model/paciente.model';
 import { PacienteService } from '../service/paciente.service';
 
@@ -16,10 +17,9 @@ export class ListaComponent {
   mensagem: string = "";
   pacientes: Paciente[] = [];
   pacienteSelecionado: Paciente | null = null;  
-  http: any;
 
-  constructor(private service: PacienteService) {
-    this.listar();
+  constructor(private service: PacienteService, private http: HttpClient) { // 🔥 Injete o HttpClient aqui
+    this.listar();  
   }
 
   listar() {
@@ -42,13 +42,17 @@ export class ListaComponent {
   }
 
   salvarEdicao(paciente: Paciente) {
+    if (!paciente || !paciente.codigo) {
+      console.error("Paciente inválido!", paciente);
+      return;
+    }
+
     this.http.put(`http://localhost:8091/api/paciente/${paciente.codigo}`, paciente)
     .subscribe({
         next: () => console.log('Paciente atualizado com sucesso!'),
         error: (err: any) => console.error('Erro ao atualizar paciente:', err)
       });
   }
-  
 
   cancelarEdicao() {
     this.pacienteSelecionado = null;  
@@ -74,12 +78,4 @@ export class ListaComponent {
       });
     }
   }
-  
-  }
-  
-  
-  
-  
-
-    
-  
+}
