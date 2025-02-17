@@ -1,4 +1,4 @@
-/* Estilo para o campo de pesquisa */
+/*campo de pesquisa */
 .row .form-control {
   border-radius: 0.5rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -74,7 +74,7 @@
   border-top: 1px solid #dee2e6;
 }
 
-/* Botões de ação */
+/* Botões*/
 .table-striped .btn-primary {
   background-color: #007bff;
   border: none;

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http'; // 🔥 Importe o HttpClient
+import { HttpClient } from '@angular/common/http'; 
 import { Paciente } from '../model/paciente.model';
 import { PacienteService } from '../service/paciente.service';
 
@@ -18,7 +18,7 @@ export class ListaComponent {
   pacientes: Paciente[] = [];
   pacienteSelecionado: Paciente | null = null;  
 
-  constructor(private service: PacienteService, private http: HttpClient) { // 🔥 Injete o HttpClient aqui
+  constructor(private service: PacienteService, private http: HttpClient) { 
     this.listar();  
   }
 

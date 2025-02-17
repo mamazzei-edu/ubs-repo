@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ListaComponent } from './lista.component';
 import { PacienteService } from '../service/paciente.service';
-import { of } from 'rxjs';  // Importando o 'of' para criar a resposta mockada
+import { of } from 'rxjs'; 
 import { Paciente } from '../model/paciente.model';
 
 describe('ListaComponent', () => {
@@ -49,7 +49,7 @@ describe('ListaComponent', () => {
         contatoEmail: 'joao@example.com'
       },
       {
-        codigo: 2,  // Aqui também
+        codigo: 2,  
         nomeCompleto: 'Maria Oliveira',
         nomeSocial: 'Maria',
         nomeMae: 'Ana Oliveira',

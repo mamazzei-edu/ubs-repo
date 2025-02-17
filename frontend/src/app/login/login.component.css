@@ -6,8 +6,8 @@ body {
   
   /* Estilização do container do login */
   .login-container {
-    height: 80vh; /* Altura da tela inteira */
-    border-radius: 30px; /* Bordas mais arredondadas */
+    height: 80vh; 
+    border-radius: 30px; 
     display: flex;
     justify-content: center;
     align-items: center;
@@ -18,11 +18,11 @@ body {
   .card {
     background-color: #ffffff;
     border: none;
-    border-radius: 20px; /* Bordas mais arredondadas */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Sombra */
+    border-radius: 20px; 
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     padding: 2rem;
     width: 100%;
-    max-width: 500px; /* Largura máxima */
+    max-width: 500px; 
   }
   
   /* Título do formulário */
@@ -43,7 +43,7 @@ body {
   
   /* Inputs */
   .card .form-control {
-    border-radius: 15px; /* Inputs arredondados */
+    border-radius: 15px; 
     border: 1px solid #cccccc;
     padding: 0.8rem;
     font-size: 1rem;
@@ -74,12 +74,12 @@ body {
   
   /* Estilização extra para botões secundários */
   .btn {
-    border-radius: 20px; /* Deixa todos os botões arredondados */
+    border-radius: 20px; 
     padding: 10px 20px;
     font-size: 1rem;
   }
   
-  /* Ajustes para dispositivos móveis */
+  
   @media (max-width: 768px) {
     .card {
       padding: 1.5rem;
