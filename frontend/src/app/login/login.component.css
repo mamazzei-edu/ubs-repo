@@ -89,4 +89,7 @@ body {
       font-size: 1.5rem;
     }
   }
+  select.form-control {
+    cursor: pointer;
+  }
   

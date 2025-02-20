@@ -1,8 +1,11 @@
 package br.sp.gov.fatec.ubs.backend;
 
-import jakarta.persistence.*;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDate;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 @Entity(name="paciente")
 public class PacienteEntity {
@@ -35,16 +38,7 @@ public class PacienteEntity {
     private String telefoneComercial;
     private String contato;
     private String email;
-
-    // Novo campo CPF (se precisar capturar do PDF)
-    private String cpf;
-
-    // Armazena apenas o nome/caminho do arquivo PDF
-    private String ficha; 
-
-    // Caso queira armazenar o PDF no banco diretamente:
-    @Lob
-    private byte[] arquivoFicha;
+    private String cpf; // CPF do paciente
 
     // Getters e Setters
     public int getCodigo() { return codigo; }
@@ -61,14 +55,4 @@ public class PacienteEntity {
 
     public LocalDate getDataNascimento() { return dataNascimento; }
     public void setDataNascimento(LocalDate dataNascimento) { this.dataNascimento = dataNascimento; }
-
-    public String getFicha() { return ficha; }
-    public void setFicha(String ficha) { this.ficha = ficha; }
-
-    public byte[] getArquivoFicha() { return arquivoFicha; }
-    public void setArquivoFicha(byte[] arquivoFicha) { this.arquivoFicha = arquivoFicha; }
-    public void setSexo(String extrairRegex) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setSexo'");
-    }
 }
