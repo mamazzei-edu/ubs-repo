@@ -1,6 +1,5 @@
 package br.sp.gov.fatec.ubs.backend;
 
-import java.util.HashMap;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,42 +11,50 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin(origins = "*")
 @RestController
+@RequestMapping("/api/paciente")  // Melhor organização das rotas
 public class PacienteController {
+
     @Autowired
-    PacienteRepository bd;
+    private PacienteRepository bd;
 
-    @PostMapping("/api/paciente")
-    public PacienteEntity gravar(@RequestBody PacienteEntity obj) {
-        bd.save(obj);
-        return obj;
+    @PostMapping
+    public ResponseEntity<PacienteEntity> gravar(@RequestBody PacienteEntity obj) {
+        PacienteEntity pacienteSalvo = bd.save(obj);
+        return ResponseEntity.ok(pacienteSalvo);
     }
 
-    @GetMapping("/api/paciente/{codigo}")
-    public PacienteEntity ler(@PathVariable long codigo) {
+    @GetMapping("/{codigo}")
+    public ResponseEntity<PacienteEntity> ler(@PathVariable Long codigo) {
         Optional<PacienteEntity> obj = bd.findById(codigo);
-        return obj.orElse(null);
+        return obj.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("/api/paciente/{codigo}")
-    public ResponseEntity<?> remover(@PathVariable long codigo) {
-        bd.deleteById(codigo);
-        return ResponseEntity.ok().body(new HashMap<String, String>() {{
-            put("mensagem", "Paciente " + codigo + " removido com sucesso");
-        }});
+    @DeleteMapping("/{codigo}")
+    public ResponseEntity<?> remover(@PathVariable Long codigo) {
+        if (bd.existsById(codigo)) {
+            bd.deleteById(codigo);
+            return ResponseEntity.ok().body("Paciente " + codigo + " removido com sucesso");
+        }
+        return ResponseEntity.notFound().build();
     }
 
-    @PutMapping("/api/paciente/{codigo}")
-    public String alterar(@RequestBody PacienteEntity obj) {
-        bd.save(obj);
-        return "Paciente alterado com sucesso";
+    @PutMapping("/{codigo}")
+    public ResponseEntity<PacienteEntity> alterar(@PathVariable Long codigo, @RequestBody PacienteEntity obj) {
+        if (!bd.existsById(codigo)) {
+            return ResponseEntity.notFound().build();
+        }
+        obj.setCodigo(codigo);
+        PacienteEntity atualizado = bd.save(obj);
+        return ResponseEntity.ok(atualizado);
     }
 
-    @GetMapping("/api/paciente")
-    public Iterable<PacienteEntity> listar() {
-        return bd.findAll();
+    @GetMapping
+    public ResponseEntity<Iterable<PacienteEntity>> listar() {
+        return ResponseEntity.ok(bd.findAll());
     }
 }

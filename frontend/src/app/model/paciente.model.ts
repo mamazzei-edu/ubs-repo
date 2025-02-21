@@ -20,6 +20,9 @@ export class Paciente {
   // Outros dados
   public racaCor: 'Branca' | 'Preta' | 'Parda' | 'Amarela' | 'Indígena' = 'Branca'; // Raça/Cor
   public frequentaEscola?: 'Sim' | 'Não'; // Frequenta escola (opcional)
+  public situacaoFamiliar?: string;  // Adicionado  
+  public estabelecimentoVeiculo?: string; // Adicionado
+  public estabelecimentoCadastro?: string; // Adicionado
 
   // Dados de deficiência
   public deficiente?: 'Sim' | 'Não'; // Se o paciente possui deficiência
@@ -29,11 +32,14 @@ export class Paciente {
   public intelectual?: 'Sim' | 'Não'; // Deficiência intelectual
 
   // Dados de contato
-  public contatoCelular: string = ''; // Celular
-  public contatoResidencial?: string; // Telefone residencial (opcional)
-  public contatoComercial?: string; // Telefone comercial (opcional)
-  public contatoEmail: string = ''; // Email
-
+  
+    public telefoneCelular: string = '';  // Alterado para corresponder ao backend
+    public telefoneResidencial?: string; // Alterado para corresponder ao backend
+    public telefoneComercial?: string;   // Alterado para corresponder ao backend
+    public email: string = '';           // Alterado para corresponder ao backend
+    public cpf: string = '';             // Adicionado, pois está na entidade do backend
+  
+  
 
   
   constructor(init?: Partial<Paciente>) {

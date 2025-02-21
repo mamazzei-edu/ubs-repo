@@ -23,17 +23,23 @@ export class CadastroComponent {
 
 
   public gravar() {
+    console.log('Enviando paciente:', this.paciente);
+  
     this.service.gravar(this.paciente).subscribe({
       next: (data) => {
+        console.log('Resposta do servidor:', data);
         this.mensagem = "Paciente registrado com sucesso!";
         this.limpar();
       },
       error: (msg) => {
+        console.error('Erro ao registrar paciente:', msg);
         this.mensagem = "Ocorreu um erro, tente mais tarde.";
       }
     });
-   
   }
+  
+   
+  
    public limpar() {
     this.paciente = new Paciente;
   } 
