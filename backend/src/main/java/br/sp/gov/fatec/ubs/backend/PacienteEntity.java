@@ -12,7 +12,7 @@ import jakarta.persistence.Id;
 @Entity(name = "paciente")
 public class PacienteEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)  // Usar IDENTITY para compatibilidade com MySQL
+    @GeneratedValue(strategy = GenerationType.IDENTITY)  
     private Long codigo;
 
     private String nomeCompleto;
@@ -20,7 +20,7 @@ public class PacienteEntity {
     private String nomeMae;
     private String nomePai;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")  // Corrigindo formato da data
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")  
     private LocalDate dataNascimento;
 
     private String sexo;

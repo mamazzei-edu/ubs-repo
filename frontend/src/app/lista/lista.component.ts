@@ -68,13 +68,10 @@ export class ListaComponent {
       this.service.remover(codigo).subscribe({
         next: (response) => {  
           console.log(response.mensagem);  
-          this.mensagem = response.mensagem; 
+          this.mensagem = response.mensagem || 'Paciente removido com sucesso'; 
           this.listar();
         },
-        error: (erro) => {
-          console.error('Erro ao remover paciente:', erro);
-          this.mensagem = 'Erro ao remover paciente';
-        }
+        
       });
     }
   }

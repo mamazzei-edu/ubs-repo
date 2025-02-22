@@ -1,8 +1,11 @@
 package br.sp.gov.fatec.ubs.backend;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -34,15 +37,16 @@ public class PacienteController {
         return obj.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("/{codigo}")
-    public ResponseEntity<?> remover(@PathVariable Long codigo) {
-        if (bd.existsById(codigo)) {
-            bd.deleteById(codigo);
-            return ResponseEntity.ok().body("Paciente " + codigo + " removido com sucesso");
-        }
-        return ResponseEntity.notFound().build();
+    @DeleteMapping("/api/paciente/{codigo}")
+    public ResponseEntity<?> remover(@PathVariable long codigo) {
+        bd.deleteById(codigo);
+        return ResponseEntity.ok().body(new HashMap<String, String>() {{
+            put("mensagem", "Paciente " + codigo + " removido com sucesso");
+        }});
     }
 
+
+    
     @PutMapping("/{codigo}")
     public ResponseEntity<PacienteEntity> alterar(@PathVariable Long codigo, @RequestBody PacienteEntity obj) {
         if (!bd.existsById(codigo)) {
