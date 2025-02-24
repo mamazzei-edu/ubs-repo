@@ -65,10 +65,9 @@ describe('ListaComponent', () => {
         auditiva: 'Não',
         motora: 'Não',
         intelectual: 'Sim',
-        contatoCelular: '11999887766',
-        contatoResidencial: '2133445566',
-        contatoComercial: '2233446677',
-        contatoEmail: 'maria@example.com'
+        telefoneCelular: '11999887766',
+        telefoneResidencial: '2133445566',
+        email: 'maria@example.com'
       }
     ] as Paciente[]));  // Asserção de tipo
 

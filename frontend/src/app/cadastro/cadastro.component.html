@@ -169,13 +169,23 @@
     </div>
   </div>
 
-    <!-- Situação Familiar -->
+
+    <!-- Estabelecimento de Vínculo -->
     <div class="form-floating col-md-6">
-      <input id="situacaoFamiliar" class="form-control" type="text" [(ngModel)]="paciente.situacaoFamiliar" />
-      <label for="situacaoFamiliar">Situação Familiar:</label>
+      <input id="estabelecimentoVinculo" class="form-control" type="text" [(ngModel)]="paciente.estabelecimentoVeiculo" />
+      <label for="estabelecimentoVinculo">Estabelecimento de Vínculo:</label>
     </div>
   </div>
-  
+
+  <!-- Estabelecimento de Cadastro -->
+  <div class="row mt-3">
+    <div class="form-floating col-md-6">
+      <input id="estabelecimentoCadastro" class="form-control" type="text" [(ngModel)]="paciente.estabelecimentoCadastro" />
+      <label for="estabelecimentoCadastro">Estabelecimento de Cadastro:</label>
+    </div>
+  </div>
+
+
   <!-- Dados de Contato -->
   <h4>Dados de Contato</h4>
   <hr>
@@ -209,4 +219,4 @@
   <div *ngIf="mensagem" class="alert alert-info">
     {{ mensagem }}
   </div>
-</div>
+
