@@ -5,17 +5,22 @@
   <div class="row">
     <!-- Nome completo -->
     <div class="form-floating col-md-6">
-      <input id="nome" class="form-control" type="text" [(ngModel)]="paciente.nomeCompleto" required />
+      <input id="nome" class="form-control" type="text" [(ngModel)]="paciente.nomeCompleto"
+             (keyup)="validarNome()" required />
       <label for="nome">Nome completo do paciente:</label>
       <small *ngIf="!paciente.nomeCompleto" class="text-danger">Campo obrigatório.</small>
+      <small *ngIf="paciente.nomeCompleto && nomeInvalido" class="text-danger">
+        O nome deve conter apenas letras.
+      </small>
     </div>
-    
+
     <!-- Nome social -->
     <div class="form-floating col-md-6">
       <input id="nomeSocial" class="form-control" type="text" [(ngModel)]="paciente.nomeSocial" />
       <label for="nomeSocial">Nome social do paciente:</label>
     </div>
   </div>
+
   <div class="row mt-3">
     <!-- Nome da mãe -->
     <div class="form-floating col-md-6">
@@ -29,15 +34,19 @@
       <label for="nomePai">Nome do pai (se existente):</label>
     </div>
   </div>
-  
+
   <div class="row mt-3">
     <!-- CPF -->
     <div class="form-floating col-md-6">
-      <input id="cpf" class="form-control" type="text" [(ngModel)]="paciente.cpf" required />
+      <input id="cpf" class="form-control" type="text" [(ngModel)]="paciente.cpf"
+             (keyup)="formatarCPF()" required placeholder="000.000.000-00" />
       <label for="cpf">CPF:</label>
       <small *ngIf="!paciente.cpf" class="text-danger">Campo obrigatório.</small>
+      <small *ngIf="paciente.cpf && cpfInvalido" class="text-danger">
+        CPF inválido. Use o formato 000.000.000-00.
+      </small>
     </div>
-    
+
     <!-- Data de nascimento -->
     <div class="form-floating col-md-6">
       <input id="dataNascimento" class="form-control" type="date" [(ngModel)]="paciente.dataNascimento" required />
@@ -45,7 +54,7 @@
       <small *ngIf="!paciente.dataNascimento" class="text-danger">Campo obrigatório.</small>
     </div>
   </div>
-  
+
   <div class="row mt-3">
     <!-- Sexo -->
     <div class="form-floating col-md-6">
@@ -58,8 +67,9 @@
       <label for="sexo">Sexo:</label>
       <small *ngIf="!paciente.sexo" class="text-danger">Campo obrigatório.</small>
     </div>
+  </div>
 
-     <!-- Outros Dados -->
+  <!-- Outros Dados -->
   <h4>Outros Dados</h4>
   <hr>
   <div class="row mt-3">
@@ -76,14 +86,14 @@
       <label for="racaCor">Raça/Cor:</label>
       <small *ngIf="!paciente.racaCor" class="text-danger">Campo obrigatório.</small>
     </div>
+  </div>
 
-
-    <!-- Dados de Deficiência -->
+<!-- Deficiência -->
 <h4>Deficiência</h4>
 <hr>
 <div class="row mt-3">
-  <!-- Deficiência -->
-  <div class="form-floating col-md-4">
+  <!-- Deficiente -->
+  <div class="form-floating col-md-3">
     <select id="deficiente" class="form-control" [(ngModel)]="paciente.deficiente">
       <option value="" disabled selected>Selecione...</option>
       <option value="Sim">Sim</option>
@@ -93,53 +103,51 @@
   </div>
 
   <!-- Deficiência Visual -->
-  <div class="form-floating col-md-4">
+  <div class="form-floating col-md-3">
     <select id="visual" class="form-control" [(ngModel)]="paciente.visual">
       <option value="" disabled selected>Selecione...</option>
       <option value="Sim">Sim</option>
       <option value="Não">Não</option>
     </select>
-    <label for="visual">Deficiência Visual:</label>
+    <label for="visual">Visual:</label>
   </div>
 
-
-  
-
   <!-- Deficiência Auditiva -->
-  <div class="form-floating col-md-4">
+  <div class="form-floating col-md-3">
     <select id="auditiva" class="form-control" [(ngModel)]="paciente.auditiva">
       <option value="" disabled selected>Selecione...</option>
       <option value="Sim">Sim</option>
       <option value="Não">Não</option>
     </select>
-    <label for="auditiva">Deficiência Auditiva:</label>
+    <label for="auditiva">Auditiva:</label>
   </div>
-</div>
 
-<!-- Deficiência Motora e Intelectual -->
-<div class="row mt-3">
   <!-- Deficiência Motora -->
-  <div class="form-floating col-md-4">
+  <div class="form-floating col-md-3">
     <select id="motora" class="form-control" [(ngModel)]="paciente.motora">
       <option value="" disabled selected>Selecione...</option>
       <option value="Sim">Sim</option>
       <option value="Não">Não</option>
     </select>
-    <label for="motora">Deficiência Motora:</label>
+    <label for="motora">Motora:</label>
   </div>
+</div>
 
+<div class="row mt-3">
   <!-- Deficiência Intelectual -->
-  <div class="form-floating col-md-4">
+  <div class="form-floating col-md-3">
     <select id="intelectual" class="form-control" [(ngModel)]="paciente.intelectual">
       <option value="" disabled selected>Selecione...</option>
       <option value="Sim">Sim</option>
       <option value="Não">Não</option>
     </select>
-    <label for="intelectual">Deficiência Intelectual:</label>
+    <label for="intelectual">Intelectual:</label>
   </div>
 </div>
 
-    <!-- Localidade -->
+
+
+  <!-- Localidade -->
   <h4>Localidade</h4>
   <hr>
   <div class="row mt-3">
@@ -157,66 +165,64 @@
       <small *ngIf="!paciente.municipioNascimento" class="text-danger">Campo obrigatório.</small>
     </div>
   </div>
+<!-- Frequenta escola -->
+<div class="form-floating col-md-6">
+  <select id="frequentaEscola" class="form-control" [(ngModel)]="paciente.frequentaEscola">
+    <option value="" disabled selected>Selecione...</option>
+    <option value="Sim">Sim</option>
+    <option value="Não">Não</option>
+  </select>
+  <label for="frequentaEscola">Frequenta escola:</label>
+</div>
 
- <!-- Frequenta escola -->
-    <div class="form-floating col-md-6">
-      <select id="frequentaEscola" class="form-control" [(ngModel)]="paciente.frequentaEscola">
-        <option value="" disabled selected>Selecione...</option>
-        <option value="Sim">Sim</option>
-        <option value="Não">Não</option>
-      </select>
-      <label for="frequentaEscola">Frequenta escola:</label>
-    </div>
+
+
+<!-- Estabelecimento de Vínculo -->
+<div class="form-floating col-md-6">
+  <input id="estabelecimentoVinculo" class="form-control" type="text" [(ngModel)]="paciente.estabelecimentoVeiculo" />
+  <label for="estabelecimentoVinculo">Estabelecimento de Vínculo:</label>
+</div>
+
+<!-- Estabelecimento de Cadastro -->
+<div class="row mt-3">
+<div class="form-floating col-md-6">
+  <input id="estabelecimentoCadastro" class="form-control" type="text" [(ngModel)]="paciente.estabelecimentoCadastro" />
+  <label for="estabelecimentoCadastro">Estabelecimento de Cadastro:</label>
+</div>
+</div>
+ <!-- Contato -->
+<h4>Contato</h4>
+<hr>
+<div class="row mt-3">
+<!-- Celular -->
+<div class="form-floating col-md-6">
+  <input id="telefoneCelular" class="form-control" type="tel" [(ngModel)]="paciente.telefoneCelular"
+         (keyup)="formatarTelefone()" required placeholder="(00) 00000-0000" />
+  <label for="telefoneCelular">Celular:</label>
+  <small *ngIf="!paciente.telefoneCelular" class="text-danger">Campo obrigatório.</small>
+  <small *ngIf="paciente.telefoneCelular && telefoneInvalido" class="text-danger">
+    Telefone inválido. Use o formato (00) 00000-0000.
+  </small>
+ </div>
+  </div>
+  <!-- Residencial -->
+  <div class="form-floating col-md-3">
+    <input type="text" id="contatoResidencial" class="form-control" [(ngModel)]="paciente.telefoneResidencial" placeholder="(XX) XXXX-XXXX">
+    <label for="contatoResidencial">Residencial:</label>
   </div>
 
+  <!-- Email -->
+  <div class="form-floating col-md-3">
+    <input type="email" id="contatoEmail" class="form-control" [(ngModel)]="paciente.email" placeholder="email@exemplo.com">
+    <label for="contatoEmail">E-mail:</label>
+  </div>
+</div>
 
-    <!-- Estabelecimento de Vínculo -->
-    <div class="form-floating col-md-6">
-      <input id="estabelecimentoVinculo" class="form-control" type="text" [(ngModel)]="paciente.estabelecimentoVeiculo" />
-      <label for="estabelecimentoVinculo">Estabelecimento de Vínculo:</label>
-    </div>
+  <div class="container mt-3">
+    <button class="btn-enviar" (click)="gravar()">Enviar</button>
   </div>
 
-  <!-- Estabelecimento de Cadastro -->
-  <div class="row mt-3">
-    <div class="form-floating col-md-6">
-      <input id="estabelecimentoCadastro" class="form-control" type="text" [(ngModel)]="paciente.estabelecimentoCadastro" />
-      <label for="estabelecimentoCadastro">Estabelecimento de Cadastro:</label>
-    </div>
-  </div>
-
-
-  <!-- Dados de Contato -->
-  <h4>Dados de Contato</h4>
-  <hr>
-  <div class="row mt-3">
-    <!-- Celular -->
-    <div class="form-floating col-md-4">
-      <input id="telefoneCelular" class="form-control" type="tel" [(ngModel)]="paciente.telefoneCelular" required />
-      <label for="telefoneCelular">Celular:</label>
-      <small *ngIf="!paciente.telefoneCelular" class="text-danger">Campo obrigatório.</small>
-    </div>
-    
-    <!-- Residencial -->
-    <div class="form-floating col-md-4">
-      <input id="telefoneResidencial" class="form-control" type="tel" [(ngModel)]="paciente.telefoneResidencial" />
-      <label for="telefoneResidencial">Telefone Residencial:</label>
-    </div>
-    
-    <!-- Email -->
-    <div class="form-floating col-md-4">
-      <input id="email" class="form-control" type="email" [(ngModel)]="paciente.email" required />
-      <label for="email">Email:</label>
-      <small *ngIf="!paciente.email" class="text-danger">Campo obrigatório.</small>
-    </div>
-  </div>
-  
-  <div class="container">
-    <button class="btn-enviar" (click)="gravar();">Enviar</button>
-  </div>
-  
   <!-- Exibir a mensagem se houver -->
   <div *ngIf="mensagem" class="alert alert-info">
     {{ mensagem }}
   </div>
-
