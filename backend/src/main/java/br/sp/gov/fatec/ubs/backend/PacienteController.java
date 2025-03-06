@@ -23,28 +23,33 @@ public class PacienteController {
     @Autowired
     private PacienteRepository bd;
 
+    // Criar um novo paciente
     @PostMapping
     public ResponseEntity<PacienteEntity> gravar(@RequestBody PacienteEntity obj) {
         PacienteEntity pacienteSalvo = bd.save(obj);
         return ResponseEntity.ok(pacienteSalvo);
     }
 
+    // Buscar um paciente pelo código
     @GetMapping("/{codigo}")
     public ResponseEntity<PacienteEntity> ler(@PathVariable Long codigo) {
         Optional<PacienteEntity> obj = bd.findById(codigo);
         return obj.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("/api/paciente/{codigo}")
+    // Remover um paciente pelo código
+    @DeleteMapping("/{codigo}")
     public ResponseEntity<?> remover(@PathVariable long codigo) {
+        if (!bd.existsById(codigo)) {
+            return ResponseEntity.notFound().build(); 
+        }
         bd.deleteById(codigo);
         return ResponseEntity.ok().body(new HashMap<String, String>() {{
             put("mensagem", "Paciente " + codigo + " removido com sucesso");
         }});
     }
 
-
-    
+    // Atualizar um paciente pelo código
     @PutMapping("/{codigo}")
     public ResponseEntity<PacienteEntity> alterar(@PathVariable Long codigo, @RequestBody PacienteEntity obj) {
         if (!bd.existsById(codigo)) {
@@ -55,6 +60,7 @@ public class PacienteController {
         return ResponseEntity.ok(atualizado);
     }
 
+    // Listar todos os pacientes
     @GetMapping
     public ResponseEntity<Iterable<PacienteEntity>> listar() {
         return ResponseEntity.ok(bd.findAll());

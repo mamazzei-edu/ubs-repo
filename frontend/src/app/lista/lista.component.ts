@@ -66,13 +66,17 @@ export class ListaComponent {
   
     if (confirm('Tem certeza que deseja remover este paciente?')) {
       this.service.remover(codigo).subscribe({
-        next: (response) => {  
-          console.log(response.mensagem);  
-          this.mensagem = response.mensagem || 'Paciente removido com sucesso'; 
-          this.listar();
+        next: (response) => {
+          console.log(response.mensagem);
+          this.mensagem = response.mensagem || 'Paciente removido com sucesso';
+          this.listar(); // Atualiza a lista de pacientes após a remoção
         },
-        
+        error: (erro) => {
+          console.error('Erro ao remover paciente:', erro);
+          this.mensagem = 'Erro ao remover paciente';
+        }
       });
     }
   }
-}
+  
+  }
