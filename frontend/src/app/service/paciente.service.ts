@@ -11,7 +11,7 @@ export class PacienteService {
     return this.http.put<any>(`${this.apiUrl}/pacientes/${codigo}`, paciente);
 }
 
-  private apiUrl = 'http://localhost:8091/api/paciente'; // Definir uma variável base para a URL
+  private apiUrl = 'http://localhost:8091/api/paciente'; 
 
   constructor(private http: HttpClient) {}
 

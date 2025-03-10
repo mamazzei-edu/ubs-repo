@@ -1,16 +1,16 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms'; // ✅ Importando FormsModule
+import { FormsModule } from '@angular/forms';
 import { PacienteService } from '../service/paciente.service';
 import { Paciente } from '../model/paciente.model';
 
 @Component({
   selector: 'app-cadastro',
-  standalone: true, // ✅ Obrigatório para Standalone Components
+  standalone: true, 
   templateUrl: './cadastro.component.html',
   styleUrls: ['./cadastro.component.css'],
   providers: [PacienteService],
-  imports: [CommonModule, FormsModule] // ✅ Adicionando FormsModule para funcionar o ngModel
+  imports: [CommonModule, FormsModule]
 })
 export class CadastroComponent {
   public paciente = new Paciente();
@@ -21,13 +21,13 @@ export class CadastroComponent {
 
   constructor(private service: PacienteService) {}
 
-  // ✅ Valida se o nome contém apenas letras e espaços
+  // Para validar se o nome contém apenas letras e espaços
   public validarNome() {
     const regex = /^[A-Za-zÀ-ÖØ-öø-ÿ ]+$/;
     this.nomeInvalido = !regex.test(this.paciente.nomeCompleto || '');
   }
 
-  // ✅ Formata CPF e verifica se segue o padrão 000.000.000-00
+  // Para formatar CPF e verifica se segue o padrão 000.000.000-00
   public formatarCPF() {
     let cpf = this.paciente.cpf?.replace(/\D/g, '') || '';
     if (cpf.length > 3) cpf = cpf.replace(/^(\d{3})(\d)/, '$1.$2');
@@ -38,7 +38,7 @@ export class CadastroComponent {
     this.cpfInvalido = cpf.length !== 14;
   }
 
-  // ✅ Formata telefone e verifica se segue o padrão (00) 00000-0000
+  //  Formatar telefone e verifica se segue o padrão (00) 00000-0000
   public formatarTelefone() {
     let telefone = this.paciente.telefoneCelular?.replace(/\D/g, '') || '';
     if (telefone.length > 2) telefone = telefone.replace(/^(\d{2})(\d)/, '($1) $2');
@@ -48,7 +48,7 @@ export class CadastroComponent {
     this.telefoneInvalido = telefone.length !== 15;
   }
 
-  // ✅ Verifica se todos os campos são válidos antes de enviar
+  //  Verificar se todos os campos são válidos antes de enviar
   public gravar() {
     if (this.nomeInvalido) {
       this.mensagem = 'Nome inválido! Apenas letras são permitidas.';
@@ -78,7 +78,7 @@ export class CadastroComponent {
     });
   }
 
-  // ✅ Reseta os campos do formulário
+  // Reseta os campos do formulário
   public limpar() {
     this.paciente = new Paciente();
     this.nomeInvalido = false;

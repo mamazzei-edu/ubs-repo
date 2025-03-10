@@ -1,6 +1,6 @@
-/* Navbar Styles */
+
 .navbar {
-    background-color: #007bff; /* Azul escuro para o fundo */
+    background-color: #007bff;
   }
   
   .navbar .navbar-brand {
@@ -25,7 +25,7 @@
   }
   
   .navbar-nav .nav-link:hover {
-    color: #ffcc00; /* Cor amarela para o hover */
+    color: #ffcc00; 
   }
   
   .navbar-nav .nav-link.active {
@@ -34,7 +34,7 @@
   
   .navbar .btn {
     font-weight: bold;
-    border-radius: 30px; /* Botões mais arredondados */
+    border-radius: 30px; 
     transition: background-color 0.3s ease, color 0.3s ease;
   }
   
@@ -49,10 +49,10 @@
   }
   
   .navbar .navbar-collapse {
-    justify-content: flex-end; /* Alinha os itens à direita */
+    justify-content: flex-end; 
   }
   
-  /* Container - E-SUS Section */
+ 
   .container {
     padding: 40px 15px;
   }
@@ -65,7 +65,7 @@
     color: #333;
   }
   
-  /* Botões E-SUS */
+  
   .container .btn {
     display: inline-block;
     margin: 10px;
@@ -105,7 +105,7 @@
     color: white;
   }
   
-  /* Responsividade para telas pequenas */
+  /* Responsividade  */
   @media (max-width: 768px) {
     .navbar-nav {
       text-align: center;

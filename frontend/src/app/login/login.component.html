@@ -1,41 +1,41 @@
 <div class="login-container d-flex justify-content-center align-items-center vh-100">
-  <div class="card p-4 shadow-lg rounded-3" style="max-width: 500px;">
-      <h3 class="text-center mb-4">Login Funcionários:</h3>
-      <form>
-          <div class="mb-3">
-              <label for="email" class="form-label">Email:</label>
-              <input type="email" id="email" class="form-control" placeholder="Digite seu email" required />
-          </div>
-          <div class="mb-3">
-              <label for="senha" class="form-label">Senha:</label>
-              <input type="password" id="senha" class="form-control" placeholder="Digite sua senha" required />
-          </div>
-          <div class="mb-3">
-              <label for="funcao" class="form-label">Função:</label>
-              <select id="funcao" class="form-control" required>
-                  <option value="" disabled selected>Selecione sua função</option>
-                  <option value="medico">Médico</option>
-                  <option value="recepcionista">Recepcionista</option>
-                  <option value="administrador">Administrador</option>
-              </select>
-          </div>
-          <div class="mb-3">
-              <label for="setor" class="form-label">Setor:</label>
-              <select id="setor" class="form-control" required>
-                  <option value="" disabled selected>Selecione seu setor</option>
-                  <option value="atendimento">Atendimento</option>
-                  <option value="triagem">Triagem</option>
-                  <option value="consultorio">Consultório</option>
-                  <option value="farmacia">Farmácia</option>
-                  <option value="administrativo">Administrativo</option>
-              </select>
-          </div>
-          <button type="submit" class="btn btn-primary w-100">Entrar</button>
-       
-          <button type="button" class="btn btn-secondary w-100 mt-2" (click)="voltar()">Voltar à Página Inicial</button>
-
-
-
-      </form>
+    <div class="card p-4 shadow-lg rounded-3" style="max-width: 500px;">
+        <h3 class="text-center mb-4">Login Funcionários:</h3>
+        <form>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email:</label>
+                <input type="email" id="email" class="form-control" placeholder="Digite seu email" required />
+            </div>
+            <div class="mb-3">
+                <label for="senha" class="form-label">Senha:</label>
+                <input type="password" id="senha" class="form-control" placeholder="Digite sua senha" required />
+            </div>
+            <div class="mb-3">
+                <label for="funcao" class="form-label">Função:</label>
+                <select id="funcao" class="form-control" required>
+                    <option value="" disabled selected>Selecione sua função</option>
+                    <option value="medico">Médico</option>
+                    <option value="recepcionista">Recepcionista</option>
+                    <option value="administrador">Administrador</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="setor" class="form-label">Setor:</label>
+                <select id="setor" class="form-control" required>
+                    <option value="" disabled selected>Selecione seu setor</option>
+                    <option value="atendimento">Atendimento</option>
+                    <option value="triagem">Triagem</option>
+                    <option value="consultorio">Consultório</option>
+                    <option value="farmacia">Farmácia</option>
+                    <option value="administrativo">Administrativo</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Entrar</button>
+         
+            <button type="button" class="btn btn-secondary w-100 mt-2" (click)="voltar()">Voltar à Página Inicial</button>
+  
+  
+  
+        </form>
+    </div>
   </div>
-</div>

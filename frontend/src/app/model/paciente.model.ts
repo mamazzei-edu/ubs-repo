@@ -26,10 +26,10 @@ export class Paciente {
 
   // Dados de deficiência
   public deficiente?: 'Sim' | 'Não'; // Se o paciente possui deficiência
-  public visual?: 'Sim' | 'Não'; // Deficiência visual
-  public auditiva?: 'Sim' | 'Não'; // Deficiência auditiva
-  public motora?: 'Sim' | 'Não'; // Deficiência motora
-  public intelectual?: 'Sim' | 'Não'; // Deficiência intelectual
+  public visual?: 'Sim' | 'Não';
+  public auditiva?: 'Sim' | 'Não'; 
+  public motora?: 'Sim' | 'Não'; 
+  public intelectual?: 'Sim' | 'Não';
 
   // Dados de contato
   
