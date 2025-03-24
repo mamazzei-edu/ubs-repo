@@ -1,4 +1,4 @@
-## Grupos para o sprint
+## Grupos para o sprint 2
 
 ## Grupo 1 - devel-a
 - Kaic
