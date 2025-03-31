@@ -5,6 +5,8 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
+
+
 export class PacienteService {
   private apiUrl = 'http://localhost:8090/api/pacientes';  // URL do backend diretamente no código
 

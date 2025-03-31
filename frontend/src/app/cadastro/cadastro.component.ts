@@ -1,5 +1,7 @@
 
 import { Component } from '@angular/core';
+import { Paciente } from '../model/paciente';
+import { PacienteService } from '../service/paciente.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
@@ -14,6 +16,7 @@ import { PacienteService } from '../service/paciente.service';
   styleUrls: ['./cadastro.component.css'],
   providers: [PacienteService]
 })
+
 export class CadastroComponent {
  
   nomeCompleto: string = '';

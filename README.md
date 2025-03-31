@@ -1,3 +1,20 @@
-By Rafael Lourenço Cerchiaro 
-Leitor de PDF de prontuários/cadastro/consulta para projeto integrador SUS 
-Usando Java/Spring Boot/ Angular
+## Grupos para o sprint
+
+## Grupo 1 - devel-a
+- Kaic
+- Gabriel Passos
+- Vitor
+- Matheus
+- Rafael
+- Gabriel Guillen
+- Pedro
+
+## Grupo 2 - devel-b
+- Natália
+- Isabella
+- Gustavo
+- Kleber
+- Ryan
+- Arthur
+- Enrico
+
