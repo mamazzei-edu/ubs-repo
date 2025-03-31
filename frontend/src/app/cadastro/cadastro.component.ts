@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { RouterModule } from '@angular/router'; // Para funcionalidades de roteamento
-import { PacienteService } from '../service/paciente.service';
+
  
 @Component({
   selector: 'app-cadastro',

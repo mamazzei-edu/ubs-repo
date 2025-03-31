@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';  // Para usar ngModel
 import { RouterModule } from '@angular/router';  // Para o roteamento
@@ -8,7 +9,7 @@ import { HttpClientModule } from '@angular/common/http';  // Importa o HttpClien
 @Component({
   selector: 'app-root',
   standalone: true,  // Componente standalone
-  imports: [CommonModule, FormsModule, RouterModule, HttpClientModule],  // Adiciona o HttpClientModule aqui
+  imports: [CommonModule, FormsModule, RouterModule, RouterOutlet,HttpClientModule],  // Adiciona o HttpClientModule aqui
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
