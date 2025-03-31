@@ -4,8 +4,10 @@ import { Observable } from 'rxjs';
 import { Paciente } from '../model/paciente.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
+
+
 export class PacienteService {
   updatePaciente(codigo: number, paciente: Paciente): Observable<any> {
     return this.http.put<any>(`${this.apiUrl}/pacientes/${codigo}`, paciente);

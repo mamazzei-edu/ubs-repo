@@ -1,3 +1,5 @@
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -12,6 +14,7 @@ import { Paciente } from '../model/paciente.model';
   providers: [PacienteService],
   imports: [CommonModule, FormsModule]
 })
+
 export class CadastroComponent {
   public paciente = new Paciente();
   mensagem: string = '';
