@@ -10,7 +10,7 @@ import org.springframework.context.annotation.ComponentScan;
 import br.sp.gov.fatec.ubs.backend.armazenamento.ArmazenamentoPropriedades;
 import br.sp.gov.fatec.ubs.backend.armazenamento.ArmazenamentoService;
 
-@ComponentScan("br.sp.gov.fatec.ubs.backend.model")
+
 @ComponentScan("br.sp.gov.fatec.ubs.backend.armazenamento")
 @EnableConfigurationProperties(ArmazenamentoPropriedades.class)	
 @SpringBootApplication

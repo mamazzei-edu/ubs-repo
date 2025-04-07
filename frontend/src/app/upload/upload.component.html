@@ -1,6 +1,15 @@
-<p>upload works!</p>
+<div class="container">
+  <h2>Carregar Ficha do Paciente</h2>
+  <input type="file" (change)="onFileSelected($event)" accept=".pdf">
+  <button (click)="uploadFile()" [disabled]="!selectedFile">Enviar</button>
+  <input type="file" (change)="uploadFicha(123, $event)" />
 
-<form method = "post" action = "http://localhost:8081/arquivos">
-    <input type="file" class="file-upload">
-    <input type="submit" value="Enviar">
-</form>
+  <div *ngIf="extractedData">
+    <h3>Dados Extraídos:</h3>
+    <ul>
+      <li *ngFor="let item of extractedData | keyvalue">
+        <strong>{{ item.key }}:</strong> {{ item.value }}
+      </li>
+    </ul>
+  </div>
+</div>
