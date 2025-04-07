@@ -8,5 +8,6 @@ export const routes: Routes = [
     {path : "cadastro", component : CadastroComponent},
     {path : "lista", component :ListaComponent},
     {path : "upload" , component : UploadComponent},
-    {path : " ", component :ListaComponent}
+    {path : " ", component :ListaComponent},
+    {path : "api/upload", component : UploadComponent} // Rotas não encontradas redirecionam para a lista de pacientes
 ];

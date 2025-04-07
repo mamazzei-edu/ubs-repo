@@ -6,11 +6,13 @@ import java.util.stream.Stream;
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
+import br.sp.gov.fatec.ubs.backend.model.Paciente;
+
 public interface ArmazenamentoService {
 
     void init();
 
-    void armazenar(MultipartFile arquivo);
+    Paciente armazenar(MultipartFile arquivo);
 
     Stream<Path> carregarTodos();
 
