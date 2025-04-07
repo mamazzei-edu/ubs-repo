@@ -2,66 +2,91 @@ package br.sp.gov.fatec.ubs.backend.model;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor;
+import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins="*")
+import java.util.List;
+import java.util.Optional;
+
 @RestController
-@RequestMapping({"/pacientes"})
+@RequestMapping("/api/pacientes")
 public class PacienteController {
+
     @Autowired
-    PacienteRepository bd;
+    private PacienteService pacienteService;
 
-    @GetMapping
-    public Iterable<Paciente> buscarPacientes(){
-        return bd.findAll();
-    }
-
-    @GetMapping("/{idPaciente}")
-    public Paciente buscarPacientePorId(@PathVariable Long idPaciente){
-        return bd.findById(idPaciente).get();
-    }
-
+    // Endpoint para salvar um novo paciente
     @PostMapping
-    public ResponseEntity<?> cadastrarPaciente(@RequestBody Paciente paciente){
-        try {
-            bd.save(paciente);
-            return new ResponseEntity<>(paciente, HttpStatus.OK);
-        } catch (Exception e) {
-            Paciente pac = bd.buscaPorNomeOuCpf("", paciente.getCpf()).get(0);
-            return new ResponseEntity<>(pac, HttpStatus.CONFLICT);
+    public ResponseEntity<Paciente> salvarPaciente(@RequestBody Paciente paciente) {
+        Paciente pacienteSalvo = pacienteService.salvarPaciente(paciente);
+        return new ResponseEntity<>(pacienteSalvo, HttpStatus.CREATED);
+    }
+
+    // Endpoint para listar todos os pacientes
+    @GetMapping
+    public ResponseEntity<List<Paciente>> listarPacientes() {
+        List<Paciente> pacientes = pacienteService.listarPacientes();
+        return new ResponseEntity<>(pacientes, HttpStatus.OK);
+    }
+
+    // Endpoint para buscar um paciente pelo ID
+    @GetMapping("/{id}")
+    public ResponseEntity<Paciente> buscarPaciente(@PathVariable Long id) {
+        Optional<Paciente> paciente = pacienteService.buscarPacientePorId(id);
+        if (paciente.isPresent()) {
+            return new ResponseEntity<>(paciente.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
-    @PutMapping(value="/{idPaciente}")
-    public Paciente atualizarPaciente(@PathVariable("idPaciente") long id, @RequestBody Paciente paciente){
-        return bd.findById(id).map(record->{
-            record.setNome(paciente.getNome());
-            return bd.save(record);
-        }).orElseGet(()->{
-            paciente.setId(id);
-            return bd.save(paciente);
+    // Endpoint para excluir paciente
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> excluirPaciente(@PathVariable Long id) {
+        Optional<Paciente> paciente = pacienteService.buscarPacientePorId(id);
+        if (paciente.isPresent()) {
+            pacienteService.excluirPaciente(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        );
     }
 
-    @DeleteMapping(path="/{idPaciente}")
-    public ResponseEntity<?> deletarPaciente(@PathVariable("idPaciente") long id){
-        return bd.findById(id).map(record->{
-            bd.deleteById(id);
-            return ResponseEntity.ok().build();
-        }).orElse(ResponseEntity.notFound().build());
-    }
+    // Endpoint para atualizar um paciente
+    @PutMapping("/{id}")
+    public ResponseEntity<Paciente> atualizarPaciente(
+            @PathVariable Long id, @RequestBody Paciente pacienteAtualizado) {
+        Optional<Paciente> pacienteOpt = pacienteService.buscarPacientePorId(id);
 
+        if (pacienteOpt.isPresent()) {
+            Paciente paciente = pacienteOpt.get();
+
+            // Atualizando os campos
+            paciente.setNomeCompleto(pacienteAtualizado.getNomeCompleto());
+            paciente.setNomeSocial(pacienteAtualizado.getNomeSocial());
+            paciente.setNomeMae(pacienteAtualizado.getNomeMae());
+            paciente.setNomePai(pacienteAtualizado.getNomePai());
+            paciente.setDataNascimento(pacienteAtualizado.getDataNascimento());
+            paciente.setSexo(pacienteAtualizado.getSexo());
+            paciente.setNacionalidade(pacienteAtualizado.getNacionalidade());
+            paciente.setMunicipioNascimento(pacienteAtualizado.getMunicipioNascimento());
+            paciente.setRacaCor(pacienteAtualizado.getRacaCor());
+            paciente.setFrequentaEscola(pacienteAtualizado.getFrequentaEscola());
+            paciente.setEscolaridade(pacienteAtualizado.getEscolaridade());
+            paciente.setSituacaoFamiliar(pacienteAtualizado.getSituacaoFamiliar());
+            paciente.setVinculoEstabelecimento(pacienteAtualizado.getVinculoEstabelecimento());
+            paciente.setDeficiencia(pacienteAtualizado.getDeficiencia());
+            paciente.setContatoCelular(pacienteAtualizado.getContatoCelular());
+            paciente.setContatoResidencial(pacienteAtualizado.getContatoResidencial());
+            paciente.setContatoComercial(pacienteAtualizado.getContatoComercial());
+            paciente.setContatoEmail(pacienteAtualizado.getContatoEmail());
+            paciente.setCpf(pacienteAtualizado.getCpf());
+            // Atualize outros campos conforme necessário...
+
+            Paciente pacienteAtualizadoSalvo = pacienteService.salvarPaciente(paciente);
+            return new ResponseEntity<>(pacienteAtualizadoSalvo, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 }
