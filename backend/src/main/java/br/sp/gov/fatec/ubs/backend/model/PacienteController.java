@@ -62,6 +62,8 @@ public class PacienteController {
             Paciente paciente = pacienteOpt.get();
 
             // Atualizando os campos
+            paciente.setCns(pacienteAtualizado.getCns());
+            paciente.setProntuario(pacienteAtualizado.getProntuario());
             paciente.setNomeCompleto(pacienteAtualizado.getNomeCompleto());
             paciente.setNomeSocial(pacienteAtualizado.getNomeSocial());
             paciente.setNomeMae(pacienteAtualizado.getNomeMae());

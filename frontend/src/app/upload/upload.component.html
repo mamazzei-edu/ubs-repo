@@ -1,26 +1,225 @@
 <div class="container">
     <div class="div-upload">
-        <form method="post" action="http://localhost:8080/arquivos">
-            <div class="continue-application">
-                <div>
-                    <div class="pencil"></div>
-                    <div class="folder">
-                        <div class="top">
-                            <svg viewBox="0 0 24 27">
-                                <path
-                                    d="M1,0 L23,0 C23.5522847,-1.01453063e-16 24,0.44771525 24,1 L24,8.17157288 C24,8.70200585 23.7892863,9.21071368 23.4142136,9.58578644 L20.5857864,12.4142136 C20.2107137,12.7892863 20,13.2979941 20,13.8284271 L20,26 C20,26.5522847 19.5522847,27 19,27 L1,27 C0.44771525,27 6.76353751e-17,26.5522847 0,26 L0,1 C-6.76353751e-17,0.44771525 0.44771525,1.01453063e-16 1,0 Z">
-                                </path>
-                            </svg>
-                        </div>
-                        <div class="paper"></div>
-                    </div>
-                </div>
-                <input type="file" class="file-upload">
+
+        <form [formGroup]="form" enctype="multipart/form-data" (ngSubmit)="submitForm()">
+
+            <div class="form-group">
+                <label for="ficha">Arquivo pdf:</label>
+                <input formControlName="ficha" type="file" id="ficha" name="ficha"
+                    (change)="uploadFile($event)">
             </div>
-            <div style="justify-content: center; display: flex;">
-            <input type="submit" value="Upload" id="botao-upload" class="btn btn-outline-success">
+
+            <div class="form-group">
+                <button>Transferir arquivo</button>
             </div>
         </form>
+
     </div>
+
+  <!-- Modal de Edição (sempre visível abaixo da tabela) -->
+  <div *ngIf="mostrarModalEditar" class="card mt-4">
+    <div class="card-header bg-warning text-white">
+      <h5 class="mb-0">Validar Paciente</h5>
+    </div>
+    <div class="card-body">
+      <form (ngSubmit)="salvarPaciente()">
+        <div class="mb-3">
+          <label for="id">Código:</label>
+          <input
+            id="id"
+            type="text"
+            [(ngModel)]="pacienteSelecionado.id"
+            name="id"
+            disabled
+            class="form-control text-muted" />
+        </div>
+
+        <div class="mb-3">
+          <label for="nomeCompleto">Nome Completo:</label>
+          <input
+            id="nomeCompleto"
+            type="text"
+            [(ngModel)]="pacienteSelecionado.nomeCompleto"
+            name="nomeCompleto"
+            class="form-control" />
+        </div>
+
+        <div class="mb-3">
+          <label for="nomeSocial">Nome Social:</label>
+          <input
+            id="nomeSocial"
+            type="text"
+            [(ngModel)]="pacienteSelecionado.nomeSocial"
+            name="nomeSocial"
+            class="form-control" />
+        </div>
+
+        <div class="mb-3">
+          <label for="nomeMae">Nome da Mãe:</label>
+          <input
+            id="nomeMae"
+            type="text"
+            [(ngModel)]="pacienteSelecionado.nomeMae"
+            name="nomeMae"
+            class="form-control" />
+        </div>
+
+        <div class="mb-3">
+          <label for="nomePai">Nome do Pai:</label>
+          <input
+            id="nomePai"
+            type="text"
+            [(ngModel)]="pacienteSelecionado.nomePai"
+            name="nomePai"
+            class="form-control" />
+        </div>
+
+        <div class="mb-3">
+          <label for="dataNascimento">Data de Nascimento:</label>
+          <input
+            id="dataNascimento"
+            type="date"
+            [(ngModel)]="pacienteSelecionado.dataNascimento"
+            name="dataNascimento"
+            class="form-control" />
+        </div>
+
+        <div class="mb-3">
+          <label for="sexo">Sexo:</label>
+          <select
+            id="sexo"
+            [(ngModel)]="pacienteSelecionado.sexo"
+            name="sexo"
+            class="form-control">
+            <option value="Masculino">Masculino</option>
+            <option value="Feminino">Feminino</option>
+            <option value="Outro">Outro</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label for="nacionalidade">Nacionalidade:</label>
+          <input
+            id="nacionalidade"
+            type="text"
+            [(ngModel)]="pacienteSelecionado.nacionalidade"
+            name="nacionalidade"
+            class="form-control" />
+        </div>
+
+        <div class="mb-3">
+          <label for="municipioNascimento">Município de Nascimento:</label>
+          <input
+            id="municipioNascimento"
+            type="text"
+            [(ngModel)]="pacienteSelecionado.municipioNascimento"
+            name="municipioNascimento"
+            class="form-control" />
+        </div>
+
+        <div class="mb-3">
+          <label for="racaCor">Raça/Côr:</label>
+          <input
+            id="racaCor"
+            type="text"
+            [(ngModel)]="pacienteSelecionado.racaCor"
+            name="racaCor"
+            class="form-control" />
+        </div>
+
+        <div class="mb-3">
+          <label for="frequentaEscola">Frequenta Escola:</label>
+          <input
+            id="frequentaEscola"
+            type="text"
+            [(ngModel)]="pacienteSelecionado.frequentaEscola"
+            name="frequentaEscola"
+            class="form-control" />
+        </div>
+
+        <div class="mb-3">
+          <label for="escolaridade">Escolaridade:</label>
+          <input
+            id="escolaridade"
+            type="text"
+            [(ngModel)]="pacienteSelecionado.escolaridade"
+            name="escolaridade"
+            class="form-control" />
+        </div>
+
+        <div class="mb-3">
+          <label for="situacaoFamiliar">Situação Familiar:</label>
+          <input
+            id="situacaoFamiliar"
+            type="text"
+            [(ngModel)]="pacienteSelecionado.situacaoFamiliar"
+            name="situacaoFamiliar"
+            class="form-control" />
+        </div>
+
+        <div class="mb-3">
+          <label for="vinculoEstabelecimento">Vínculo com Estabelecimento:</label>
+          <input
+            id="vinculoEstabelecimento"
+            type="text"
+            [(ngModel)]="pacienteSelecionado.vinculoEstabelecimento"
+            name="vinculoEstabelecimento"
+            class="form-control" />
+        </div>
+
+        <div class="mb-3">
+          <label for="deficiencia">Deficiência:</label>
+          <input
+            id="deficiencia"
+            type="text"
+            [(ngModel)]="pacienteSelecionado.deficiencia"
+            name="deficiencia"
+            class="form-control" />
+        </div>
+
+        <div class="mb-3">
+          <label for="contatoCelular">Contato Celular:</label>
+          <input
+            id="contatoCelular"
+            type="text"
+            [(ngModel)]="pacienteSelecionado.contatoCelular"
+            name="contatoCelular"
+            class="form-control" />
+        </div>
+
+        <div class="mb-3">
+          <label for="contatoResidencial">Contato Residencial:</label>
+          <input
+            id="contatoResidencial"
+            type="text"
+            [(ngModel)]="pacienteSelecionado.contatoResidencial"
+            name="contatoResidencial"
+            class="form-control" />
+        </div>
+
+        <div class="mb-3">
+          <label for="contatoComercial">Contato Comercial:</label>
+          <input
+            id="contatoComercial"
+            type="text"
+            [(ngModel)]="pacienteSelecionado.contatoComercial"
+            name="contatoComercial"
+            class="form-control" />
+        </div>
+
+        <div class="mb-3">
+          <label for="contatoEmail">Email:</label>
+          <input
+            id="contatoEmail"
+            type="email"
+            [(ngModel)]="pacienteSelecionado.contatoEmail"
+            name="contatoEmail"
+            class="form-control" />
+        </div>
+
+        <button type="submit" class="btn btn-success mt-3">Salvar Paciente</button>
+      </form>
+    </div>
+  </div>
 
 </div>

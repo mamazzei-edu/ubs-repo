@@ -11,6 +11,8 @@ public class Paciente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
+    public String cns;
+    public String prontuario;
     public String nomeCompleto;
     public String nomeSocial;
     public String nomeMae;
@@ -30,6 +32,23 @@ public class Paciente {
     public String contatoComercial;
     public String contatoEmail;
     public String cpf;
+
+
+    public String getCns() {
+        return cns;
+    }
+
+    public void setCns(String cns) {
+        this.cns = cns;
+    }
+
+    public String getProntuario() {
+        return prontuario;
+    }
+
+    public void setProntuario(String prontuario) {
+        this.prontuario = prontuario;
+    }
 
     // Getter e Setter para id
     public Long getId() {
