@@ -5,6 +5,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +16,8 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
+
+import br.sp.gov.fatec.ubs.backend.PacienteEntity;
 
 @Service
 public class ArmazenamentoSistemaDeArquivoService implements ArmazenamentoService {
@@ -39,7 +44,7 @@ public class ArmazenamentoSistemaDeArquivoService implements ArmazenamentoServic
     }
 
     @Override
-    public void armazenar(MultipartFile arquivo) {
+    public PacienteEntity armazenar(MultipartFile arquivo) {
         try {
             if (arquivo.isEmpty()) {
                 throw new ArmazenamentoException("Falha ao armazenar arquivo vazio " + arquivo.getOriginalFilename());
@@ -51,19 +56,70 @@ public class ArmazenamentoSistemaDeArquivoService implements ArmazenamentoServic
             try(InputStream entrada = arquivo.getInputStream()) {
                 Files.copy(entrada, destino, StandardCopyOption.REPLACE_EXISTING);
             }
-            String texto = ExtraiTextoPDF.extraiTextoPDF(destino.toString());
-            System.out.println(texto);
             String texto2 = ExtraiTextoPDF.extraiTextoPDFiText(destino.toString());
             System.out.println("Itext:");
             System.out.println(texto2);
-            String regex = "^Ficha(.*)";
-            //String regex = "(.*)?[A-Za-z0-9.]+@[A-Za-z0-9]+\\.[a-zA-Z]+(\\.[A-Za-z]+)?+(\\.[A-Za-z]+)?(.*)?";
-            boolean encontrou = texto2.matches(regex);
-            if (encontrou) {
-                System.out.println("Encontrou email");
-            } else {
-                System.out.println("Não encontrou email");
+            // mascaras é um dicionário que armazena as expressões regulares
+            // e os nomes das propriedades correspondentes
+            // Exemplo: mascaras.put("nomeMae", "Nome da Mãe: (.*)");
+            HashMap<String, String> mascaras = new HashMap<String, String>();
+            // Coincide com valores começando com "CNS" captura o valor com (.*) em grupo1            
+            mascaras.put("cns","^CNS\\s*:\\s*(.*)$");
+            // Coincide com valores terminando com "-CSE GERALDO DE PAULA SOUZA" captura o valor com (\\d+*) em grupo1
+            mascaras.put("prontuario", "^(\\d+)\\s*-CSE GERALDO DE PAULA SOUZA$");
+            // Coincide com valores começando com "Usuário:" captura o valor com (.*) em grupo1 
+            // seguida por espaço \\s* e Nome Social: e se existir algum valor após (.*?) coloca e
+            // em grupo2
+            // Aqui é necessário colocar a ? após o * para que a expressão não consuma a próxima linha
+            mascaras.put("nomeCompleto","^Usuário:\\s*(.*)\\s*Nome Social:\\s*?(.*?)$");
+            // Coincide com valores começando com "Mãe:" captura o valor com (.*) em grupo1
+            // seguida por espaço \\s* Pai: e se existir algum valor após (.*?) colocar
+            // em grupo2
+            mascaras.put("nomeMae", "^Mãe:\\s*(.*)\\s*Pai:\\s*?(.*?)$");
+            // Adicione mascaras para cada um dos valores adicionais que você deseja extrair
+
+            PacienteEntity paciente = new PacienteEntity();
+            for (String propriedade : mascaras.keySet()) {
+                // Compila cada expressão regular e procura no texto
+                String regexString = mascaras.get(propriedade);
+                Pattern pattern = Pattern.compile(regexString, Pattern.MULTILINE);
+                Matcher matcher = pattern.matcher(texto2);
+                if (matcher.find()) {
+                    // Isso é para debugging, para ver o que foi encontrado
+                    // Deve ser tirado ao final
+                    System.out.println("Linha encontrada: " + matcher.group(0));
+                    System.out.println("Propriedade: " + propriedade);
+                    // Se encontrou 2 propriedades, imprime os dois valores
+                    if (matcher.groupCount() == 2) {
+                        System.out.println("Valor1: " + matcher.group(1));
+                        System.out.println("Valor2: " + matcher.group(2));
+                    } else {
+                        // Se encontrou apenas 1 propriedade, imprime o valor
+                        System.out.println("Valor1: " + matcher.group(1));
+                    }
+                    switch (propriedade) {
+                        // Para cada mascara, seta a propriedade correspondente no objeto Paciente
+                        // Se a mascara tiver 2 grupos, seta os dois valores    
+                        case "cns":
+                            paciente.setCns(matcher.group(1));
+                            break;
+                        case "prontuario":
+                            paciente.setProntuario(matcher.group(1));
+                            break;
+                        case "nomeCompleto":
+                            paciente.setNomeCompleto(matcher.group(1));
+                            paciente.setNomeSocial(matcher.group(2));
+                            break;
+                        case "nomeMae":
+                            paciente.setNomeMae(matcher.group(1));
+                            paciente.setNomePai(matcher.group(2));
+                            break;
+                        default:
+                            break;
+                    }
+                }
             }
+            return paciente;
         } catch (Exception e) {
             throw new ArmazenamentoException("Falha ao armazenar arquivo " + arquivo.getOriginalFilename(), e);
         }

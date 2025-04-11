@@ -13,7 +13,7 @@ export class PacienteService {
     return this.http.put<any>(`${this.apiUrl}/pacientes/${codigo}`, paciente);
 }
 
-  private apiUrl = 'http://localhost:8091/api/paciente'; 
+  private apiUrl = 'http://localhost:8090/api/paciente'; 
 
   constructor(private http: HttpClient) {}
 

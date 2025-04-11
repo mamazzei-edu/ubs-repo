@@ -1,4 +1,4 @@
-package br.sp.gov.fatec.ubs.backend.config;
+package br.sp.gov.fatec.ubs.backend;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

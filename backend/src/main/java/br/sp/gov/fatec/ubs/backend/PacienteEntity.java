@@ -23,6 +23,8 @@ public class PacienteEntity {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")  
     private LocalDate dataNascimento;
 
+    private String cns;
+    private String prontuario;
     private String sexo;
     private String nacionalidade;
     private String municipioNascimento;
@@ -98,4 +100,12 @@ public class PacienteEntity {
 
     public String getCpf() { return cpf; }
     public void setCpf(String cpf) { this.cpf = cpf; }
+
+    public String getCns() { return cns;    }
+    public void setCns(String cns) { this.cns = cns;}
+
+    public String getProntuario() { return prontuario; }
+    public void setProntuario(String prontuario) { this.prontuario = prontuario;  }
+
+    
 }
