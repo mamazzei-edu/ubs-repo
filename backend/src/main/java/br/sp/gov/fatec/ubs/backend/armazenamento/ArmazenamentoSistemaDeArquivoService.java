@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -80,6 +81,28 @@ public class ArmazenamentoSistemaDeArquivoService implements ArmazenamentoServic
             mascaras.put("nomeMae", "^Mãe:\\s*(.*)\\s*Pai:\\s*?(.*?)$");
             // Adicione mascaras para cada um dos valores adicionais que você deseja extrair
 
+            mascaras.put("NascimentoESexo", "^Nascimento:\\s*(.*)\\s*Sexo:\\s?(.*?)$");
+            // \s*(.*)\s*
+            
+            //mascaras.put("cpf", "^cpf:(\\d+)$");
+            
+            mascaras.put("NacionalidadeEMunicipio", "^Nacionalidade:\\s*(.*)\\s*Município de Nascimento:\\s*?(.*?)$");
+
+            mascaras.put("racaCor", "^Raça\\/Cor:\\s*?(.*?)\\s*Etnia:\\s*?(.*?)$");
+
+            mascaras.put("frequentaEscola", "^Frequenta Escola\\?:\\s*(.*)\\s*Escolaridade:\\s*?(.*?)$"); 
+
+            mascaras.put("Deficiencia", "^Possui alguma de.*?ciência\\?:\\s*(.*)\\s*Utiliza alguma OPM\\?:\\s*?(.*?)$");
+
+            mascaras.put("vinculoEstabelecimento", "^Estabelecimento de Vínculo:\\s*(.*)\\s*Estabelecimento de Cadastro:\\s*?(.*?)$");
+            mascaras.put("situacaoFamiliar", "^Situação Familiar:\\s*(.*)\\s*Ocupação:\\s*?(.*?)$");
+
+            mascaras.put("CelularEResidencial", "^Telefone Celular:\\s*(.*)\\s*Telefone Residencial:\\s*?(.*?)$");
+            
+            mascaras.put("contatoComercial", "^Telefone Comercial:\\s*(.*)\\s*Telefone Contato:\\s*?(.*?)$");
+            mascaras.put("contatoEmail", "^E-mail:\\s*(.*)\\s*Contato:\\s*?(.*?)$");
+ 
+            
             Paciente paciente = new Paciente();
             for (String propriedade : mascaras.keySet()) {
                 // Compila cada expressão regular e procura no texto
@@ -116,6 +139,41 @@ public class ArmazenamentoSistemaDeArquivoService implements ArmazenamentoServic
                             paciente.nomeMae = matcher.group(1);
                             paciente.nomePai = matcher.group(2);
                             break;
+                        case "NascimentoESexo":
+                            String data = matcher.group(1).trim();
+                            paciente.dataNascimento = data;
+                            paciente.sexo = matcher.group(2);
+                            break;
+                        case "NacionalidadeEMunicipio":
+                            paciente.nacionalidade = matcher.group(1);
+                            paciente.municipioNascimento = matcher.group(2);
+                            break;
+                        case "racaCor":
+                            paciente.racaCor = matcher.group(1);
+                            break;
+                        case "frequentaEscola":
+                            paciente.frequentaEscola = matcher.group(1);
+                            paciente.escolaridade = matcher.group(2);
+                            break;
+                        case "Deficiencia":
+                            paciente.deficiencia = matcher.group(1);
+                            break;
+                        case "vinculoEstabelecimento":
+                            paciente.vinculoEstabelecimento = matcher.group(1);
+                            break;
+                        case "situacaoFamiliar":
+                            paciente.situacaoFamiliar = matcher.group(1);
+                            break;
+                        case "CelularEResidencial":
+                            paciente.contatoCelular = matcher.group(1);
+                            paciente.contatoResidencial = matcher.group(2);
+                            break;
+                        case "contatoComercial":
+                            paciente.contatoComercial = matcher.group(1);
+                            break;
+                        case "contatoEmail":
+                            paciente.contatoEmail = matcher.group(1);
+                            break;    
                         default:
                             break;
                     }
