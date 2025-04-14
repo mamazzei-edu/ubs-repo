@@ -47,6 +47,9 @@ export class UploadComponent implements OnInit {
             next: (dados) => {
               this.mostrarModalEditar = true;
               this.pacienteSelecionado = dados;
+              const date = this.pacienteSelecionado.dataNascimento;
+              const [dia, mes, ano] = date.split('/');
+              
             },
             error: () => {
             },
