@@ -37,9 +37,15 @@ export class Paciente {
     public telefoneResidencial?: string; 
     public telefoneComercial?: string;   
     public email: string = '';       
-    public cpf: string = '';            
+    public cpf: string = '';     
+    
+  //Prontuario
+
+  public prontuarioPaciente: string = "";
   
-  
+  //CNS
+
+  public cnsPaciente: string = "";
 
   
   constructor(init?: Partial<Paciente>) {
