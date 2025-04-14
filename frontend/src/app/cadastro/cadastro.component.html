@@ -216,7 +216,25 @@
     <input type="email" id="contatoEmail" class="form-control" [(ngModel)]="paciente.email" placeholder="email@exemplo.com">
     <label for="contatoEmail">E-mail:</label>
   </div>
-</div>
+
+  <h4>Prontuario</h4>
+  <hr>
+  <div>
+  <input id="prontuarioPaciente" class="form-control" type="text" [(ngModel)]="paciente.prontuarioPaciente"
+        required placeholder="A-0000"/>
+        <label for="prontuarioPaciente"Prontuario></label>
+        </div>
+
+
+        <h4>CNS</h4>
+        <hr>
+        <div>
+        <input id="cnsPaciente" class="form-control" type="text" [(ngModel)]="paciente.cnsPaciente"
+             required placeholder="99999999999 9999" />
+             <label for="cnsPaciente"CNS></label>
+              </div>
+  </div>
+
 
   <div class="container mt-3">
     <button class="btn-enviar" (click)="gravar()">Enviar</button>
