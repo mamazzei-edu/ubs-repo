@@ -21,13 +21,14 @@ public class PacienteEntity {
     private String nomePai;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")  
-    private LocalDate dataNascimento;
+    private String dataNascimento;
 
     private String cns;
     private String prontuario;
     private String sexo;
     private String nacionalidade;
     private String municipioNascimento;
+    private String racaCor;
     private String frequentaEscola;
     private String deficiente;
     private String visual;
@@ -40,72 +41,139 @@ public class PacienteEntity {
     private String email;
     private String cpf;
 
+    // Novos campos do PDF
+    private String escolaridade;
+    private String situacaoFamiliar;
+    private String ocupacao;
+    private String cep;
+    private String logradouro;
+    private String numero;
+    private String bairro;
+    private String complemento;
+    private String uf;
+    private String rg;
+    private String orgaoEmissor;
+    private String pisPasepNis;
+    private String cnh;
+    private String ctps;
+    private String tituloEleitor;
+    private String passaporte;
+
     // Getters e Setters
+    // (Incluindo os novos campos adicionados abaixo)
     public Long getCodigo() { return codigo; }
     public void setCodigo(Long codigo) { this.codigo = codigo; }
-
+ 
     public String getNomeCompleto() { return nomeCompleto; }
     public void setNomeCompleto(String nomeCompleto) { this.nomeCompleto = nomeCompleto; }
-
+ 
     public String getNomeSocial() { return nomeSocial; }
     public void setNomeSocial(String nomeSocial) { this.nomeSocial = nomeSocial; }
-
+ 
     public String getNomeMae() { return nomeMae; }
     public void setNomeMae(String nomeMae) { this.nomeMae = nomeMae; }
-
+ 
     public String getNomePai() { return nomePai; }
     public void setNomePai(String nomePai) { this.nomePai = nomePai; }
-
-    public LocalDate getDataNascimento() { return dataNascimento; }
-    public void setDataNascimento(LocalDate dataNascimento) { this.dataNascimento = dataNascimento; }
-
+ 
+    public String getDataNascimento() { return dataNascimento; }
+    public void setDataNascimento(String dataNascimento) { this.dataNascimento = dataNascimento; }
+ 
     public String getSexo() { return sexo; }
     public void setSexo(String sexo) { this.sexo = sexo; }
-
+ 
     public String getNacionalidade() { return nacionalidade; }
     public void setNacionalidade(String nacionalidade) { this.nacionalidade = nacionalidade; }
-
+ 
     public String getMunicipioNascimento() { return municipioNascimento; }
     public void setMunicipioNascimento(String municipioNascimento) { this.municipioNascimento = municipioNascimento; }
-
+ 
     public String getFrequentaEscola() { return frequentaEscola; }
     public void setFrequentaEscola(String frequentaEscola) { this.frequentaEscola = frequentaEscola; }
-
+ 
     public String getDeficiente() { return deficiente; }
     public void setDeficiente(String deficiente) { this.deficiente = deficiente; }
-
+ 
     public String getVisual() { return visual; }
     public void setVisual(String visual) { this.visual = visual; }
-
+ 
     public String getAuditiva() { return auditiva; }
     public void setAuditiva(String auditiva) { this.auditiva = auditiva; }
-
+ 
     public String getMotora() { return motora; }
     public void setMotora(String motora) { this.motora = motora; }
-
+ 
     public String getIntelectual() { return intelectual; }
     public void setIntelectual(String intelectual) { this.intelectual = intelectual; }
-
+ 
     public String getTelefoneCelular() { return telefoneCelular; }
     public void setTelefoneCelular(String telefoneCelular) { this.telefoneCelular = telefoneCelular; }
-
+ 
     public String getTelefoneResidencial() { return telefoneResidencial; }
     public void setTelefoneResidencial(String telefoneResidencial) { this.telefoneResidencial = telefoneResidencial; }
-
+ 
     public String getTelefoneComercial() { return telefoneComercial; }
     public void setTelefoneComercial(String telefoneComercial) { this.telefoneComercial = telefoneComercial; }
-
+ 
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
-
+ 
     public String getCpf() { return cpf; }
     public void setCpf(String cpf) { this.cpf = cpf; }
-
+ 
     public String getCns() { return cns;    }
     public void setCns(String cns) { this.cns = cns;}
-
+ 
     public String getProntuario() { return prontuario; }
     public void setProntuario(String prontuario) { this.prontuario = prontuario;  }
+ 
+    public String getEscolaridade() { return escolaridade; }
+    public void setEscolaridade(String escolaridade) { this.escolaridade = escolaridade; }
 
-    
+    public String getSituacaoFamiliar() { return situacaoFamiliar; }
+    public void setSituacaoFamiliar(String situacaoFamiliar) { this.situacaoFamiliar = situacaoFamiliar; }
+
+    public String getOcupacao() { return ocupacao; }
+    public void setOcupacao(String ocupacao) { this.ocupacao = ocupacao; }
+
+    public String getCep() { return cep; }
+    public void setCep(String cep) { this.cep = cep; }
+
+    public String getLogradouro() { return logradouro; }
+    public void setLogradouro(String logradouro) { this.logradouro = logradouro; }
+
+    public String getNumero() { return numero; }
+    public void setNumero(String numero) { this.numero = numero; }
+
+    public String getBairro() { return bairro; }
+    public void setBairro(String bairro) { this.bairro = bairro; }
+
+    public String getComplemento() { return complemento; }
+    public void setComplemento(String complemento) { this.complemento = complemento; }
+
+    public String getUf() { return uf; }
+    public void setUf(String uf) { this.uf = uf; }
+
+    public String getRg() { return rg; }
+    public void setRg(String rg) { this.rg = rg; }
+
+    public String getOrgaoEmissor() { return orgaoEmissor; }
+    public void setOrgaoEmissor(String orgaoEmissor) { this.orgaoEmissor = orgaoEmissor; }
+
+    public String getPisPasepNis() { return pisPasepNis; }
+    public void setPisPasepNis(String pisPasepNis) { this.pisPasepNis = pisPasepNis; }
+
+    public String getCnh() { return cnh; }
+    public void setCnh(String cnh) { this.cnh = cnh; }
+
+    public String getCtps() { return ctps; }
+    public void setCtps(String ctps) { this.ctps = ctps; }
+
+    public String getTituloEleitor() { return tituloEleitor; }
+    public void setTituloEleitor(String tituloEleitor) { this.tituloEleitor = tituloEleitor; }
+
+    public String getPassaporte() { return passaporte; }
+    public void setPassaporte(String passaporte) { this.passaporte = passaporte; }
+
+   
 }
