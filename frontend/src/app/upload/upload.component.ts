@@ -49,7 +49,8 @@ export class UploadComponent implements OnInit {
               this.pacienteSelecionado = dados;
               const date = this.pacienteSelecionado.dataNascimento;
               const [dia, mes, ano] = date.split('/');
-              
+              const dataNascimento = `${ano}-${mes}-${dia}`;
+              this.pacienteSelecionado.dataNascimento = dataNascimento;
             },
             error: () => {
             },
