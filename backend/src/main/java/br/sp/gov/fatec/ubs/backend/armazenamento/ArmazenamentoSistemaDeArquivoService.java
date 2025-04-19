@@ -80,27 +80,39 @@ public class ArmazenamentoSistemaDeArquivoService implements ArmazenamentoServic
             mascaras.put("nomeMae", "^Mãe:\\s*(.*)\\s*Pai:\\s*?(.*?)$");
             // Adicione mascaras para cada um dos valores adicionais que você deseja extrair
             mascaras.put("nascimento", "^Nascimento:\\s*(.*)\\s*Sexo:\\s*?(.*?)$");
-            mascaras.put("nacionalidadeMunicipio", "^Nacionalidade:\\s*(.*?)\\s+Município de Nascimento:\\s*(.*)$");
+            mascaras.put("nacionalidade", "^Nacionalidade:\\s*(.*?)$");
+            mascaras.put("municipioNascimento", "^Munic[ií]pio de Nascimento:\\s*(.*?)$");
             mascaras.put("racaCorEtnia", "^Raça/Cor:\\s*(.*?)\\s*Etnia:\\s*(.*)$");
             mascaras.put("frequentaEscolaEscolaridade", "^Frequenta Escola\\?:\\s*(Sim|Não)\\s*Escolaridade:\\s*(.*)$");
-            mascaras.put("situacaoFamiliarOcupacao", "^Situação Familiar:\\s*(.*?)\\s*Ocupação:\\s*(.*)$");
+            mascaras.put("situacaoFamiliar", "^Situação Familiar:\\s*(.*)$");
+            mascaras.put("ocupacao", "^Ocupação:\\s*(.*)$");
+            mascaras.put("estabelecimentoVinculoCadastro", "^Estabelecimento de Vínculo:\\s*(.*?)\\s*Estabelecimento de Cadastro:\\s*(.*?)$");
+
             mascaras.put("deficiente", "^Pessoa com Deficiência:\\s*(Sim|Não)$");
-            mascaras.put("contatos", "^Telefone Celular:\\s*(.*?)\\s*Telefone Residencial:\\s*(.*?)$");
-            mascaras.put("origemEnderecoCep", "^Origem do Endere[cç]o:\\s*(.*?)\\s+CEP:\\s*(\\d{8})$");
+            mascaras.put("telefones", "^Telefone Celular:\\s*(.*?)\\s*Telefone Residencial:\\s*(.*?)$");
+
+            // Origem do Endereço + CEP
+            mascaras.put("origemEnderecoCep", "^Origem do Endere[cç]o:\\s*(.*?)\\s+CEP:\\s*(\\d{5}-?\\d{3})$");
+
+            // Município de Residência + Distrito Administrativo
             mascaras.put("municipioDistrito", "^Munic[ií]pio de Resid[êe]ncia:\\s*(.*?)\\s*Distrito Administrativo:\\s*(.*?)$");
+
+            // Tipo Logradouro + Logradouro
             mascaras.put("tipoLogradouroLogradouro", "^Tipo Logradouro:\\s*(.*?)\\s*Logradouro:\\s*(.*?)$");
+
+            // Número + Bairro
             mascaras.put("numeroBairro", "^Número:\\s*(.*?)\\s*Bairro:\\s*(.*?)$");
+
+            // Complemento + Referência
             mascaras.put("complementoReferencia", "^Complemento:\\s*(.*?)\\s*Refer[êe]ncia:\\s*(.*?)$");
-            mascaras.put("cpf", "^CPF:\\s*(\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2})$");
+
             
 
 
             mascaras.put("telefoneComercial", "^Telefone Comercial:\\s*(.*)$");
             mascaras.put("email", "^E-mail:\\s*(.*)$");
-            mascaras.put("escolaridade", "^Escolaridade:\\s*(.*)$");
-            mascaras.put("situacaoFamiliar", "^Situação Familiar:\\s*(.*)$");
-            mascaras.put("ocupacao", "^Ocupação:\\s*(.*)$");
-            mascaras.put("cep", "^CEP:\\s*(\\d{5}-\\d{3})$");
+
+        
        
         
          
@@ -163,25 +175,37 @@ public class ArmazenamentoSistemaDeArquivoService implements ArmazenamentoServic
                             break;  
 
                         case "nacionalidade":
-                           paciente.setNacionalidade(matcher.group(1));
-                           paciente.setMunicipioNascimento(matcher.group(2));
-                           break;
+                            paciente.setNacionalidade(matcher.group(1));
+                            break;
+                        
+                        case "municipioNascimento":
+                            paciente.setMunicipioNascimento(matcher.group(1));
+                            break;
+                        
                         
                         case "racaCorEtnia":
-                         //paciente.setRacaCor(matcher.group(1));
-                       // Etnia ainda não existe na entidade paciente.setEtnia(matcher.group(2));
+                           paciente.setRacaCor(matcher.group(1));
+                           paciente.setEtnia(matcher.group(2));
                          break;
 
-                         case "frequentaEscolaEscolaridade":
+                        case "frequentaEscolaEscolaridade":
                           paciente.setFrequentaEscola(matcher.group(1));
                           paciente.setEscolaridade(matcher.group(2));
                           break;
                      
-                         case "situacaoFamiliarOcupacao":
-                           paciente.setSituacaoFamiliar(matcher.group(1));
-                           paciente.setOcupacao(matcher.group(2));
-                           break;
+                        case "situacaoFamiliar":
+                          paciente.setSituacaoFamiliar(matcher.group(1));
+                          break;
+                        case "ocupacao":
+                          paciente.setOcupacao(matcher.group(1));
+                          break;
+                      
 
+                        case "estabelecimentoVinculoCadastro":
+                           paciente.setEstabelecimentoVinculo(matcher.group(1));
+                           paciente.setEstabelecimentoCadastro(matcher.group(2));
+                           break;
+                       
                     
 
                         case "deficiente":
@@ -202,205 +226,75 @@ public class ArmazenamentoSistemaDeArquivoService implements ArmazenamentoServic
                            paciente.setIntelectual(matcher.group(1));
                            break;
 
-                        case "telefoneCelular":
+                        case "telefones":
                            paciente.setTelefoneCelular(matcher.group(1));
                            paciente.setTelefoneResidencial(matcher.group(2));
                            break;
+                       
    
                        case "telefoneComercial":
                            paciente.setTelefoneComercial(matcher.group(1));
                            break;
    
-   
-   
-                       case "email":
-   
-   
-   
-                           paciente.setEmail(matcher.group(1));
-   
-   
-   
-                           break;
-   
-   
-   
-                       case "cpf":
-   
-   
-   
-                           paciente.setCpf(matcher.group(1));
-   
-   
-   
-                           break;
-   
-   
-   
-                       case "escolaridade":
-   
-   
-   
-                           paciente.setEscolaridade(matcher.group(1));
-   
-   
-   
-                           break;
-   
-   
-   
-                       case "situacaoFamiliar":
-   
-   
-   
-                           paciente.setSituacaoFamiliar(matcher.group(1));
-   
-   
-   
-                           break;
-   
-   
-   
-                       case "ocupacao":
-   
-   
-   
-                           paciente.setOcupacao(matcher.group(1));
-   
-   
-   
-                           break;
-   
-   
-   
-                       case "cep":
-   
-   
-   
-                           paciente.setCep(matcher.group(1));
-   
-   
-   
-                           break;
-   
-   
-   
-                       case "logradouro":
-   
-   
-   
-                           paciente.setLogradouro(matcher.group(1));
-   
-   
-   
-                           break;
-   
-   
-   
-                       case "numero":
-   
-   
-   
-                           paciente.setNumero(matcher.group(1));
-   
-   
-   
-                           break;
-   
-   
-   
-                       case "bairro":
-   
-   
-   
-                           paciente.setBairro(matcher.group(1));
-   
-   
-   
-                           break;
-   
-   
-   
-                       case "complemento":
-   
-   
-   
-                           paciente.setComplemento(matcher.group(1));
-   
-   
-   
-                           break;
-   
-   
-   
+                        case "email":
+                            paciente.setEmail(matcher.group(1));
+                            break;
+                            case "origemEnderecoCep":
+                            paciente.setOrigemEndereco(matcher.group(1));
+                            paciente.setCep(matcher.group(2));
+                            break;
+                        
+                        case "municipioDistrito":
+                            paciente.setMunicipioNascimento(matcher.group(1)); // ou paciente.setMunicipioResidencia se preferir
+                            paciente.setDistritoAdministrativo(matcher.group(2));
+                            break;
+                        
+                        case "tipoLogradouroLogradouro":
+                            paciente.setTipoLogradouro(matcher.group(1));
+                            paciente.setLogradouro(matcher.group(2));
+                            break;
+                        
+                        case "numeroBairro":
+                            paciente.setNumero(matcher.group(1));
+                            paciente.setBairro(matcher.group(2));
+                            break;
+                        
+                        case "complementoReferencia":
+                            paciente.setComplemento(matcher.group(1));
+                            paciente.setReferencia(matcher.group(2));
+                            break;
+                        
+                        case "cpf":
+                            paciente.setCpf(matcher.group(1));
+                            break;
+   
+
+                        
                        case "uf":
-   
-   
-   
                            paciente.setUf(matcher.group(1));
-   
-   
-   
                            break;
-   
-   
    
                        case "rg":
-   
-   
-   
                            paciente.setRg(matcher.group(1));
-   
-   
-   
                            break;
-   
-   
-   
+
                        case "orgaoEmissor":
-   
-   
-   
                            paciente.setOrgaoEmissor(matcher.group(1));
-   
-   
-   
                            break;
-   
-   
-   
+
                        case "pisPasepNis":
-   
-   
-   
-                           paciente.setPisPasepNis(matcher.group(1));
-   
-   
-   
-                           break;
-   
-   
+                            paciente.setPisPasepNis(matcher.group(1));
+                            break;
+
    
                        case "cnh":
-   
-   
-   
                            paciente.setCnh(matcher.group(1));
-   
-   
-   
                            break;
-   
-   
    
                        case "ctps":
    
-   
-   
-                           paciente.setCtps(matcher.group(1));
-
-   
-                           break;
+                            paciente.setCtps(matcher.group(1));
+                            break;
    
                        case "tituloEleitor":
                            paciente.setTituloEleitor(matcher.group(1));

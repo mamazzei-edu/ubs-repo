@@ -29,8 +29,10 @@ public class PacienteEntity {
     private String nacionalidade;
     private String municipioNascimento;
     private String racaCor;
+    private String etnia;
     private String frequentaEscola;
     private String deficiente;
+    private String opm;
     private String visual;
     private String auditiva;
     private String motora;
@@ -45,6 +47,8 @@ public class PacienteEntity {
     private String escolaridade;
     private String situacaoFamiliar;
     private String ocupacao;
+    private String estabelecimentoVinculo;
+    private String estabelecimentoCadastro;
     private String cep;
     private String logradouro;
     private String numero;
@@ -58,6 +62,43 @@ public class PacienteEntity {
     private String ctps;
     private String tituloEleitor;
     private String passaporte;
+    private String origemEndereco;
+    private String distritoAdministrativo;
+    private String tipoLogradouro;
+    
+    
+    public String getOpm() {
+        return opm;
+    }
+    public void setOpm(String opm) {
+        this.opm = opm;
+    }
+    public String getOrigemEndereco() {
+        return origemEndereco;
+    }
+    public void setOrigemEndereco(String origemEndereco) {
+        this.origemEndereco = origemEndereco;
+    }
+    public String getDistritoAdministrativo() {
+        return distritoAdministrativo;
+    }
+    public void setDistritoAdministrativo(String distritoAdministrativo) {
+        this.distritoAdministrativo = distritoAdministrativo;
+    }
+    public String getTipoLogradouro() {
+        return tipoLogradouro;
+    }
+    public void setTipoLogradouro(String tipoLogradouro) {
+        this.tipoLogradouro = tipoLogradouro;
+    }
+    public String getReferencia() {
+        return referencia;
+    }
+    public void setReferencia(String referencia) {
+        this.referencia = referencia;
+    }
+    private String referencia;
+
 
     // Getters e Setters
     // (Incluindo os novos campos adicionados abaixo)
@@ -131,6 +172,30 @@ public class PacienteEntity {
     public void setEscolaridade(String escolaridade) { this.escolaridade = escolaridade; }
 
     public String getSituacaoFamiliar() { return situacaoFamiliar; }
+    public String getRacaCor() {
+        return racaCor;
+    }
+    public void setRacaCor(String racaCor) {
+        this.racaCor = racaCor;
+    }
+    public String getEtnia() {
+        return etnia;
+    }
+    public void setEtnia(String etnia) {
+        this.etnia = etnia;
+    }
+    public String getEstabelecimentoVinculo() {
+        return estabelecimentoVinculo;
+    }
+    public void setEstabelecimentoVinculo(String estabelecimentoVinculo) {
+        this.estabelecimentoVinculo = estabelecimentoVinculo;
+    }
+    public String getEstabelecimentoCadastro() {
+        return estabelecimentoCadastro;
+    }
+    public void setEstabelecimentoCadastro(String estabelecimentoCadastro) {
+        this.estabelecimentoCadastro = estabelecimentoCadastro;
+    }
     public void setSituacaoFamiliar(String situacaoFamiliar) { this.situacaoFamiliar = situacaoFamiliar; }
 
     public String getOcupacao() { return ocupacao; }
