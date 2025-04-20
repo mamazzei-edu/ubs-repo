@@ -1,9 +1,6 @@
 package br.sp.gov.fatec.ubs.backend;
 
-import java.time.LocalDate;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -63,9 +60,16 @@ public class PacienteEntity {
     private String tituloEleitor;
     private String passaporte;
     private String origemEndereco;
+    private String municipioResidencia;
     private String distritoAdministrativo;
     private String tipoLogradouro;
     
+    public String getMunicipioResidencia() {
+        return municipioResidencia;
+    }
+    public void setMunicipioResidencia(String municipioResidencia) {
+        this.municipioResidencia = municipioResidencia;
+    }
     
     public String getOpm() {
         return opm;

@@ -47,7 +47,7 @@ export class ListaComponent {
       return;
     }
 
-    this.http.put(`http://localhost:8091/api/paciente/${paciente.codigo}`, paciente)
+    this.http.put(`http://localhost:8090/api/paciente/${paciente.codigo}`, paciente)
     .subscribe({
         next: () => console.log('Paciente atualizado com sucesso!'),
         error: (err: any) => console.error('Erro ao atualizar paciente:', err)

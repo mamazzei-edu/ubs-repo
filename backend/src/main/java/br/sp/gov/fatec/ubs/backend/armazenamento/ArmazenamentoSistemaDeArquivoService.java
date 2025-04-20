@@ -80,8 +80,10 @@ public class ArmazenamentoSistemaDeArquivoService implements ArmazenamentoServic
             mascaras.put("nomeMae", "^Mãe:\\s*(.*)\\s*Pai:\\s*?(.*?)$");
             // Adicione mascaras para cada um dos valores adicionais que você deseja extrair
             mascaras.put("nascimento", "^Nascimento:\\s*(.*)\\s*Sexo:\\s*?(.*?)$");
-            mascaras.put("nacionalidade", "^Nacionalidade:\\s*(.*?)$");
-            mascaras.put("municipioNascimento", "^Munic[ií]pio de Nascimento:\\s*(.*?)$");
+            mascaras.put("nacionalidade", "^Nacionalidade:\\s*([^\\r\\n]+)$");
+            mascaras.put("municipioNascimento", "^Munic[ií]pio de Nascimento:\\s*([^\\r\\n]+)$");
+
+            
             mascaras.put("racaCorEtnia", "^Raça/Cor:\\s*(.*?)\\s*Etnia:\\s*(.*)$");
             mascaras.put("frequentaEscolaEscolaridade", "^Frequenta Escola\\?:\\s*(Sim|Não)\\s*Escolaridade:\\s*(.*)$");
             mascaras.put("situacaoFamiliar", "^Situação Familiar:\\s*(.*)$");
@@ -93,33 +95,22 @@ public class ArmazenamentoSistemaDeArquivoService implements ArmazenamentoServic
 
             // Origem do Endereço + CEP
             mascaras.put("origemEnderecoCep", "^Origem do Endere[cç]o:\\s*(.*?)\\s+CEP:\\s*(\\d{5}-?\\d{3})$");
+            mascaras.put("municipioDistrito", "^Munic[ií]pio de Resid[êe]ncia:\\s*(.*?)\\s+Distrito Administrativo:\\s*(.*?)$");
 
             // Município de Residência + Distrito Administrativo
-            mascaras.put("municipioDistrito", "^Munic[ií]pio de Resid[êe]ncia:\\s*(.*?)\\s*Distrito Administrativo:\\s*(.*?)$");
-
-            // Tipo Logradouro + Logradouro
+            mascaras.put("municipioDistrito", "^Munic[ií]pio de Resid[êe]ncia:\\s*(.*?)\\s+Distrito Administrativo:\\s*([^\\r\\n]+)$");
             mascaras.put("tipoLogradouroLogradouro", "^Tipo Logradouro:\\s*(.*?)\\s*Logradouro:\\s*(.*?)$");
-
-            // Número + Bairro
             mascaras.put("numeroBairro", "^Número:\\s*(.*?)\\s*Bairro:\\s*(.*?)$");
-
-            // Complemento + Referência
-            mascaras.put("complementoReferencia", "^Complemento:\\s*(.*?)\\s*Refer[êe]ncia:\\s*(.*?)$");
-
+            mascaras.put("complemento", "^Complemento:\\s*(.*)$");
+            mascaras.put("referencia", "^Refer[êe]ncia:\\s*(.*)$");
             
-
-
             mascaras.put("telefoneComercial", "^Telefone Comercial:\\s*(.*)$");
-            mascaras.put("email", "^E-mail:\\s*(.*)$");
+            mascaras.put("email", "^(E-mail|Email):\\s*(.*)$");
 
-        
-       
-        
-         
- 
             mascaras.put("uf", "^UF:\\s*(\\w{2})$");
             mascaras.put("rg", "^RG:\\s*(\\d{2}\\.\\d{3}\\.\\d{3}-\\d{1})$");
-            mascaras.put("orgaoEmissor", "^Órgão Emissor:\\s*(.*)$");
+            mascaras.put("orgaoEmissorUf", "^Órgão Emissor:\\s*(.*?)\\s+UF:\\s*(\\w{2})$");
+
             mascaras.put("pisPasepNis", "^PIS/PASEP/NIS:\\s*(.*)$");
             mascaras.put("cnh", "^CNH:\\s*(.*)$");
             mascaras.put("ctps", "^CTPS:\\s*(.*)$");
@@ -181,6 +172,11 @@ public class ArmazenamentoSistemaDeArquivoService implements ArmazenamentoServic
                         case "municipioNascimento":
                             paciente.setMunicipioNascimento(matcher.group(1));
                             break;
+
+                        case "municipioDistrito":
+                            paciente.setMunicipioResidencia(matcher.group(1));
+                            paciente.setDistritoAdministrativo(matcher.group(2));
+                            break;
                         
                         
                         case "racaCorEtnia":
@@ -235,20 +231,26 @@ public class ArmazenamentoSistemaDeArquivoService implements ArmazenamentoServic
                        case "telefoneComercial":
                            paciente.setTelefoneComercial(matcher.group(1));
                            break;
-   
+
                         case "email":
-                            paciente.setEmail(matcher.group(1));
+                           paciente.setEmail(matcher.group(2));
+                           break;
+                       
+
+                        case "complemento":
+                            paciente.setComplemento(matcher.group(1));
                             break;
-                            case "origemEnderecoCep":
+                        
+                        case "referencia":
+                            paciente.setReferencia(matcher.group(1));
+                            break;
+
+                        case "origemEnderecoCep":
                             paciente.setOrigemEndereco(matcher.group(1));
                             paciente.setCep(matcher.group(2));
                             break;
                         
-                        case "municipioDistrito":
-                            paciente.setMunicipioNascimento(matcher.group(1)); // ou paciente.setMunicipioResidencia se preferir
-                            paciente.setDistritoAdministrativo(matcher.group(2));
-                            break;
-                        
+                  
                         case "tipoLogradouroLogradouro":
                             paciente.setTipoLogradouro(matcher.group(1));
                             paciente.setLogradouro(matcher.group(2));
@@ -259,29 +261,23 @@ public class ArmazenamentoSistemaDeArquivoService implements ArmazenamentoServic
                             paciente.setBairro(matcher.group(2));
                             break;
                         
-                        case "complementoReferencia":
-                            paciente.setComplemento(matcher.group(1));
-                            paciente.setReferencia(matcher.group(2));
-                            break;
-                        
+           
                         case "cpf":
                             paciente.setCpf(matcher.group(1));
                             break;
    
-
+                        case "orgaoEmissorUf":
+                            paciente.setOrgaoEmissor(matcher.group(1));
+                            paciente.setUf(matcher.group(2));
+                            break;
                         
-                       case "uf":
-                           paciente.setUf(matcher.group(1));
-                           break;
+                     
    
                        case "rg":
                            paciente.setRg(matcher.group(1));
                            break;
 
-                       case "orgaoEmissor":
-                           paciente.setOrgaoEmissor(matcher.group(1));
-                           break;
-
+                  
                        case "pisPasepNis":
                             paciente.setPisPasepNis(matcher.group(1));
                             break;
