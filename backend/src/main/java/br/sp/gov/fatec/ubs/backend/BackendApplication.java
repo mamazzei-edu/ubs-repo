@@ -13,13 +13,11 @@ import br.sp.gov.fatec.ubs.backend.armazenamento.ArmazenamentoService;
 @ComponentScan("br.sp.gov.fatec.ubs.backend.model")
 @ComponentScan("br.sp.gov.fatec.ubs.backend.armazenamento")
 @EnableConfigurationProperties(ArmazenamentoPropriedades.class)	
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "br.sp.gov.fatec.ubs.backend")
 public class BackendApplication {
-
-	public static void main(String[] args) {
-		SpringApplication.run(BackendApplication.class, args);
-	}
-
+    public static void main(String[] args) {
+        SpringApplication.run(BackendApplication.class, args);
+    }
 	@Bean
 	CommandLineRunner init(ArmazenamentoService armazenamentoService) {
 		return (args) -> {
