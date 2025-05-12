@@ -65,6 +65,7 @@ public class ArmazenamentoSistemaDeArquivoService implements ArmazenamentoServic
             // e os nomes das propriedades correspondentes
             // Exemplo: mascaras.put("nomeMae", "Nome da Mãe: (.*)");
             HashMap<String, String> mascaras = new HashMap<String, String>();
+            mascaras.put("serieProntuario","^([A-Z]\\-[0-9]{4})$");
             // Coincide com valores começando com "CNS" captura o valor com (.*) em grupo1            
             mascaras.put("cns","^CNS\\s*:\\s*(.*)$");
             // Coincide com valores terminando com "-CSE GERALDO DE PAULA SOUZA" captura o valor com (\\d+*) em grupo1
@@ -80,14 +81,17 @@ public class ArmazenamentoSistemaDeArquivoService implements ArmazenamentoServic
             mascaras.put("nomeMae", "^Mãe:\\s*(.*)\\s*Pai:\\s*?(.*?)$");
             // Adicione mascaras para cada um dos valores adicionais que você deseja extrair
             mascaras.put("nascimento", "^Nascimento:\\s*(.*)\\s*Sexo:\\s*?(.*?)$");
-            mascaras.put("nacionalidade", "^Nacionalidade:\\s*([^\\r\\n]+)$");
-            mascaras.put("municipioNascimento", "^Munic[ií]pio de Nascimento:\\s*([^\\r\\n]+)$");
+//            mascaras.put("nacionalidade", "^Nacionalidade:\\s*([^\\r\\n]+)$");
+//            mascaras.put("municipioNascimento", "^Munic[ií]pio de Nascimento:\\s*([^\\r\\n]+)$");
+            mascaras.put("nacionalidade", "^Nacionalidade:\\s*(.*)\\s*Munic[ií]pio de Nascimento:\\s*?(.*?)$");
 
             
             mascaras.put("racaCorEtnia", "^Raça/Cor:\\s*(.*?)\\s*Etnia:\\s*(.*)$");
             mascaras.put("frequentaEscolaEscolaridade", "^Frequenta Escola\\?:\\s*(Sim|Não)\\s*Escolaridade:\\s*(.*)$");
-            mascaras.put("situacaoFamiliar", "^Situação Familiar:\\s*(.*)$");
-            mascaras.put("ocupacao", "^Ocupação:\\s*(.*)$");
+//            mascaras.put("situacaoFamiliar", "^Situação Familiar:\\s*(.*)$");
+//            mascaras.put("ocupacao", "^Ocupação:\\s*(.*)$");
+            mascaras.put("situacaoFamiliar", "^Situação Familiar:\\s*(.*)\\s*Ocupação:\\s*?(.*?)$");
+
             mascaras.put("estabelecimentoVinculoCadastro", "^Estabelecimento de Vínculo:\\s*(.*?)\\s*Estabelecimento de Cadastro:\\s*(.*?)$");
 
             mascaras.put("deficiente", "^Pessoa com Deficiência:\\s*(Sim|Não)$");
@@ -95,10 +99,10 @@ public class ArmazenamentoSistemaDeArquivoService implements ArmazenamentoServic
 
             // Origem do Endereço + CEP
             mascaras.put("origemEnderecoCep", "^Origem do Endere[cç]o:\\s*(.*?)\\s+CEP:\\s*(\\d{5}-?\\d{3})$");
-           // mascaras.put("municipioDistrito", "^Munic[ií]pio de Resid[êe]ncia:\\s*(.*?)\\s+Distrito Administrativo:\\s*(.*?)$");
+//            mascaras.put("municipioDistrito", "^Munic[ií]pio de Resid[êe]ncia:\\s*(.*?)\\s*Distrito Administrativo:\\s*(.*?)$");
 
             // Município de Residência + Distrito Administrativo
-            mascaras.put("municipioDistrito", "^Munic[ií]pio de Resid[êe]ncia:\\s*(.*?)\\s+Distrito Administrativo:\\s*([^\\r\\n]+)$");
+            mascaras.put("municipioDistrito", "^Munic[ií]pio de Resid[êe]ncia:\\s*(.*?)\\s*Distrito Administrativo:\\s*(.*?)$");
             mascaras.put("tipoLogradouroLogradouro", "^Tipo Logradouro:\\s*(.*?)\\s*Logradouro:\\s*(.*?)$");
             mascaras.put("numeroBairro", "^Número:\\s*(.*?)\\s*Bairro:\\s*(.*?)$");
             mascaras.put("complemento", "^Complemento:\\s*(.*)$");
@@ -120,11 +124,30 @@ public class ArmazenamentoSistemaDeArquivoService implements ArmazenamentoServic
 
 
             PacienteEntity paciente = new PacienteEntity();
+            String serieProntuario = "";
+            String regexString = mascaras.get("serieProntuario");
+            Pattern pattern = Pattern.compile(regexString, Pattern.MULTILINE);
+            Matcher matcher = pattern.matcher(texto2);
+            if (matcher.find()) {
+                // Isso é para debugging, para ver o que foi encontrado
+                // Deve ser tirado ao final
+                System.out.println("Linha encontrada: " + matcher.group(0));
+                System.out.println("Propriedade: " + "serieProntuario");
+                // Se encontrou 2 propriedades, imprime os dois valores
+                if (matcher.groupCount() == 2) {
+                    System.out.println("Valor1: " + matcher.group(1));
+                    System.out.println("Valor2: " + matcher.group(2));
+                } else {
+                    // Se encontrou apenas 1 propriedade, imprime o valor
+                    System.out.println("Valor1: " + matcher.group(1));
+                }
+                serieProntuario = matcher.group(1);
+            }
             for (String propriedade : mascaras.keySet()) {
                 // Compila cada expressão regular e procura no texto
-                String regexString = mascaras.get(propriedade);
-                Pattern pattern = Pattern.compile(regexString, Pattern.MULTILINE);
-                Matcher matcher = pattern.matcher(texto2);
+                regexString = mascaras.get(propriedade);
+                pattern = Pattern.compile(regexString, Pattern.MULTILINE);
+                matcher = pattern.matcher(texto2);
                 if (matcher.find()) {
                     // Isso é para debugging, para ver o que foi encontrado
                     // Deve ser tirado ao final
@@ -140,12 +163,12 @@ public class ArmazenamentoSistemaDeArquivoService implements ArmazenamentoServic
                     }
                     switch (propriedade) {
                         // Para cada mascara, seta a propriedade correspondente no objeto Paciente
-                        // Se a mascara tiver 2 grupos, seta os dois valores    
+                        // Se a mascara tiver 2 grupos, seta os dois valores
                         case "cns":
                             paciente.setCns(matcher.group(1));
                             break;
                         case "prontuario":
-                            paciente.setProntuario(matcher.group(1));
+                            paciente.setProntuario(serieProntuario + "-" + matcher.group(1));
                             break;
                         case "nomeCompleto":
                             paciente.setNomeCompleto(matcher.group(1));
@@ -154,8 +177,6 @@ public class ArmazenamentoSistemaDeArquivoService implements ArmazenamentoServic
                         case "nomeMae":
                             paciente.setNomeMae(matcher.group(1));
                             paciente.setNomePai(matcher.group(2));
-                            break;
-                        default:
                             break;
 
                         case "nascimento":
@@ -167,12 +188,9 @@ public class ArmazenamentoSistemaDeArquivoService implements ArmazenamentoServic
 
                         case "nacionalidade":
                             paciente.setNacionalidade(matcher.group(1));
+                            paciente.setMunicipioNascimento(matcher.group(2));
                             break;
                         
-                        case "municipioNascimento":
-                            paciente.setMunicipioNascimento(matcher.group(1));
-                            break;
-
                         case "municipioDistrito":
                             paciente.setMunicipioResidencia(matcher.group(1));
                             paciente.setDistritoAdministrativo(matcher.group(2));
@@ -182,7 +200,7 @@ public class ArmazenamentoSistemaDeArquivoService implements ArmazenamentoServic
                         case "racaCorEtnia":
                            paciente.setRacaCor(matcher.group(1));
                            paciente.setEtnia(matcher.group(2));
-                         break;
+                           break;
 
                         case "frequentaEscolaEscolaridade":
                           paciente.setFrequentaEscola(matcher.group(1));
@@ -191,9 +209,7 @@ public class ArmazenamentoSistemaDeArquivoService implements ArmazenamentoServic
                      
                         case "situacaoFamiliar":
                           paciente.setSituacaoFamiliar(matcher.group(1));
-                          break;
-                        case "ocupacao":
-                          paciente.setOcupacao(matcher.group(1));
+                          paciente.setOcupacao(matcher.group(2));
                           break;
                       
 
@@ -299,6 +315,9 @@ public class ArmazenamentoSistemaDeArquivoService implements ArmazenamentoServic
                         case "passaporte":
                            paciente.setPassaporte(matcher.group(1));
                            break;
+
+                        default:
+                            break;
  
                     }
                 }
