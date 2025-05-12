@@ -95,7 +95,7 @@ public class ArmazenamentoSistemaDeArquivoService implements ArmazenamentoServic
 
             // Origem do Endereço + CEP
             mascaras.put("origemEnderecoCep", "^Origem do Endere[cç]o:\\s*(.*?)\\s+CEP:\\s*(\\d{5}-?\\d{3})$");
-            mascaras.put("municipioDistrito", "^Munic[ií]pio de Resid[êe]ncia:\\s*(.*?)\\s+Distrito Administrativo:\\s*(.*?)$");
+           // mascaras.put("municipioDistrito", "^Munic[ií]pio de Resid[êe]ncia:\\s*(.*?)\\s+Distrito Administrativo:\\s*(.*?)$");
 
             // Município de Residência + Distrito Administrativo
             mascaras.put("municipioDistrito", "^Munic[ií]pio de Resid[êe]ncia:\\s*(.*?)\\s+Distrito Administrativo:\\s*([^\\r\\n]+)$");
