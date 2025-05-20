@@ -1,35 +1,48 @@
-
-  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    
-    <div class="container">
-      <a class="navbar-brand" href="#">UBS Geraldo de Paula</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
-            <a class="nav-link active" href="#">Início</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Serviços</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Contato</a>
-          </li>
-        </ul>
-        <a href="./login/" class="btn btn-light ms-3">Entrar</a>
-      </div>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container">
+    <a class="navbar-brand" href="#">UBS Geraldo de Paula</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto d-flex flex-row">
+        <li class="nav-item">
+          <a class="nav-link active" href="#">Início</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Serviços</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Contato</a>
+        </li>
+      </ul>
+      
     </div>
-  </nav>
-<div class="container">
-  <a href="./lista " class = "btn btn-outline-info">Ver lista</a>
-  <a href= "./cadastro" class = "btn btn-outline-success">Cadastro Novo</a>
-  <a href= "./upload" class = "btn btn-outline-danger">Carregar Ficha</a>
+  </div>
+</nav>
+
+<!-- Menu Linear para Ações -->
+<div class="container mt-4">
+  <ul class="list-inline">
+    <li class="list-inline-item">
+      <a href="./lista" class="text-decoration-none">Ver lista</a>
+    </li>
+    <li class="list-inline-item">
+      <a href="./cadastro" class="text-decoration-none">Cadastro Novo</a>
+    </li>
+    <li class="list-inline-item">
+      <a href="./upload" class="text-decoration-none">Carregar Ficha</a>
+    </li>
+    <li class="list-inline-item">
+      <a href="./agendar" class="text-decoration-none">Agendar Consulta</a>
+    </li>
+    <li class="list-inline-item">
+      <a href="./ver-agendamentos" class="text-decoration-none">Ver Agendamentos</a>
+    </li>
+  </ul>
+</div>
 
 
-  <router-outlet/> 
-
-
-
+<div class="container mt-4">
+  <router-outlet></router-outlet>
 </div>
