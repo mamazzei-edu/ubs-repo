@@ -85,7 +85,13 @@
     		<version>9.1.0</version>
     		<type>pom</type>
 		</dependency>
-
+		
+		<dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+            <version>6.4.5</version>
+        </dependency>
+   
 	</dependencies>
 
 	<build>
