@@ -43,7 +43,7 @@ button:hover {
   background-color: #45b2b2; /* Mudança de cor ao passar o mouse */
 }
 
-/* Modal */
+/* Modal 
 .modal-content {
   background: #ffffff;
   color: #333;
@@ -61,6 +61,7 @@ button:hover {
   display: flex;
   justify-content: space-between;
 }
+*/
 
 /* Estilo para labels e texto de aviso */
 label {
