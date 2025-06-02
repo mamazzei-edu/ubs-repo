@@ -28,7 +28,7 @@ public class JwtUtil {
     }
 
     public Claims validateToken(String token, String issuer) {
-        return Jwts.parserBuilder()
+        return Jwts.parser()
             .setSigningKey(key)
             .requireIssuer(issuer)
             .build()

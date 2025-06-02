@@ -1,8 +1,7 @@
 package br.sp.gov.fatec.ubs.backend.security;
 
-import javax.naming.AuthenticationException;
-
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,28 +17,26 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     @Autowired
-    private AuthenticationManager authenticationManager; // gerencia autenticação
+    private AuthenticationManager authenticationManager;
 
     @Autowired
-    private JwtUtil jwtUtil; // a classe que gera o token JWT
+    private JwtUtil jwtUtil;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         try {
-            // Aqui tenta autenticar o usuário com username e senha
-            org.springframework.security.core.Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
+            // Autentica usando usuario e senha
+            Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(loginRequest.getUsuario(), loginRequest.getSenha())
             );
 
-            // Se autenticou com sucesso, gera o token JWT
-            String token = jwtUtil.generateToken(loginRequest.getUsername(), "your-issuer");
+            // Gera token JWT usando o usuário como subject
+            String token = jwtUtil.generateToken(loginRequest.getUsuario(), "your-issuer");
 
-            // Retorna o token para o cliente
             return ResponseEntity.ok(new AuthResponse(token));
 
         } catch (AuthenticationException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciais inválidas");
         }
     }
-
 }

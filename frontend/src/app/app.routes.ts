@@ -1,14 +1,13 @@
 import { Routes } from '@angular/router';
-import { CadastroComponent } from './cadastro/cadastro.component';
 import { ListaComponent } from './lista/lista.component';
 import { UploadComponent } from './upload/upload.component';
-import { Component } from '@angular/core';
-import { LoginComponent } from './login/login.component';
+import { CadastroUsuarioComponent } from './cadastroUsuario/cadastroUsuario.component';
+import { CadastroComponent } from './cadastro/cadastro.component';
 
 export const routes: Routes = [
-  { path: 'cadastro', component: CadastroComponent },
-  { path: 'login', component: LoginComponent },
+  { path: 'cadastro', component: CadastroComponent }, 
+  {path: 'cadastroUsuario' ,  component: CadastroUsuarioComponent},
   { path: 'lista', component: ListaComponent },
   { path: 'upload', component: UploadComponent },
-  { path: '', redirectTo: '/login', pathMatch: 'full' } // Redireciona para o login ao acessar a aplicação
+  { path: '', redirectTo: '/login', pathMatch: 'full' }
 ];
