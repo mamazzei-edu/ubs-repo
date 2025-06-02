@@ -47,3 +47,8 @@
   font-weight: bold;
   color: #f58a6a; 
 }
+
+.modal-body {
+  max-height: 70vh;
+  overflow-y: auto;
+}

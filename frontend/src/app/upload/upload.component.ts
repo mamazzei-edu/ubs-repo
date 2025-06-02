@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from "@angular/forms";
-import { HttpClient } from '@angular/common/http'
-import { ReactiveFormsModule, FormsModule } from '@angular/forms'
+import { HttpClient } from '@angular/common/http';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { PacienteService } from '../service/paciente.service';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router'; // ✅ IMPORTAÇÃO DO ROUTER ADICIONADA
 
 @Component({
   selector: 'app-upload',
@@ -12,7 +13,6 @@ import { CommonModule } from '@angular/common';
   templateUrl: './upload.component.html',
   styleUrl: './upload.component.css',
   providers: [PacienteService]
-
 })
 
 export class UploadComponent implements OnInit {
@@ -22,12 +22,18 @@ export class UploadComponent implements OnInit {
   mostrarModalEditar: boolean = false;
   isModalVisible = false;
 
+  // ✅ INJEÇÃO DO ROUTER NO CONSTRUTOR
+  constructor(
+    public fb: FormBuilder,
+    private http: HttpClient,
+    private pacienteService: PacienteService,
+    private router: Router // ✅ INJEÇÃO DO ROUTER
+  ) { }
 
-  constructor(public fb: FormBuilder, private http: HttpClient, private pacienteService: PacienteService) { }
   ngOnInit() {
     this.form = this.fb.group({
       ficha: [null],
-    })
+    });
   }
 
   uploadFile(event: any) {
@@ -41,30 +47,22 @@ export class UploadComponent implements OnInit {
     if (this.file) {
       const formData = new FormData();
       formData.append('ficha', this.file, this.file.name);
-      this.http.post('http://localhost:8090/arquivos', formData)
-        .subscribe(
-          {
-            next: (dados) => {
-              this.mostrarModalEditar = true;
-              this.pacienteSelecionado = dados;
-              const date = this.pacienteSelecionado.dataNascimento;
-              const [dia, mes, ano] = date.split('/');
-              const dataNascimento = `${ano}-${mes}-${dia}`;
-              this.pacienteSelecionado.dataNascimento = dataNascimento;
-            },
-            error: () => {
-            },
-          })
-
+      this.http.post('http://localhost:8090/arquivos', formData).subscribe({
+        next: (dados) => {
+          this.mostrarModalEditar = true;
+          this.pacienteSelecionado = dados;
+          const date = this.pacienteSelecionado.dataNascimento;
+          const [dia, mes, ano] = date.split('/');
+          const dataNascimento = `${ano}-${mes}-${dia}`;
+          this.pacienteSelecionado.dataNascimento = dataNascimento;
+        },
+        error: () => {
+        },
+      });
     }
-
   }
-  
+
   salvarPaciente() {
-    // Verificar se o nomeCompleto está vazio ou contém apenas espaços em branco
- 
- 
-    // Envia o paciente para a API
     this.http.post('http://localhost:8090/api/pacientes', this.pacienteSelecionado).subscribe({
       next: (data) => {
         console.log('Paciente salvo com sucesso:', data);
@@ -79,9 +77,10 @@ export class UploadComponent implements OnInit {
   openModal() {
     this.isModalVisible = true;
   }
- 
+
   closeModal() {
     this.isModalVisible = false;
+    // ✅ REDIRECIONAMENTO APÓS FECHAR A MODAL
+    this.router.navigate(['/lista']); // Altere para a rota desejada
   }
-
 }

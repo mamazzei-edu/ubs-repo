@@ -67,8 +67,7 @@ export class ListaComponent implements OnInit {
   }
 
   abrirModalEditar(paciente: any): void {
-    console.log('Paciente selecionado:', paciente);  // Verifique os dados no console
-    this.pacienteSelecionado = { ...paciente };  // Cria uma cópia do paciente para edição
+    this.pacienteSelecionado = { ...paciente };
     this.mostrarModalEditar = true;
   }
 
@@ -78,15 +77,12 @@ export class ListaComponent implements OnInit {
   }
 
   atualizarPaciente(): void {
-    console.log('Paciente a ser atualizado:', this.pacienteSelecionado);  // Verifique se o objeto está correto
     this.pacienteService.editarPaciente(this.pacienteSelecionado.id, this.pacienteSelecionado).subscribe({
-      next: (paciente) => {
-        console.log('Paciente atualizado com sucesso:', paciente);
-        this.fecharModal();  // Fecha a modal após atualização
-        this.carregarPacientes();  // Atualiza a lista de pacientes
+      next: () => {
+        this.fecharModal();
+        this.carregarPacientes();
       },
-      error: (err) => {
-        console.error('Erro ao atualizar paciente:', err);
+      error: () => {
         this.mensagem = 'Erro ao atualizar paciente.';
       }
     });
