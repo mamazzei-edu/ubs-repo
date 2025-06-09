@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from "@angular/forms";
-import { HttpClient } from '@angular/common/http'
-import { ReactiveFormsModule, FormsModule } from '@angular/forms'
+import { HttpClient } from '@angular/common/http';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { PacienteService } from '../service/paciente.service';
 import { CommonModule } from '@angular/common';
 import { Paciente } from '../model/paciente.model';
@@ -14,7 +14,6 @@ import { Paciente } from '../model/paciente.model';
   styleUrls: ['./upload.component.css'],
   providers: [PacienteService]
 })
-
 export class UploadComponent implements OnInit {
   public form!: FormGroup;
   file: File | null = null;
@@ -30,9 +29,27 @@ export class UploadComponent implements OnInit {
   ngOnInit() {
     this.form = this.fb.group({
       ficha: [null],
-    })
+    });
   }
 
+  // Evita o comportamento padrão (abrir arquivo no navegador)
+  onDragOver(event: DragEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+
+  // Captura o arquivo ao soltar (drop)
+  onDrop(event: DragEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (event.dataTransfer?.files && event.dataTransfer.files.length > 0) {
+      this.file = event.dataTransfer.files[0];
+      event.dataTransfer.clearData();
+    }
+  }
+
+  // Captura arquivo ao selecionar pelo input
   uploadFile(event: any) {
     const file = event.target.files[0];
     if (file) {
@@ -45,30 +62,27 @@ export class UploadComponent implements OnInit {
       const formData = new FormData();
       formData.append('ficha', this.file, this.file.name);
       this.http.post('http://localhost:8090/arquivos', formData)
-        .subscribe(
-          {
-            next: (dados) => {
-              this.mostrarModalEditar = true;
-              this.pacienteSelecionado = dados;
-              const data = this.pacienteSelecionado.dataNascimento;
-              const [dia,mes,ano] =data.split('/');
-              const dataNascimento = `${ano}-${mes}-${dia}`;
-              console.log(dataNascimento);
-              this.pacienteSelecionado.dataNascimento = dataNascimento;
-            },
-            error: () => {
-            },
-          })
-
+        .subscribe({
+          next: (dados) => {
+            this.mostrarModalEditar = true;
+            this.pacienteSelecionado = dados;
+            const data = this.pacienteSelecionado.dataNascimento;
+            const [dia, mes, ano] = data.split('/');
+            const dataNascimento = `${ano}-${mes}-${dia}`;
+            this.pacienteSelecionado.dataNascimento = dataNascimento;
+          },
+          error: () => {
+            this.mensagem = "Erro no upload do arquivo.";
+          },
+        });
     }
   }
-  
+
   public validarNome() {
     const regex = /^[A-Za-zÀ-ÖØ-öø-ÿ ]+$/;
     this.nomeInvalido = !regex.test(this.pacienteSelecionado.nomeCompleto || '');
   }
 
-  // Para formatar CPF e verifica se segue o padrão 000.000.000-00
   public formatarCPF() {
     let cpf = this.pacienteSelecionado.cpf?.replace(/\D/g, '') || '';
     if (cpf.length > 3) cpf = cpf.replace(/^(\d{3})(\d)/, '$1.$2');
@@ -79,7 +93,6 @@ export class UploadComponent implements OnInit {
     this.cpfInvalido = cpf.length !== 14;
   }
 
-  //  Formatar telefone e verifica se segue o padrão (00) 00000-0000
   public formatarTelefone() {
     let telefone = this.pacienteSelecionado.telefoneCelular?.replace(/\D/g, '') || '';
     if (telefone.length > 2) telefone = telefone.replace(/^(\d{2})(\d)/, '($1) $2');
@@ -89,14 +102,10 @@ export class UploadComponent implements OnInit {
     this.telefoneInvalido = telefone.length !== 15;
   }
 
-
-
   uploadFicha(codigo: number, event: any) {
-    const file: File = event.target.files[0]; // Obtém o arquivo do input
-  
+    const file: File = event.target.files[0];
     if (file) {
       this.pacienteService.uploadFicha(codigo, file).subscribe((response: { mensagem: any; }) => {
-        console.log(response.mensagem);
         alert('Ficha enviada com sucesso!');
       }, (error: any) => {
         alert('Erro ao enviar a ficha.');
@@ -105,28 +114,21 @@ export class UploadComponent implements OnInit {
   }
 
   public gravar(pacienteSelecionado: Paciente) {
-
-    console.log('Enviando paciente:', this.pacienteSelecionado);
-
     this.pacienteService.gravar(this.pacienteSelecionado).subscribe({
       next: (data) => {
-        console.log('Resposta do servidor:', data);
         this.mensagem = "Paciente registrado com sucesso!";
         this.limpar();
       },
       error: (msg) => {
-        console.error('Erro ao registrar paciente:', msg);
         this.mensagem = "Ocorreu um erro, tente mais tarde.";
       }
     });
   }
+
   public limpar() {
     this.pacienteSelecionado = new Paciente();
     this.nomeInvalido = false;
     this.cpfInvalido = false;
     this.telefoneInvalido = false;
   }
-
-  
-  }
-
+}

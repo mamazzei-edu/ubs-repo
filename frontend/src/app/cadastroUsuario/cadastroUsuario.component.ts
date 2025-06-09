@@ -1,10 +1,13 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-cadastro-usuario',
+  standalone: true,
+  imports: [CommonModule, FormsModule],
   templateUrl: './cadastrousuario.component.html',
   styleUrls: ['./cadastrousuario.component.css']
 })

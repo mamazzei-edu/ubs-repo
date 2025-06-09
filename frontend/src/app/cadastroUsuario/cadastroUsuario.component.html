@@ -1,23 +1,25 @@
-<form (ngSubmit)="cadastroUsuario()">
-  <h2>Cadastro de Usuário</h2>
 
-  <div *ngIf="errorMessage" style="color: red;">{{ errorMessage }}</div>
+  <form (ngSubmit)="cadastroUsuario()">
+    <h2>Cadastro de Usuário</h2>
 
-  <label for="nomeCompleto">Nome Completo:</label>
-  <input id="nomeCompleto" name="nomeCompleto" [(ngModel)]="usuario.nomeCompleto" /><br />
+    <div *ngIf="errorMessage" style="color: red;">{{ errorMessage }}</div>
 
-  <label for="email">Email:</label>
-  <input id="email" name="email" type="email" [(ngModel)]="usuario.email" /><br />
+    <label for="nomeCompleto">Nome Completo:</label>
+    <input id="nomeCompleto" name="nomeCompleto" [(ngModel)]="usuario.nomeCompleto" /><br />
 
-  <label for="senha">Senha:</label>
-  <input id="senha" name="senha" type="password" [(ngModel)]="usuario.senha" /><br />
+    <label for="email">Email:</label>
+    <input id="email" name="email" type="email" [(ngModel)]="usuario.email" /><br />
 
-  <label for="funcao">Função:</label>
-  <input id="funcao" name="funcao" [(ngModel)]="usuario.funcao" /><br />
+    <label for="senha">Senha:</label>
+    <input id="senha" name="senha" type="password" [(ngModel)]="usuario.senha" /><br />
 
-  <label for="departamento">Departamento:</label>
-  <input id="departamento" name="departamento" [(ngModel)]="usuario.departamento" /><br />
+    <label for="funcao">Função:</label>
+    <input id="funcao" name="funcao" [(ngModel)]="usuario.funcao" /><br />
 
-  <button type="submit">Cadastrar</button>
-  <button type="button" (click)="voltar()">Voltar</button>
-</form>
+    <label for="departamento">Departamento:</label>
+    <input id="departamento" name="departamento" [(ngModel)]="usuario.departamento" /><br />
+
+    <button type="submit">Cadastrar</button>
+    <button type="button" (click)="voltar()">Voltar</button>
+  </form>
+

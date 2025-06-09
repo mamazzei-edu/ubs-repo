@@ -1,21 +1,27 @@
-<div class="container">
+<div class="upload-form">
 
-  <form [formGroup]="form" enctype="multipart/form-data" (ngSubmit)="submitForm()">
-    <div class="form-group">
-      <label for="ficha">Arquivo PDF:</label>
-      <input formControlName="ficha" type="file" id="ficha" name="ficha" (change)="uploadFile($event)">
-    </div>
+  <label class="form-label">Upload de Ficha</label>
 
-    <div class="form-group">
-      <button>Transferir arquivo</button>
-    </div>
-  </form>
+  <div class="file-drop-area"
+       (dragover)="onDragOver($event)"
+       (drop)="onDrop($event)"
+       (click)="fileInput.click()">
 
-  <!-- Edição do Paciente -->
-  <div *ngIf="pacienteSelecionado" class="card mt-4">
-    <div class="card-header bg-info text-white">
-      <h5 class="mb-0">Editar Paciente</h5>
-    </div>
+    <!-- Texto que só aparece se não tiver arquivo -->
+    <p *ngIf="!file">Arraste e solte seu arquivo aqui ou clique para selecionar</p>
+    <!-- Nome do arquivo só aparece se tiver arquivo -->
+    <p *ngIf="file">Arquivo selecionado: {{ file.name }}</p>
+
+    <input type="file" #fileInput hidden (change)="uploadFile($event)">
+  </div>
+
+  <button class="btn-upload" (click)="submitForm()" [disabled]="!file">Enviar</button>
+
+  <p *ngIf="mensagem">{{ mensagem }}</p>
+
+  <!-- ÁREA DE EDIÇÃO: aparece só após carregar o arquivo e receber os dados -->
+  <div *ngIf="mostrarModalEditar" class="editar-ficha">
+    <h3>Editar Dados da Ficha</h3>
 
     <div class="card-body">
 
@@ -130,5 +136,5 @@
     <div class="card-footer">
       <button class="btn btn-success me-2" (click)="gravar(pacienteSelecionado)">Salvar</button>
     </div>
-  </div>
-</div>
+  
+
