@@ -1,5 +1,7 @@
 package br.sp.gov.fatec.ubs.backend.model;
 
-public interface UsuarioRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
 }
