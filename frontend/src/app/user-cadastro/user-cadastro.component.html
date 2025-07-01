@@ -1,19 +1,15 @@
-<button class="btn btn-secondary">Cadastrar novo usuario</button>
+<button class="btn btn-secondary" (click)="abrirModalCadastro()">Cadastrar novo usuario</button>
 
 <div class="container mt-4">
   <!-- Campo de pesquisa -->
   <div class="row mb-3">
     <div class="col-md-9">
-      <input
-        type="text"
-        class="form-control"
-        [(ngModel)]="pesquisaId"
-        placeholder="Pesquisar paciente por código" />
+      <input type="text" class="form-control" [(ngModel)]="pesquisaId" placeholder="Pesquisar paciente por código" />
     </div>
     <div class="col-md-3 text-end">
       <button class="btn btn-success w-100" (click)="pesquisarUsuarioPorId()">
         <i class="bi bi-search"></i> Pesquisar
-      </button> 
+      </button>
     </div>
   </div>
 
@@ -26,7 +22,7 @@
       <table class="table table-striped table-hover">
         <thead class="table-primary">
           <tr>
-            <th>Código</th>
+            <th>Matricula</th>
             <th>Nome</th>
             <th>Email</th>
             <th>Ações</th>
@@ -34,18 +30,14 @@
         </thead>
         <tbody>
           <tr *ngFor="let usuario of usuarios">
-            <td>{{ usuario.id }}</td>
+            <td>{{ usuario.matricula }}</td>
             <td>{{ usuario.nomeCompleto }}</td>
             <td>{{ usuario.email }}</td>
             <td>
-              <button
-                class="btn btn-primary btn-sm me-2"
-                (click)="abrirModalEditar(usuario)">
+              <button class="btn btn-primary btn-sm me-2" (click)="abrirModalEditar(usuario)">
                 <i class="bi bi-pencil"></i> Editar
               </button>
-              <button
-                class="btn btn-danger btn-sm"
-                (click)="excluirUsuario(usuario.id)">
+              <button class="btn btn-danger btn-sm" (click)="excluirUsuario(usuario.id)">
                 <i class="bi bi-trash"></i> Excluir
               </button>
             </td>
@@ -58,4 +50,98 @@
         </tbody>
       </table>
     </div>
+
+    <!-- Modal Editar -->
+    <div class="modal fade show d-block" *ngIf="mostrarModalEditar" tabindex="-1"
+      style="background-color: rgba(0, 0, 0, 0.5);">
+      <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header bg-warning text-white">
+            <h5 class="modal-title">Editar Paciente</h5>
+            <button type="button" class="btn-close" (click)="fecharModal()"></button>
+          </div>
+          <div class="modal-body">
+            <form (ngSubmit)="atualizarUsuario()" #form="ngForm">
+              <div class="row g-3">
+                <div class="col-md-12">
+                  <label for="id">Código:</label>
+                  <input id="id" type="text" [(ngModel)]="usuarioSelecionado.id" name="id" disabled
+                    class="form-control text-muted" />
+                </div>
+
+                <div class="col-md-12">
+                  <label for="nomeCompleto">Nome Completo:</label>
+                  <input id="nomeCompleto" type="text" [(ngModel)]="usuarioSelecionado.nomeCompleto" name="nomeCompleto"
+                    class="form-control" />
+                </div>
+
+                <div class="col-md-12">
+                  <label for="email">Email:</label>
+                  <input id="email" type="text" [(ngModel)]="usuarioSelecionado.email" name="email"
+                    class="form-control" />
+                </div>
+                <button type="submit" class="btn btn-warning mt-4 w-100">Salvar Alterações</button>
+              </div>
+            </form>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+        <!-- Modal Cadastro -->
+    <div class="modal fade show d-block" *ngIf="mostrarModalCadastro" tabindex="-1"
+      style="background-color: rgba(0, 0, 0, 0.5);">
+      <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header bg-warning text-white">
+            <h5 class="modal-title">Cadastrar Paciente</h5>
+            <button type="button" class="btn-close" (click)="fecharModal()"></button>
+          </div>
+          <div class="modal-body">
+            <form (ngSubmit)="salvarUsuario()" #form="ngForm">
+              <div class="row g-3">
+                
+                <div class="col-md-12">
+                  <label for="matricula">Matricula</label>
+                  <input id="matricula" type="text" [(ngModel)]="matricula" name="matricula"
+                    class="form-control" />
+                </div>
+                
+                <div class="col-md-12">
+                  <label for="nomeCompleto">Nome Completo:</label>
+                  <input id="nomeCompleto" type="text" [(ngModel)]="nomeCompleto" name="nomeCompleto"
+                    class="form-control" />
+                </div>
+
+                <div class="col-md-12">
+                  <label for="email">Email:</label>
+                  <input id="email" type="text" [(ngModel)]="email" name="email"
+                    class="form-control" />
+                </div>
+
+                <div class="col-md-12">
+                  <label for="nomeUsuario">Nome do usuário:</label>
+                  <input id="nomeUsuario" type="text" [(ngModel)]="nomeUsuario" name="nomeUsuario"
+                    class="form-control" />
+                </div>
+                
+                <div class="col-md-12">
+                  <label for="senha">Senha:</label>
+                  <input id="senha" type="text" [(ngModel)]="senha" name="senha"
+                    class="form-control" />
+                </div>
+                
+                <button type="submit" class="btn btn-warning mt-4 w-100">Salvar Alterações</button>
+              </div>
+            </form>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
   </div>
+</div>

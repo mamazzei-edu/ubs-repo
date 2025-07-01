@@ -16,7 +16,14 @@ export class UserCadastroComponent implements OnInit {
   mensagem: string = '';
   pesquisaId: string = '';
   usuarioSelecionado: any = null;
-    mostrarModalEditar: boolean = false;
+  mostrarModalEditar: boolean = false;
+  mostrarModalCadastro: boolean = false;
+
+  nomeCompleto: string = '';
+  matricula: string = '';
+  email: string = '';
+  nomeUsuario: string = '';
+  senha: string = '';
   
   constructor(private usuarioservice : UserService){}
   
@@ -71,12 +78,17 @@ export class UserCadastroComponent implements OnInit {
     this.mostrarModalEditar = true;
   }
 
+  abrirModalCadastro() : void{
+    this.mostrarModalCadastro = true;
+  }
+
   fecharModal(): void {
+    this.mostrarModalCadastro = false;
     this.mostrarModalEditar = false;
     this.usuarioSelecionado = null;
   }
 
-  atualizarPaciente(): void {
+  atualizarUsuario(): void {
     this.usuarioservice.editarUsuario(this.usuarioSelecionado.id, this.usuarioSelecionado).subscribe({
       next: () => {
         this.fecharModal();
@@ -86,6 +98,27 @@ export class UserCadastroComponent implements OnInit {
         this.mensagem = 'Erro ao atualizar usuario.';
       }
     });
+  }
+
+  salvarUsuario(){
+    const usuario = {
+      nomeCompleto: this.nomeCompleto,
+      matricula: this.matricula,
+      email: this.email,
+      nomeUsuario: this.nomeUsuario,
+      senha: this.senha
+    };
+
+    this.usuarioservice.criarUsuario(usuario).subscribe({
+      next: () => {
+        alert('Usuário cadastrado!');
+        window.location.reload();
+      },
+      error: () => {
+        alert('deu erro ao tentar cadastrar usuário');
+      }
+    });
+
   }
 
 }
