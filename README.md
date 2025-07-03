@@ -1,5 +1,6 @@
 ## Grupos turma 2024
 
+
 ## Grupo 1 - devel-a
 - Kaic
 - Gabriel Passos
@@ -8,6 +9,7 @@
 - Rafael
 - Gabriel Guillen
 - Pedro
+
 
 ## Grupo 2 - devel-b
 - Natália
@@ -18,4 +20,15 @@
 - Arthur
 - Enrico
 
+
+## Grupo turma 2025 - devel-c
+- Caio
+- Caua
+- Diogo
+- Gabriel Braga
+- Gabriel Paulino
+- Raul
+- Samuel
+- Vinycius
+- Vitor
 
