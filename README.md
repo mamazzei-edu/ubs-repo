@@ -1,4 +1,4 @@
-## Grupos para o sprint
+## Grupos turma 2024
 
 ## Grupo 1 - devel-a
 - Kaic
