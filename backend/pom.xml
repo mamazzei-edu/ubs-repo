@@ -75,10 +75,10 @@
 		</dependency>
 		
 		<!-- Spring Security Core -->
+		<!-- ... other dependency elements ... -->
 		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-core</artifactId>
-			<version>6.4.5</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 		
 		<!-- Auth0 Java JWT (opcional, pode remover se for usar só jjwt) -->
@@ -110,7 +110,7 @@
 		</dependency>
 		
 	</dependencies>
-	
+
 	<build>
 		<plugins>
 			<plugin>
