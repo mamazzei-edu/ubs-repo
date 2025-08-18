@@ -1,16 +1,13 @@
-export class User{
+export class User {
+  usuarioSelecionado?: User;
 
-      usuarioSelecionado?: User;
+  public matricula: string = '';
+  public email: string = '';
+  public senha: string = '';
+  public funcao: string = '';
+    id: any;
 
-    public nomeCompleto: string = ''; 
-    public matricula : string = '';
-    public userName : string = '';
-    public senha: string = '';
-    public email : string = ' ';
-    public cpf : string ='';
-    
-
-    constructor(init?: Partial<User>) {
-    Object.assign(this, init); 
+  constructor(init?: Partial<User>) {
+    Object.assign(this, init);
   }
-    }
+}

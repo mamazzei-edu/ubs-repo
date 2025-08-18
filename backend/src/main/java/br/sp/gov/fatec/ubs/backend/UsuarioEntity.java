@@ -1,6 +1,5 @@
 package br.sp.gov.fatec.ubs.backend;
 
-
 import jakarta.persistence.*;
 
 @Entity
@@ -9,37 +8,28 @@ public class UsuarioEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
-    private String nomeCompleto;
-
+    @Column(nullable = false, length = 50)
     private String matricula;
 
-    @Column(unique = true)
+    @Column(nullable = false, unique = true, length = 150)
     private String email;
-    private String cpf;
 
-
-    @Column(unique = true)
-    private String username;
-
+    @Column(nullable = false, length = 255)
     private String senha;
 
+    @Column(nullable = false, length = 50)
+    private String funcao;
+
     // Getters e Setters
-    public int getId() {
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getNomeCompleto() {
-        return nomeCompleto;
-    }
-
-    public void setNomeCompleto(String nomeCompleto) {
-        this.nomeCompleto = nomeCompleto;
     }
 
     public String getMatricula() {
@@ -58,14 +48,6 @@ public class UsuarioEntity {
         this.email = email;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     public String getSenha() {
         return senha;
     }
@@ -73,11 +55,12 @@ public class UsuarioEntity {
     public void setSenha(String senha) {
         this.senha = senha;
     }
-        public String getCpf() {
-        return cpf;
+
+    public String getFuncao() {
+        return funcao;
     }
 
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
+    public void setFuncao(String funcao) {
+        this.funcao = funcao;
     }
 }

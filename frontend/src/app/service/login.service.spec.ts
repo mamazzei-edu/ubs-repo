@@ -6,7 +6,7 @@ import { User } from '../model/user.model';
 
 
 describe('LoginService', () => {
-  let service: LoginService;
+  let service: AuthService;
   let httpMock: HttpTestingController;
 
   beforeEach(() => {

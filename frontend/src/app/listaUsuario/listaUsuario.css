@@ -1,0 +1,118 @@
+/* Container principal */
+.container {
+  max-width: 900px;
+  margin: 20px auto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Mensagem de alerta */
+.alert {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+/* Card geral */
+.card {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+  border: none;
+}
+
+/* Cabeçalho do card */
+.card-header {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+/* Tabela */
+table.table {
+  margin-bottom: 0;
+}
+
+table.table th, table.table td {
+  vertical-align: middle;
+  text-align: center;
+  padding: 12px 10px;
+}
+
+table.table tbody tr:hover {
+  background-color: #f1f1f1;
+  cursor: pointer;
+}
+
+/* Botões */
+.btn {
+  min-width: 70px;
+  font-size: 0.85rem;
+  transition: background-color 0.3s ease;
+}
+
+.btn-warning {
+  background-color: #ffc107;
+  border: none;
+  color: #212529;
+}
+
+.btn-warning:hover {
+  background-color: #e0a800;
+  color: #212529;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  border: none;
+}
+
+.btn-danger:hover {
+  background-color: #b02a37;
+}
+
+.btn-success {
+  background-color: #198754;
+  border: none;
+}
+
+.btn-success:hover {
+  background-color: #146c43;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  border: none;
+}
+
+.btn-secondary:hover {
+  background-color: #565e64;
+}
+
+/* Espaçamento dos botões */
+.me-2 {
+  margin-right: 0.5rem !important;
+}
+
+/* Formulário de edição */
+.card-body input.form-control,
+.card-body select.form-control {
+  border-radius: 4px;
+  border: 1px solid #ced4da;
+  padding: 8px 10px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.card-body input.form-control:focus,
+.card-body select.form-control:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 5px rgba(13, 110, 253, 0.5);
+  outline: none;
+}
+
+/* Rodapé do card */
+.card-footer {
+  background-color: #f8f9fa;
+  padding: 12px 20px;
+  border-top: 1px solid #dee2e6;
+  text-align: right;
+  border-radius: 0 0 6px 6px;
+}
