@@ -1,0 +1,67 @@
+<div class="container mt-4">
+  <div class="alert alert-warning" *ngIf="mensagem">{{ mensagem }}</div>
+
+  <div class="card">
+    <div class="card-header bg-primary text-white">
+      <h5 class="mb-0">Lista de Usuários</h5>
+    </div>
+    <div class="card-body">
+      <table class="table table-striped table-hover">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Matrícula</th>
+            <th>Email</th>
+            <th>Função</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let usuario of usuarios">
+            <td>{{ usuario.id || '-' }}</td>
+            <td>{{ usuario.matricula || 'Não informado' }}</td>
+            <td>{{ usuario.email || 'Não informado' }}</td>
+            <td>{{ usuario.funcao || 'Não informado' }}</td>
+            <td>
+              <button class="btn btn-warning btn-sm me-2" *ngIf="usuario.id" (click)="editar(usuario)">Editar</button>
+              <button class="btn btn-danger btn-sm" *ngIf="usuario.id" (click)="remover(usuario.id)">Remover</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Edição do Usuário -->
+  <div *ngIf="usuarioSelecionado" class="card mt-4">
+    <div class="card-header bg-info text-white">
+      <h5 class="mb-0">Editar Usuário</h5>
+    </div>
+    <div class="card-body">
+      <div class="mb-3">
+        <label class="form-label">Matrícula</label>
+        <input class="form-control" [(ngModel)]="usuarioSelecionado.matricula" required />
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input class="form-control" type="email" [(ngModel)]="usuarioSelecionado.email" required />
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Alterar Senha</label>
+        <input class="form-control" type="password" [(ngModel)]="novaSenha" placeholder="Digite a nova senha" />
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Função</label>
+        <input class="form-control" [(ngModel)]="usuarioSelecionado.funcao" required />
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <button class="btn btn-success me-2" (click)="salvarEdicao()">Salvar</button>
+      <button class="btn btn-secondary" (click)="cancelarEdicao()">Cancelar</button>
+    </div>
+  </div>
+</div>
