@@ -21,20 +21,20 @@ a {
 
 /* Hero Section */
 section.bg-primary {
-  background-color: #50bfad;
+  background-color: #50bfad !important; /* Adicionado !important aqui */
   padding: 50px 0;
 }
 
 section.bg-primary h1 {
   font-size: 3rem;
   margin-bottom: 20px;
-  color: #004646;
+  color: #004646 !important; /* Adicionado !important aqui */
 }
 
 section.bg-primary .lead {
   font-size: 1.25rem;
+  color: #004646 !important; /* Adicionado !important aqui */
 }
-
 section.bg-primary .container {
   text-align: center;
 }
@@ -126,4 +126,46 @@ footer a {
 
 footer a:hover {
   color: #50bfad;
+}
+
+/* Força a cor de fundo para a barra de navegação */
+nav.bg-primary {
+  background-color: #50BFAD !important;
+}
+
+/* Força a cor do texto para o menu da navegação */
+nav.nav-dark .nav-link,
+nav.nav-dark .navbar-brand {
+  color: #ffffff !important;
+}
+
+/* Altera a cor do texto para branco no título principal e na descrição */
+section.bg-primary h1,
+section.bg-primary .lead {
+  color: #ffffff !important;
+}
+
+/* Altera a cor do texto para branco na barra de navegação */
+nav.nav-dark .nav-link,
+nav.nav-dark .navbar-brand {
+  color: #ffffff !important;
+}
+
+/* Mantenha esta regra para a cor de fundo da navegação */
+nav.bg-primary {
+  background-color: #50BFAD !important;
+}
+
+/* Regras para o link que está ativo */
+.nav-link.active {
+  background-color: #004646 !important; /* Muda o fundo do link ativo para o verde */
+  color: #ffffff !important;           /* Garante que o texto fique branco */
+  border-color: transparent !important; /* Remove a borda azul se houver */
+}
+
+/* Regras para o link ao passar o mouse */
+.nav-link:hover {
+  background-color: #004646 !important; /* Muda o fundo do link ao passar o mouse */
+  color: #ffffff !important;           /* Garante que o texto fique branco */
+  border-color: transparent !important; /* Remove a borda azul se houver */
 }
