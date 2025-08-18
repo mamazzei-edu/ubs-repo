@@ -10,14 +10,14 @@ form {
 
 h2 {
   text-align: center;
-  color: #333;
+  color: #004646;
 }
 
 label {
   display: block;
   margin-top: 15px;
   font-weight: bold;
-  color: #444;
+  color: #004646;
 }
 
 input {
@@ -40,7 +40,7 @@ button {
 }
 
 button[type="submit"] {
-  background-color: #28a745;
+  background-color: #50BFAD;
   color: white;
   margin-right: 4%;
 }
@@ -53,6 +53,11 @@ button[type="button"] {
 button:hover {
   opacity: 0.9;
 }
+
+button[type="submit"]:hover {
+  background-color: #004646; /* Cor de "Texto" no hover */
+}
+
 
 div[style*="color: red;"] {
   margin-bottom: 15px;
