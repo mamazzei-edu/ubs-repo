@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-cadastro-usuario',
+  selector: 'app-login-usuario',
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './login.component.html',
@@ -14,7 +14,7 @@ import { FormsModule } from '@angular/forms';
 export class LoginComponent {
   usuario = {
     email: '',
-    senha: '',
+    senha: ''
   };
 
   errorMessage = '';
@@ -22,7 +22,7 @@ export class LoginComponent {
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  loginComponent() {
+  login() {
     this.errorMessage = '';
 
     // ✅ Validação simples no frontend
@@ -38,13 +38,13 @@ export class LoginComponent {
         this.router.navigate(['/']);
       },
       error: err => {
-        console.error('Erro ao cadastrar:', err);
+        console.error('Erro ao efetuar login:', err);
         if (err.status === 400) {
           this.errorMessage = err.error?.message || 'Dados inválidos.';
         } else if (err.status === 409) {
-          this.errorMessage = 'Este e-mail já está cadastrado.';
+          this.errorMessage = 'Erro 1 de login.';
         } else {
-          this.errorMessage = 'Erro ao cadastrar usuário. Tente novamente.';
+          this.errorMessage = 'Erro efetuar o login. Tente novamente.';
         }
       },
       complete: () => {
