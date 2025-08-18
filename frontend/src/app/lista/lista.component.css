@@ -20,7 +20,7 @@
   align-items: center;
   justify-content: center;
   font-weight: bold;
-  background-color: #25405e;
+  background-color: #50BFAD;
   border: none;
   border-radius: 0.5rem;
   transition: background-color 0.3s ease;
@@ -29,7 +29,7 @@
 }
 
 .row .btn-success:hover {
-  background-color: #1d3042;
+  background-color: #004646;
 }
 
 /* Alerta de mensagem */
