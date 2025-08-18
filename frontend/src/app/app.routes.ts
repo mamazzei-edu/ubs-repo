@@ -14,6 +14,9 @@ export const routes: Routes = [
   },
   { path: 'lista', component: ListaComponent },
   { path: 'upload', component: UploadComponent },
-  { path: 'login', component: LoginComponent },
+  { path: 'login',
+loadComponent: () =>
+import('./login/login.component')
+.then(m => m.LoginComponent) },
   { path: '', redirectTo: '/login', pathMatch: 'full' }
 ];

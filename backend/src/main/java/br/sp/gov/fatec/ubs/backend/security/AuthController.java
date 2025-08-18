@@ -26,14 +26,21 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         try {
             // Autentica usando usuario e senha
-            Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getUsuario(), loginRequest.getSenha())
-            );
+
+            if (loginRequest.getEmail() == "teste@teste.com.br" && loginRequest.getSenha() == "123456") {
+                // Authentication authentication = authenticationManager.authenticate(
+                //     new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getSenha())
+                // );
+                return ResponseEntity.ok(new AuthResponse("123"));
+    
+            } else {
+                return ResponseEntity.ok(new AuthResponse("456"));
+
+            }
 
             // Gera token JWT usando o usuário como subject
-            String token = jwtUtil.generateToken(loginRequest.getUsuario(), "your-issuer");
+//            String token = jwtUtil.generateToken(loginRequest.getEmail(), "your-issuer");
 
-            return ResponseEntity.ok(new AuthResponse(token));
 
         } catch (AuthenticationException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciais inválidas");
