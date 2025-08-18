@@ -29,9 +29,13 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable()) // Disable CSRF for simpler example, consider enabling in production
             .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Enable CORS and provide a source
             .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/**").permitAll() // Example public endpoints
+                .requestMatchers("/login").permitAll() // Example public endpoints
                 .anyRequest().authenticated() // All other requests require authentication
-            );
+            )
+            .formLogin(form -> form
+            .loginPage("/login") // Diz ao Spring qual é a sua página de login
+            .permitAll()         // Garante que a lógica de login do Spring seja permitida
+        );
         return http.build();
     }
 

@@ -3,10 +3,12 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 
 import { AuthService } from '../service/auth.service';
 import { User } from '../model/user.model';
+import { LoginService } from '../service/login.service';
 
 
 describe('LoginService', () => {
   let service: LoginService;
+  let authservice: AuthService;
   let httpMock: HttpTestingController;
 
   beforeEach(() => {
@@ -15,7 +17,7 @@ describe('LoginService', () => {
       providers: [AuthService]
     });
 
-    service = TestBed.inject(AuthService);
+    authservice = TestBed.inject(AuthService);
     httpMock = TestBed.inject(HttpTestingController);
   });
 
