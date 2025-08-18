@@ -1,0 +1,16 @@
+<form (ngSubmit)="loginComponent()">
+  <h2>Login de Usuário</h2>
+
+  <div *ngIf="errorMessage" style="color: red;">
+    {{ errorMessage }}
+  </div>
+
+  <label for="email">Email:</label>
+  <input id="email" name="email" type="email" [(ngModel)]="usuario.email" /><br />
+
+  <label for="senha">Senha:</label>
+  <input id="senha" name="senha" type="password" [(ngModel)]="usuario.senha" /><br />
+
+  <button type="submit">Login</button>
+  <button type="button" (click)="voltar()">Voltar</button>
+</form>

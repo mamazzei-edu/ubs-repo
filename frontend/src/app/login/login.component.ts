@@ -8,18 +8,13 @@ import { FormsModule } from '@angular/forms';
   selector: 'app-cadastro-usuario',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './cadastrousuario.component.html',
-  styleUrls: ['./cadastrousuario.component.css']
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css']
 })
-export class CadastroUsuarioComponent {
+export class LoginComponent {
   usuario = {
-    matricula: '',
-    nomeCompleto: '',
     email: '',
     senha: '',
-    funcao: '',
-    departamento: '',
-    username: ''
   };
 
   errorMessage = '';
@@ -27,20 +22,20 @@ export class CadastroUsuarioComponent {
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  cadastroUsuario() {
+  loginComponent() {
     this.errorMessage = '';
 
     // ✅ Validação simples no frontend
-    if (!this.usuario.nomeCompleto || !this.usuario.email || !this.usuario.senha) {
+    if ( !this.usuario.email || !this.usuario.senha) {
       this.errorMessage = 'Preencha todos os campos obrigatórios.';
       return;
     }
 
     this.loading = true;
-    this.http.post('http://localhost:8090/api/usuarios', this.usuario).subscribe({
+    this.http.post('http://localhost:8090/login', this.usuario).subscribe({
       next: () => {
-        alert('Usuário cadastrado com sucesso!');
-        this.router.navigate(['/login']);
+        alert('Usuário logado com sucesso!');
+        this.router.navigate(['/']);
       },
       error: err => {
         console.error('Erro ao cadastrar:', err);

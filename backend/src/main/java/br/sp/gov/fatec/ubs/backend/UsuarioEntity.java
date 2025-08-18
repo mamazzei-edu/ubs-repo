@@ -13,6 +13,9 @@ public class UsuarioEntity {
     @Column(nullable = false, length = 50)
     private String matricula;
 
+    @Column(nullable = false, length = 100)
+    private String nomeCompleto;
+
     @Column(nullable = false, unique = true, length = 150)
     private String email;
 
@@ -21,6 +24,9 @@ public class UsuarioEntity {
 
     @Column(nullable = false, length = 50)
     private String funcao;
+
+    @Column(nullable = false, length =50)
+    private String username;
 
     // Getters e Setters
 
@@ -63,4 +69,22 @@ public class UsuarioEntity {
     public void setFuncao(String funcao) {
         this.funcao = funcao;
     }
+
+    public String getNomeCompleto() {
+        return nomeCompleto;
+    }
+
+    public void setNomeCompleto(String nomeCompleto) {
+        this.nomeCompleto = nomeCompleto;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    
 }

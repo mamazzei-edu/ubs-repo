@@ -1,25 +1,25 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { CadastroUsuarioComponent} from './cadastroUsuario.component';
+import { LoginComponent} from './login.component';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
-describe('CadastroUsuarioComponent', () => {
-  let component: CadastroUsuarioComponent;
-  let fixture: ComponentFixture<CadastroUsuarioComponent>;
+describe('LoginComponent', () => {
+  let component:LoginComponent;
+  let fixture: ComponentFixture<LoginComponent>;
   let httpMock: HttpTestingController;
   let routerSpy = { navigate: jasmine.createSpy('navigate') };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [FormsModule, HttpClientTestingModule],
-      declarations: [CadastroUsuarioComponent],
+      declarations: [LoginComponent],
       providers: [{ provide: Router, useValue: routerSpy }]
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CadastroUsuarioComponent);
+    fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
     httpMock = TestBed.inject(HttpTestingController);
     fixture.detectChanges();
@@ -35,18 +35,12 @@ describe('CadastroUsuarioComponent', () => {
 
   it('should call cadastroUsuario and navigate on success', () => {
     component.usuario = {
-      nomeCompleto: 'Usuário Teste',
-      matricula: '090909',
       email: 'test@example.com',
-      senha: '123456',
-      funcao: 'ADMIN',
-      departamento: 'Administração',
-      username: 'Username'
-    
+      senha: '123456'    
     };
-    component.cadastroUsuario();
+    component.loginComponent();
 
-    const req = httpMock.expectOne('http://localhost:8090/api/usuarios');
+    const req = httpMock.expectOne('http://localhost:8090/login');
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toEqual(component.usuario);
 
@@ -57,17 +51,12 @@ describe('CadastroUsuarioComponent', () => {
 
   it('should set errorMessage on cadastro error', () => {
     component.usuario = {
-      nomeCompleto: 'Usuário Teste',
-      matricula: '090909',
       email: 'test@example.com',
-      senha: '123456',
-      funcao: 'ADMIN',
-      departamento: 'Administração',
-      username: 'Username'
+      senha: '123456'
     };
-    component.cadastroUsuario();
+    component.loginComponent();
 
-    const req = httpMock.expectOne('http://localhost:8090/api/usuarios');
+    const req = httpMock.expectOne('http://localhost:8090/login');
     req.flush('Erro de servidor', { status: 500, statusText: 'Server Error' });
 
     expect(component.errorMessage).toBe('Erro ao cadastrar usuário!');
