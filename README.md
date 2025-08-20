@@ -1,4 +1,5 @@
-## Grupos para o sprint
+## Grupos turma 2024
+
 
 ## Grupo 1 - devel-a
 - Kaic
@@ -9,6 +10,7 @@
 - Gabriel Guillen
 - Pedro
 
+
 ## Grupo 2 - devel-b
 - Natália
 - Isabella
@@ -18,4 +20,15 @@
 - Arthur
 - Enrico
 
+
+## Grupo turma 2025 - devel-c
+- Caio
+- Caua
+- Diogo
+- Gabriel Braga
+- Gabriel Paulino
+- Raul
+- Samuel
+- Vinycius
+- Vitor
 
