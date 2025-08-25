@@ -10,7 +10,7 @@
 }
 
 .file-drop-area {
-  border: 2px dashed #007bff;
+  border: 2px dashed #004646;
   border-radius: 0.75rem;
   padding: 2rem;
   text-align: center;
@@ -23,7 +23,7 @@
 
 .file-drop-area:hover {
   background-color: #e9f2ff;
-  border-color: #0056b3;
+  border-color: #004646;
 }
 
 .btn-upload {
@@ -32,7 +32,7 @@
   font-size: 1rem;
   font-weight: 600;
   color: #fff;
-  background-color: #007bff;
+  background-color: #004646;
   border: none;
   border-radius: 0.5rem;
   cursor: pointer;
@@ -40,7 +40,7 @@
 }
 
 .btn-upload:hover {
-  background-color: #0056b3;
+  
   transform: scale(1.01);
 }
 

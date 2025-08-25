@@ -102,3 +102,7 @@
 .table-striped .btn-danger:hover {
   background-color: #bd2130;
 }
+
+.bg-custom-teal {
+  background-color: #004646;
+}

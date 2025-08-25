@@ -28,7 +28,7 @@
 
 .navbar-nav .nav-link:hover {
     color: #ffcc00; 
-    background-color: #0066cc; /* Azul mais suave ao passar o mouse */
+    background-color: #50BFAD !important; /* Azul mais suave ao passar o mouse */
 }
 
 .navbar-nav .nav-link.active {
@@ -72,7 +72,7 @@
 
 .container .list-inline-item a {
     text-decoration: none; /* Remove o sublinhado */
-    color: #0056b3; /* Azul mais forte */
+    color: #004646; /* Azul mais forte */
     font-weight: bold;
     padding: 10px 20px; /* Espaçamento interno */
     border-radius: 20px; /* Bordas arredondadas */
@@ -81,7 +81,7 @@
 
 .container .list-inline-item a:hover {
     color: white;
-    background-color: #0066cc; /* Azul suave */
+    background-color:  #004646; /* Azul suave */
 }
 
 /* Estilos para o conteúdo da página */

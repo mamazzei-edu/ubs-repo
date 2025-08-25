@@ -21,7 +21,7 @@ a {
 
 /* Hero Section */
 section.bg-primary {
-  background-color: #50bfad !important; /* Adicionado !important aqui */
+  background-color: #004646 !important; /* Adicionado !important aqui */
   padding: 50px 0;
 }
 
@@ -72,8 +72,8 @@ section.py-5 {
 }
 
 .btn-primary {
-  background-color: #50bfad;
-  border-color: #50bfad;
+  background-color: #004646;
+  border-color: #004646;
   padding: 10px 20px;
   border-radius: 5px;
   transition: background-color 0.3s ease;
@@ -97,7 +97,7 @@ section.py-5 {
 
 /* Footer */
 footer {
-  background-color: #343a40;
+  background-color: #004646;
   color: #ffffff;
   padding: 30px 0;
 }
@@ -153,7 +153,7 @@ nav.nav-dark .navbar-brand {
 
 /* Mantenha esta regra para a cor de fundo da navegação */
 nav.bg-primary {
-  background-color: #50BFAD !important;
+  background-color: #004646 !important;
 }
 
 /* Regras para o link que está ativo */
