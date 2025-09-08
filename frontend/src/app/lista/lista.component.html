@@ -17,19 +17,19 @@
 
   <!-- Tabela de resultados -->
   <div class="card">
-    <div class="card-header bg-success text-white">
+    <div class="card-header text-white" style="background-color: #45a897;">
       <h5 class="mb-0">Pacientes</h5>
-    </div>
-    <div class="card-body">
+    </div>    
+    <div class="card-body" >
       <table class="table table-striped table-hover">
-        <thead class="table-primary">
+        <thead style="background-color: #50BFAD !important; color: white !important;">
           <tr>
             <th>Código</th>
             <th>Nome</th>
             <th>Documento</th>
             <th>Ações</th>
           </tr>
-        </thead>
+        </thead>        
         <tbody>
           <tr *ngFor="let paciente of pacientes">
             <td>{{ paciente.id }}</td>
