@@ -1,12 +1,67 @@
-<div class="container">
-  <!-- Navegação -->
-  <div class="mt-5" style="display: flex; justify-content: center;">
-    <a routerLink="/lista" class="btn btn-outline-info">Ver lista</a>
-    <a routerLink="/cadastro" class="btn btn-outline-success">Cadastro Novo</a>
-    <a routerLink="/upload" class="btn btn-outline-danger">Carregar Ficha</a>
-    <a routerLink="/user-cadastro" class="btn btn-outline-success">Usuários</a>
+<header class="site-header">
+  <div class="site-header__inner">
+ 
+    <a class="brand" routerLink="/">
+      <img src="assets/img1.png" alt="Centro de Saúde Escola" />
+    </a>
+ 
+    <nav class="site-nav">
+      <a routerLink="/lista" routerLinkActive="active">Ver lista</a>
+      <a routerLink="/cadastro" routerLinkActive="active">Cadastro Novo</a>
+      <a routerLink="/upload" routerLinkActive="active">Carregar Ficha</a>
+      <a routerLink="/user-cadastro" routerLinkActive="active">Usuários</a>
+    </nav>
   </div>
-
-  <!-- Área onde o componente correspondente à rota será carregado -->
+</header>
+ 
+<a class="sr-anchor" routerLink="/" routerLinkActive="site-root-active" aria-hidden="true"></a>
+ 
+<div class="container">
+  <div class="image-single-wrapper">
+    <div class="image-single">
+      <img src="assets/img2.png" alt="Imagem principal" />
+    </div>
+  </div>
+ 
   <router-outlet></router-outlet>
+ 
+  <h1>Cuidando da sua saúde com excelência</h1>
+  <p class="lead">
+    Há mais de 90 anos oferecendo serviços de saúde de qualidade para a comunidade,
+    combinando tradição, inovação e cuidado humanizado.
+  </p>
 </div>
+ 
+<footer class="footer">
+  <div class="top-footer">
+    <form class="newsletter" (submit)="$event.preventDefault()">
+      <input type="email" placeholder="Digite seu e-mail" required />
+      <button type="submit"><i class="fas fa-arrow-right"></i></button>
+    </form>
+ 
+    <ul class="menu">
+      <li><a href="#">Features</a></li>
+      <li><a href="#">Blog</a></li>
+      <li><a href="#">Pricing</a></li>
+      <li><a href="#">Services</a></li>
+    </ul>
+ 
+    <div class="socials">
+      <a href="#"><i class="fab fa-twitter"></i></a>
+      <a href="#"><i class="fab fa-instagram"></i></a>
+      <a href="#"><i class="fab fa-facebook-f"></i></a>
+      <a href="#"><i class="fab fa-pinterest-p"></i></a>
+    </div>
+  </div>
+ 
+  <div class="bottom-footer">
+    <ul class="links">
+      <li><a href="#">Terms</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Privacy</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+    <img src="assets/img3.png" alt="brand" style="height:40px;" />
+    <span class="copy">© 2025. All Rights Reserved.</span>
+  </div>
+</footer>

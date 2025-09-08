@@ -2,3 +2,13 @@
   max-height: 70vh;
   overflow-y: auto;
 }
+
+.btn-custom-pesquisar {
+  background-color: #50BFAD;
+  color: white;
+  border: none;
+}
+
+.btn-custom-pesquisar:hover {
+  background-color: #45a897; /* um pouco mais escuro no hover */
+}
