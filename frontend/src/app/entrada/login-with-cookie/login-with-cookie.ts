@@ -7,26 +7,25 @@ import { FormGroup, FormControl, Validators, FormBuilder, FormsModule, ReactiveF
 import { MatLabel } from '@angular/material/form-field';
 import { MatCardContent } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
-import { LoginCliente } from './login-cliente';
+import { LoginClienteCookie } from './login-cliente-cookie';
 import { Router } from '@angular/router';
 
 
-import { LoginService } from './login-service';
-import { LoginResponse } from './login-models';
-import { AuthService } from '../logado/auth-service';
+import { LoginServiceCookie } from './login-service-cookie';
+import { LoginResponseCookie } from './login-models-cookie';
+// import { AuthService } from '../logado/auth-service';
 
 @Component({
-  selector: 'app-login',
+  selector: 'app-login-with-cookie',
   imports: [CommonModule, MatCardModule, MatLabel, MatCardContent, MatFormFieldModule, MatInputModule, FormsModule, ReactiveFormsModule, MatButtonModule],
-  templateUrl: './login.html',
-  styleUrl: './login.scss'
+  templateUrl: './login-with-cookie.html',
+  styleUrl: './login-with-cookie.scss'
 })
-
-export class Login implements OnInit {
-  loginResponse!: LoginResponse | undefined;
-  loginCliente: LoginCliente = LoginCliente.newLoginCliente();
+export class LoginWithCookie {
+  loginResponse!: LoginResponseCookie | undefined;
+  loginCliente: LoginClienteCookie = LoginClienteCookie.newLoginClienteCookie();
   loginForm: FormGroup<{ email: FormControl<string | null>; password: FormControl<string | null>; }>;
-  constructor(private formBuilder: FormBuilder, private loginService: LoginService, private authService: AuthService, private router: Router) {
+  constructor(private formBuilder: FormBuilder, private loginService: LoginServiceCookie, private router: Router) {
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required]
@@ -45,7 +44,7 @@ export class Login implements OnInit {
   }
   onSubmit() {
     this.loginService.logar(this.loginCliente).subscribe({
-      next: (response: LoginResponse | undefined) => {
+      next: (response: LoginResponseCookie | undefined) => {
         if (response === undefined) {
           console.error('Erro na autenticação: Resposta de login não definida');
           return;
@@ -55,20 +54,17 @@ export class Login implements OnInit {
         } else {
           console.log('Login bem-sucedido:', response);
           this.loginResponse = response;
-          this.authService.saveToken(this.loginResponse);
-          if (this.loginResponse.roles.includes('ROLE_SUPER_ADMIN')) {
-            this.router.navigate(['/admin']);
-          } else if (this.loginResponse.roles.includes('ROLE_ADMIN')) {
-            this.router.navigate(['/funcionario']);
-          } else {
-            this.router.navigate(['/cliente']);
-          }
+          // this.authService.saveToken(this.loginResponse);
+          // if (this.loginResponse.roles.includes('ROLE_SUPER_ADMIN')) {
+          //   this.router.navigate(['/admin']);
+          // } else if (this.loginResponse.roles.includes('ROLE_ADMIN')) {
+          //   this.router.navigate(['/funcionario']);
+          // } else {
+          //   this.router.navigate(['/cliente']);
+          // }
         }
       },
       error: erro => console.error('Erro no login:', erro)
     });
   }
-
-
-
 }

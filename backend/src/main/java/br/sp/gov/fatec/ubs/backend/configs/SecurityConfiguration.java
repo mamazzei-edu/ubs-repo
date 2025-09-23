@@ -71,6 +71,7 @@ public class SecurityConfiguration {
 //        configuration.setAllowedOrigins(List.of("*"));
         configuration.setAllowedOriginPatterns(List.of("http://localhost:4200", "https://localhost:4200"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+        configuration.setAllowCredentials(true); // para aceitar os login com cookies
         configuration.setAllowedHeaders(Arrays.asList("authorization", "content-type", "x-auth-token"));
         configuration.setExposedHeaders(List.of("x-auth-token"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

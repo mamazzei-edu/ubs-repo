@@ -1,5 +1,7 @@
 package br.sp.gov.fatec.ubs.backend.controllers;
 
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,6 +13,7 @@ import br.sp.gov.fatec.ubs.backend.dtos.RegisterUserDto;
 import br.sp.gov.fatec.ubs.backend.entities.User;
 import br.sp.gov.fatec.ubs.backend.services.AuthenticationService;
 import br.sp.gov.fatec.ubs.backend.services.JwtService;
+import jakarta.servlet.http.HttpServletResponse;
 
 @RequestMapping("/auth")
 @RestController
@@ -32,7 +35,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> authenticate(@RequestBody LoginUserDto loginUserDto) {
+    public ResponseEntity<LoginResponse> authenticate(@RequestBody LoginUserDto loginUserDto, HttpServletResponse response) {
 //        String valor = loginUserDto.getEmail();
 //        System.out.print("Tentando autenticar com: " + valor);
         User authenticatedUser = authenticationService.authenticate(loginUserDto);
@@ -52,6 +55,18 @@ public class AuthenticationController {
         loginResponse.setRoles(roles);
         loginResponse.setExpiresIn(jwtService.getExpirationTime());
 
+        // Aqui é setado o cookie para a authenticação por cookies
+        ResponseCookie cookie = ResponseCookie.from("jwt", jwtToken)
+                .httpOnly(true)
+                .path("/")
+                .secure(true)
+                .maxAge(jwtService.getExpirationTime())
+                .sameSite("Lax")
+                .build();
+
+        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+
         return ResponseEntity.ok(loginResponse);
     }
+
 }

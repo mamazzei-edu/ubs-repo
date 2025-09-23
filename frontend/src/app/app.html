@@ -1,16 +1,30 @@
 <mat-toolbar color="primary">
   <span>Projeto Base</span>
   <span class="spacer"></span>
-  <a routerLink="/login" *ngIf="! authService.isLoggedIn()">
-    <mat-icon fontIcon="login"></mat-icon>Login</a>
-  <a routerLink="/admin" *ngIf="authService.isSuperAdmin()">
-    <mat-icon fontIcon="settings"></mat-icon>Admin</a>
-  <a routerLink="/funcionario" *ngIf="authService.isAdmin() || authService.isSuperAdmin()">
-    <mat-icon fontIcon="badge"></mat-icon>Funcionário</a>
-  <a routerLink="/cliente" *ngIf="authService.isLoggedIn()">
-    <mat-icon fontIcon="person"></mat-icon>Cliente</a>
-  <a (click)="logout()"  routerLink="/" *ngIf="authService.isLoggedIn()">
-    <mat-icon fontIcon="logout"></mat-icon>Sair
-  </a>
+  @if (! authService.isLoggedIn()) {
+    <a routerLink="/login">
+      <mat-icon fontIcon="login"></mat-icon>Login</a>
+  } @else {
+    @if (authService.isSuperAdmin()){
+      <a routerLink="/admin">
+        <mat-icon fontIcon="settings"></mat-icon>Admin</a>
+      <a routerLink="/funcionario">
+        <mat-icon fontIcon="badge"></mat-icon>Funcionário</a>
+      }
+    @if (authService.isAdmin()) {
+      <a routerLink="/funcionario">
+        <mat-icon fontIcon="badge"></mat-icon>Funcionário</a>
+      }
+    @if (authService.isCliente()) {
+      <a routerLink="/cliente" *ngIf="authService.isLoggedIn()">
+        <mat-icon fontIcon="person"></mat-icon>Cliente</a>
+
+      }
+    <a (click)="logout()" routerLink="/" *ngIf="authService.isLoggedIn()">
+      <mat-icon fontIcon="logout"></mat-icon>Sair
+    </a>
+  }
+
 </mat-toolbar>
+
 <router-outlet></router-outlet>

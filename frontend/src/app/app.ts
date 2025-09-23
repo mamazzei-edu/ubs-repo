@@ -4,11 +4,11 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from './entrada/logado/auth-service';
-import { NgIf } from '@angular/common';
+import { WithCredentialsInterceptor } from './with-credentials-interceptor';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, MatToolbarModule, RouterLink, MatIconModule, NgIf],
+  imports: [RouterOutlet, MatToolbarModule, RouterLink, MatIconModule],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
