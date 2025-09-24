@@ -5,20 +5,19 @@
     <a routerLink="/login">
       <mat-icon fontIcon="login"></mat-icon>Login</a>
   } @else {
-    @if (authService.isSuperAdmin()){
+    @if (authService.getRoles().includes('ROLE_SUPER_ADMIN')){
       <a routerLink="/admin">
         <mat-icon fontIcon="settings"></mat-icon>Admin</a>
       <a routerLink="/funcionario">
         <mat-icon fontIcon="badge"></mat-icon>Funcionário</a>
       }
-    @if (authService.isAdmin()) {
+    @if (authService.getRoles().includes('ROLE_ADMIN')) {
       <a routerLink="/funcionario">
         <mat-icon fontIcon="badge"></mat-icon>Funcionário</a>
       }
-    @if (authService.isCliente()) {
+    @if (authService.getRoles().includes('ROLE_USER')) {
       <a routerLink="/cliente" *ngIf="authService.isLoggedIn()">
         <mat-icon fontIcon="person"></mat-icon>Cliente</a>
-
       }
     <a (click)="logout()" routerLink="/" *ngIf="authService.isLoggedIn()">
       <mat-icon fontIcon="logout"></mat-icon>Sair

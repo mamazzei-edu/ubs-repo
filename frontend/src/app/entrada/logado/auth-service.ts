@@ -40,36 +40,10 @@ export class AuthService {
 
 
   isLoggedIn(): boolean {
-    return localStorage.getItem('jwt_token') !== null;
+    return localStorage.getItem('user_id') !== null;
   }
-
-  isSuperAdmin(): boolean {
-    const roles = localStorage.getItem('user_roles');
-    if (roles) {
-      const rolesArray: string[] = JSON.parse(roles);
-      return rolesArray.includes('ROLE_SUPER_ADMIN');
-    }
-    return false;
-  }
-  
-  isAdmin(): boolean {
-    const roles = localStorage.getItem('user_roles');
-    if (roles) {
-      const rolesArray: string[] = JSON.parse(roles);
-      return rolesArray.includes('ROLE_ADMIN');
-    }
-    return false;
-  }
-
-  isCliente(): boolean {
-    const roles = localStorage.getItem('user_roles');
-    if (roles) {
-      const rolesArray: string[] = JSON.parse(roles);
-      return rolesArray.includes('ROLE_CLIENTE');
-    }
-    return false;
-  }     
-
 
 
 }
+
+
