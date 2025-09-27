@@ -16,12 +16,14 @@
         <mat-icon fontIcon="badge"></mat-icon>Funcionário</a>
       }
     @if (authService.getRoles().includes('ROLE_USER')) {
-      <a routerLink="/cliente" *ngIf="authService.isLoggedIn()">
+      <a routerLink="/cliente">
         <mat-icon fontIcon="person"></mat-icon>Cliente</a>
       }
-    <a (click)="logout()" routerLink="/" *ngIf="authService.isLoggedIn()">
-      <mat-icon fontIcon="logout"></mat-icon>Sair
-    </a>
+    @if (authService.isLoggedIn()) {
+      <a (click)="logout()" routerLink="/">
+        <mat-icon fontIcon="logout"></mat-icon>Sair
+      </a>
+      } 
   }
 
 </mat-toolbar>

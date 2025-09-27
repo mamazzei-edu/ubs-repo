@@ -70,7 +70,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 System.out.println("JWT cookie: " + jwt);
                 filterChain.doFilter(request, response);
             } catch (Exception exception) {
-                handlerExceptionResolver.resolveException(request, response, null, exception);
+                filterChain.doFilter(request, response);
+//                handlerExceptionResolver.resolveException(request, response, null, exception);
             }
 
         } else {

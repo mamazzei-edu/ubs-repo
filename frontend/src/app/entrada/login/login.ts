@@ -49,9 +49,6 @@ export class Login implements OnInit {
         if (response === undefined) {
           console.error('Erro na autenticação: Resposta de login não definida');
           return;
-        } else if (!response.token) {
-          console.error('Erro na autenticação: Token não encontrado na resposta');
-          return;
         } else {
           console.log('Login bem-sucedido:', response);
           this.loginResponse = response;

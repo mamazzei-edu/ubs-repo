@@ -3,15 +3,15 @@ package br.sp.gov.fatec.ubs.backend.services;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import java.security.Key;
-import java.time.Instant;
+
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+
+import javax.crypto.SecretKey;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,12 +19,19 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class JwtService {
-    @Value("${security.jwt.secret-key}")
     private String secretKey;
 
-    @Value("${security.jwt.expiration-time}")
     private long jwtExpiration;
 
+    private SecretKey key;
+
+    public JwtService(@Value("${security.jwt.secret-key}") String secretKey, 
+                      @Value("${security.jwt.expiration-time}") long jwtExpiration) {
+        this.secretKey = secretKey;
+        this.jwtExpiration = jwtExpiration;
+        this.key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
+    }
+   
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
@@ -39,7 +46,7 @@ public class JwtService {
     }
 
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
-        return buildToken(extraClaims, userDetails, jwtExpiration);
+        return buildToken(extraClaims, userDetails);
     }
 
     public long getExpirationTime() {
@@ -48,17 +55,14 @@ public class JwtService {
 
     private String buildToken(
             Map<String, Object> extraClaims,
-            UserDetails userDetails,
-            long expiration
+            UserDetails userDetails
     ) {
-        long now = System.currentTimeMillis();
-        long exp = now + expiration;
         JwtBuilder builder = Jwts.builder();
-        builder.setIssuedAt(new Date(now));
-            builder.setExpiration(new Date(exp));
-            builder.setSubject(userDetails.getUsername());
-            builder.addClaims(extraClaims);
-            builder.signWith(getSignInKey(), SignatureAlgorithm.HS256);
+        builder.issuedAt(new Date());
+            builder.expiration(new Date(System.currentTimeMillis() + jwtExpiration));
+            builder.subject(userDetails.getUsername());
+            builder.claims(extraClaims);
+            builder.signWith(key);
         return builder.compact();
     }
 
@@ -78,15 +82,15 @@ public class JwtService {
     private Claims extractAllClaims(String token) {
         return Jwts
                 .parser()
-                .setSigningKey(getSignInKey())
+                .verifyWith(key)
                 .build()
-                .parseClaimsJws(token)
-                .getBody();
+                .parseSignedClaims(token)
+                .getPayload();
     }
 
-    private Key getSignInKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
-        return Keys.hmacShaKeyFor(keyBytes);
-    }
+    // private Key getSignInKey() {
+    //     byte[] keyBytes = Decoders.BASE64.decode(secretKey);
+    //     return Keys.hmacShaKeyFor(keyBytes);
+    // }
 }
 

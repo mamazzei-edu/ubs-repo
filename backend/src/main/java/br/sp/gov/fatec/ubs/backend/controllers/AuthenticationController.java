@@ -45,7 +45,7 @@ public class AuthenticationController {
         LoginResponse loginResponse = new LoginResponse();
         loginResponse.setCreatedAt(System.currentTimeMillis());
         loginResponse.setUserId(authenticatedUser.getId());
-        loginResponse.setToken(jwtToken);
+//        loginResponse.setToken(jwtToken);
         String[] roles = new String[authenticatedUser.getAuthorities().size()];
         int contador=0;
         for (String roleString : authenticatedUser.getAuthorities().stream().map(auth -> auth.getAuthority()).toList()) {
@@ -53,7 +53,7 @@ public class AuthenticationController {
             contador++; 
         }
         loginResponse.setRoles(roles);
-        loginResponse.setExpiresIn(jwtService.getExpirationTime());
+        loginResponse.setExpiresIn(System.currentTimeMillis() + jwtService.getExpirationTime());
 
         // Aqui é setado o cookie para a authenticação por cookies
         ResponseCookie cookie = ResponseCookie.from("jwt", jwtToken)
@@ -67,6 +67,23 @@ public class AuthenticationController {
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 
         return ResponseEntity.ok(loginResponse);
+    }
+
+
+    @PostMapping("/logout")
+    public ResponseEntity<LoginResponse> logout(HttpServletResponse response) {
+        // Aqui é setado o cookie para a autenticação por cookies
+        ResponseCookie cookie = ResponseCookie.from("jwt", "")
+                .httpOnly(true)
+                .path("/")
+                .secure(true)
+                .maxAge(0)
+                .sameSite("Lax")
+                .build();
+
+        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+
+        return ResponseEntity.ok().build();
     }
 
 }
