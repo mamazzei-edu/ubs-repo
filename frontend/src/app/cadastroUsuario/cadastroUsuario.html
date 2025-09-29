@@ -1,0 +1,31 @@
+<form (ngSubmit)="cadastroUsuario()">
+  <h2 style="color: #004646;">Cadastro de Usuário</h2>
+
+  <div *ngIf="errorMessage" style="color: red;">
+    {{ errorMessage }}
+  </div>
+
+  <label for="matricula" style="color: #004646;">Matrícula:</label>
+  <input id="matricula" name="matricula" [(ngModel)]="usuario.matricula" /><br />
+
+  <label for="nomeCompleto" style="color: #004646;">Nome Completo:</label>
+  <input id="nomeCompleto" name="nomeCompleto" [(ngModel)]="usuario.nomeCompleto" /><br />
+
+  <label for="email" style="color: #004646;">Email:</label>
+  <input id="email" name="email" type="email" [(ngModel)]="usuario.email" /><br />
+
+  <label for="senha" style="color: #004646;">Senha:</label>
+  <input id="senha" name="senha" type="password" [(ngModel)]="usuario.senha" /><br />
+
+  <label for="funcao" style="color: #004646;">Função:</label>
+  <input id="funcao" name="funcao" [(ngModel)]="usuario.funcao" /><br />
+
+  <label for="departamento" style="color: #004646;">Departamento:</label>
+  <input id="departamento" name="departamento" [(ngModel)]="usuario.departamento" /><br />
+
+  <label for="username" style="color: #004646;">Username:</label>
+  <input id="username" name="username" [(ngModel)]="usuario.username" /><br />
+
+  <button type="submit">Cadastrar</button>
+  <button type="button" (click)="voltar()">Voltar</button>
+</form>

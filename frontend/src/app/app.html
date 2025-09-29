@@ -8,12 +8,22 @@
     @if (authService.getRoles().includes('ROLE_SUPER_ADMIN')){
       <a routerLink="/admin">
         <mat-icon fontIcon="settings"></mat-icon>Admin</a>
-      <a routerLink="/funcionario">
-        <mat-icon fontIcon="badge"></mat-icon>Funcionário</a>
-      }
+      <a routerLink="/cadastroUsuario">
+        <mat-icon fontIcon="badge"></mat-icon>Cadastro de Funcionários</a>
+      <a routerLink="/cadastro">
+        <mat-icon fontIcon="badge"></mat-icon>Cadastro de Pacientes</a>
+      <a routerLink="/upload">
+        <mat-icon fontIcon="upload"></mat-icon>Upload</a>
+      <a routerLink="/lista">
+        <mat-icon fontIcon="list"></mat-icon>Lista de Pacientes</a>
+      }      
     @if (authService.getRoles().includes('ROLE_ADMIN')) {
-      <a routerLink="/funcionario">
-        <mat-icon fontIcon="badge"></mat-icon>Funcionário</a>
+      <a routerLink="/cadastro">
+        <mat-icon fontIcon="badge"></mat-icon>Gestão de Pacientes</a>
+      <a routerLink="/upload">
+        <mat-icon fontIcon="upload"></mat-icon>Upload</a>
+      <a routerLink="/lista">
+        <mat-icon fontIcon="list"></mat-icon>Lista de Pacientes</a>
       }
     @if (authService.getRoles().includes('ROLE_USER')) {
       <a routerLink="/cliente">
