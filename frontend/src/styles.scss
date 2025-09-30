@@ -8,10 +8,11 @@
 
 html {
   @include mat.theme((
-    color: (
-      primary: mat.$azure-palette,
-      tertiary: mat.$blue-palette,
-    ),
+    color: mat.$green-palette,
+    // color: (
+    //   primary: mat.$green-palette,
+    //   tertiary: mat.$green-palette,
+    // ),
     typography: Roboto,
     density: 0,
   ));
@@ -34,3 +35,31 @@ body {
   margin: 0;
 }
 
+// @use '@angular/material' as mat;
+
+// html {
+//   @include mat.theme(
+//     (
+//       color: mat.$green-palette,
+//       typography: Roboto,
+//       density: 0,
+//     )
+//   );
+// }
+
+// // Define your custom color palettes
+// $my-app-primary: mat.define-palette(mat.$indigo-palette);
+// $my-app-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+// $my-app-warn: mat.define-palette(mat.$red-palette);
+
+// // Create a light or dark theme with your custom palettes
+// $my-app-theme: mat.define-light-theme((
+//   color: (
+//     primary: $my-app-primary,
+//     accent: $my-app-accent,
+//     warn: $my-app-warn,
+//   ),
+// ));
+
+// // Apply the theme to your application
+// @include mat.all-component-themes($my-app-theme);
