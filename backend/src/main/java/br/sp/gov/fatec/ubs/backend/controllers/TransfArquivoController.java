@@ -1,4 +1,4 @@
-package br.sp.gov.fatec.ubs.backend.armazenamento;
+package br.sp.gov.fatec.ubs.backend.controllers;
 
 import java.io.IOException;
 import java.util.stream.Collectors;
@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 import br.sp.gov.fatec.ubs.backend.entities.PacienteEntity;
+import br.sp.gov.fatec.ubs.backend.services.ArmazenamentoService;
 
 @Controller
 public class TransfArquivoController {

@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 
-import br.sp.gov.fatec.ubs.backend.armazenamento.ArmazenamentoPropriedades;
-import br.sp.gov.fatec.ubs.backend.armazenamento.ArmazenamentoService;
+import br.sp.gov.fatec.ubs.backend.configs.ArmazenamentoPropriedades;
+import br.sp.gov.fatec.ubs.backend.services.ArmazenamentoService;
 
 @SpringBootApplication
 @EnableConfigurationProperties(ArmazenamentoPropriedades.class)	

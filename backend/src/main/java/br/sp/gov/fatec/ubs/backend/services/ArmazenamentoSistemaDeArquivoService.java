@@ -1,4 +1,4 @@
-package br.sp.gov.fatec.ubs.backend.armazenamento;
+package br.sp.gov.fatec.ubs.backend.services;
 
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -17,7 +17,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import br.sp.gov.fatec.ubs.backend.armazenamento.ExtraiTextoPDF;
+import br.sp.gov.fatec.ubs.backend.configs.ArmazenamentoPropriedades;
 import br.sp.gov.fatec.ubs.backend.entities.PacienteEntity;
+import br.sp.gov.fatec.ubs.backend.exceptions.ArmazenamentoException;
+import br.sp.gov.fatec.ubs.backend.exceptions.ArmazenamentoFileNotFoundException;
 
 @Service
 public class ArmazenamentoSistemaDeArquivoService implements ArmazenamentoService {

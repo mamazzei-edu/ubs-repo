@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/usuarios")
-@CrossOrigin(origins = "*")
+@PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
 public class UsuarioController {
 
     @Autowired
@@ -28,7 +28,6 @@ public class UsuarioController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
 //    @PreAuthorize("hasRole('SUPER_ADMIN')")
     public UsuarioEntity criarUsuario(@RequestBody UsuarioEntity usuario) {
         return usuarioRepository.save(usuario);

@@ -1,4 +1,4 @@
-package br.sp.gov.fatec.ubs.backend.armazenamento;
+package br.sp.gov.fatec.ubs.backend.services;
 
 import java.nio.file.Path;
 import java.util.stream.Stream;

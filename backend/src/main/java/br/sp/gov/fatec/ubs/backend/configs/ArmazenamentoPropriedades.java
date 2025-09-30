@@ -1,4 +1,4 @@
-package br.sp.gov.fatec.ubs.backend.armazenamento;
+package br.sp.gov.fatec.ubs.backend.configs;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
