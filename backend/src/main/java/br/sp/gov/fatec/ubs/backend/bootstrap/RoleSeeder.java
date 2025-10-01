@@ -27,6 +27,7 @@ public class RoleSeeder implements ApplicationListener<ContextRefreshedEvent> {
     private void loadRoles() {
         RoleEnum[] roleNames = new RoleEnum[] { RoleEnum.USER, RoleEnum.ADMIN, RoleEnum.SUPER_ADMIN };
         Map<RoleEnum, String> roleDescriptionMap = Map.of(
+            RoleEnum.MEDICO, "Usuário médico",
             RoleEnum.USER, "Usuário default",
             RoleEnum.ADMIN, "Usuário administrativo",
             RoleEnum.SUPER_ADMIN, "Super usuário administrativo com privilégios extras"

@@ -10,7 +10,7 @@ import jakarta.persistence.Id;
 public class Paciente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)  
-      public Long codigo;
+      public Long id;
 
       public String nomeCompleto;
       public String nomeSocial;
@@ -106,8 +106,8 @@ public class Paciente {
 
     // Getters e Setters
     // (Incluindo os novos campos adicionados abaixo)
-    public Long getCodigo() { return codigo; }
-    public void setCodigo(Long codigo) { this.codigo = codigo; }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
  
     public String getNomeCompleto() { return nomeCompleto; }
     public void setNomeCompleto(String nomeCompleto) { this.nomeCompleto = nomeCompleto; }

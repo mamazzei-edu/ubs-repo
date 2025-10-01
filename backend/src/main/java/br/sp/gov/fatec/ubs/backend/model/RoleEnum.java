@@ -7,6 +7,7 @@ package br.sp.gov.fatec.ubs.backend.model;
 
 // Editar também em 
 public enum RoleEnum {
+    MEDICO,
     USER,
     ADMIN,
     SUPER_ADMIN

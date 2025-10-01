@@ -29,14 +29,14 @@ export class PacienteService {
   }
   
   //  Upload de ficha em PDF
-  uploadFicha(codigo: number, file: File): Observable<{ mensagem: string }> {
+  uploadFicha(id: number, file: File): Observable<{ mensagem: string }> {
     const formData: FormData = new FormData();
     formData.append('file', file);
 
     const headers = new HttpHeaders(); 
 
     return this.http.post<{ mensagem: string }>(
-      `${this.apiUrl}/${codigo}/upload-ficha`,
+      `${this.apiUrl}/${id}/upload-ficha`,
       formData,
       { headers }
     );

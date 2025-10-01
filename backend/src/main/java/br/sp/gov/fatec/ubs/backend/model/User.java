@@ -34,6 +34,10 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String username;
 
+    @Column(nullable = true) // para cadastro dos usuários médicos 
+    private String crm;
+
+
     @CreationTimestamp
     @Column(updatable = false, name = "created_at")
     private Date createdAt;
@@ -124,6 +128,15 @@ public class User implements UserDetails {
 
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public String getCrm() {
+        return crm;
+    }
+
+    public User setCrm(String crm) {
+        this.crm = crm;
+        return this;
     }
 
 

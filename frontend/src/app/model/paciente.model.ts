@@ -3,7 +3,7 @@ export class Paciente {
   // Informações pessoais
   pacienteSelecionado?: Paciente;
 
-  public codigo?: number; // Código do paciente
+  public id?: number; // Código do paciente
   public nomeCompleto: string = ''; // Nome completo
   public nomeSocial?: string; // Nome social (opcional)
   public nomeMae?: string; // Nome da mãe (opcional)
