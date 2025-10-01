@@ -39,7 +39,6 @@
       @if (! authService.isLoggedIn()) {
         <a routerLink="/login" routerLinkActive="active">Login</a>
       } @else {
-        <a (click)="logout()" routerLink="/">Sair</a>
         @if (authService.getRoles().includes('ROLE_SUPER_ADMIN')){
           <a routerLink="/user-cadastro" routerLinkActive="active">Usuários</a>
         }
@@ -47,8 +46,8 @@
           <a routerLink="/lista" routerLinkActive="active">Pacientes</a>
           <a routerLink="/cadastro" routerLinkActive="active">Cadastro Novo</a>
           <a routerLink="/upload" routerLinkActive="active">Carregar Ficha</a>
-          <a routerLink="/user-cadastro" routerLinkActive="active">Usuários</a>
         }
+        <a (click)="logout()" routerLink="/">Sair</a>
     }
       
     </nav>
