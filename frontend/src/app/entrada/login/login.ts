@@ -54,11 +54,11 @@ export class Login implements OnInit {
           this.loginResponse = response;
           this.authService.saveToken(this.loginResponse);
           if (this.loginResponse.roles.includes('ROLE_SUPER_ADMIN')) {
-            this.router.navigate(['/admin']);
+            this.router.navigate(['/user-cadastro']);
           } else if (this.loginResponse.roles.includes('ROLE_ADMIN')) {
-            this.router.navigate(['/funcionario']);
+            this.router.navigate(['/lista']);
           } else {
-            this.router.navigate(['/cliente']);
+            this.router.navigate(['/upload']);
           }
         }
       },

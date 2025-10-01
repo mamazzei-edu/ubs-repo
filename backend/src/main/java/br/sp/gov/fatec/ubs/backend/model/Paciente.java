@@ -1,232 +1,248 @@
 package br.sp.gov.fatec.ubs.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
-@Entity
+@Entity(name = "paciente")
 public class Paciente {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
-    public String cns;
-    public String prontuario;
-    public String nomeCompleto;
-    public String nomeSocial;
-    public String nomeMae;
-    public String nomePai;
-    public String dataNascimento;
-    public String sexo;
-    public String nacionalidade;
-    public String municipioNascimento;
-    public String racaCor;
-    public String frequentaEscola;
-    public String escolaridade;
-    public String situacaoFamiliar;
-    public String vinculoEstabelecimento;
-    public String deficiencia;
-    public String contatoCelular;
-    public String contatoResidencial;
-    public String contatoComercial;
-    public String contatoEmail;
-    public String cpf;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)  
+      public Long codigo;
 
+      public String nomeCompleto;
+      public String nomeSocial;
+      public String nomeMae;
+      public String nomePai;
 
-    public String getCns() {
-        return cns;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")  
+      public String dataNascimento;
+
+      public String cns;
+      public String prontuario;
+      public String sexo;
+      public String nacionalidade;
+      public String municipioNascimento;
+      public String racaCor;
+      public String etnia;
+      public String frequentaEscola;
+      public String deficiente;
+      public String opm;
+      public String visual;
+      public String auditiva;
+      public String motora;
+      public String intelectual;
+      public String telefoneCelular;
+      public String telefoneResidencial;
+      public String telefoneComercial;
+      public String email;
+      public String cpf;
+
+    // Novos campos do PDF
+      public String escolaridade;
+      public String situacaoFamiliar;
+      public String ocupacao;
+      public String estabelecimentoVinculo;
+      public String estabelecimentoCadastro;
+      public String cep;
+      public String logradouro;
+      public String numero;
+      public String bairro;
+      public String complemento;
+      public String uf;
+      public String rg;
+      public String orgaoEmissor;
+      public String pisPasepNis;
+      public String cnh;
+      public String ctps;
+      public String tituloEleitor;
+      public String passaporte;
+      public String origemEndereco;
+      public String municipioResidencia;
+      public String distritoAdministrativo;
+      public String tipoLogradouro;
+    
+    public String getMunicipioResidencia() {
+        return municipioResidencia;
     }
-
-    public void setCns(String cns) {
-        this.cns = cns;
+    public void setMunicipioResidencia(String municipioResidencia) {
+        this.municipioResidencia = municipioResidencia;
     }
-
-    public String getProntuario() {
-        return prontuario;
+    
+    public String getOpm() {
+        return opm;
     }
-
-    public void setProntuario(String prontuario) {
-        this.prontuario = prontuario;
+    public void setOpm(String opm) {
+        this.opm = opm;
     }
-
-    // Getter e Setter para id
-    public Long getId() {
-        return id;
+    public String getOrigemEndereco() {
+        return origemEndereco;
     }
-
-    public void setId(Long id) {
-        this.id = id;
+    public void setOrigemEndereco(String origemEndereco) {
+        this.origemEndereco = origemEndereco;
     }
-
-    // Getter e Setter para nomeCompleto
-    public String getNomeCompleto() {
-        return nomeCompleto;
+    public String getDistritoAdministrativo() {
+        return distritoAdministrativo;
     }
-
-    public void setNomeCompleto(String nomeCompleto) {
-        this.nomeCompleto = nomeCompleto;
+    public void setDistritoAdministrativo(String distritoAdministrativo) {
+        this.distritoAdministrativo = distritoAdministrativo;
     }
-
-    // Getter e Setter para nomeSocial
-    public String getNomeSocial() {
-        return nomeSocial;
+    public String getTipoLogradouro() {
+        return tipoLogradouro;
     }
-
-    public void setNomeSocial(String nomeSocial) {
-        this.nomeSocial = nomeSocial;
+    public void setTipoLogradouro(String tipoLogradouro) {
+        this.tipoLogradouro = tipoLogradouro;
     }
-
-    // Getter e Setter para nomeMae
-    public String getNomeMae() {
-        return nomeMae;
+    public String getReferencia() {
+        return referencia;
     }
-
-    public void setNomeMae(String nomeMae) {
-        this.nomeMae = nomeMae;
+    public void setReferencia(String referencia) {
+        this.referencia = referencia;
     }
+      String referencia;
 
-    // Getter e Setter para nomePai
-    public String getNomePai() {
-        return nomePai;
-    }
 
-    public void setNomePai(String nomePai) {
-        this.nomePai = nomePai;
-    }
+    // Getters e Setters
+    // (Incluindo os novos campos adicionados abaixo)
+    public Long getCodigo() { return codigo; }
+    public void setCodigo(Long codigo) { this.codigo = codigo; }
+ 
+    public String getNomeCompleto() { return nomeCompleto; }
+    public void setNomeCompleto(String nomeCompleto) { this.nomeCompleto = nomeCompleto; }
+ 
+    public String getNomeSocial() { return nomeSocial; }
+    public void setNomeSocial(String nomeSocial) { this.nomeSocial = nomeSocial; }
+ 
+    public String getNomeMae() { return nomeMae; }
+    public void setNomeMae(String nomeMae) { this.nomeMae = nomeMae; }
+ 
+    public String getNomePai() { return nomePai; }
+    public void setNomePai(String nomePai) { this.nomePai = nomePai; }
+ 
+    public String getDataNascimento() { return dataNascimento; }
+    public void setDataNascimento(String dataNascimento) { this.dataNascimento = dataNascimento; }
+ 
+    public String getSexo() { return sexo; }
+    public void setSexo(String sexo) { this.sexo = sexo; }
+ 
+    public String getNacionalidade() { return nacionalidade; }
+    public void setNacionalidade(String nacionalidade) { this.nacionalidade = nacionalidade; }
+ 
+    public String getMunicipioNascimento() { return municipioNascimento; }
+    public void setMunicipioNascimento(String municipioNascimento) { this.municipioNascimento = municipioNascimento; }
+ 
+    public String getFrequentaEscola() { return frequentaEscola; }
+    public void setFrequentaEscola(String frequentaEscola) { this.frequentaEscola = frequentaEscola; }
+ 
+    public String getDeficiente() { return deficiente; }
+    public void setDeficiente(String deficiente) { this.deficiente = deficiente; }
+ 
+    public String getVisual() { return visual; }
+    public void setVisual(String visual) { this.visual = visual; }
+ 
+    public String getAuditiva() { return auditiva; }
+    public void setAuditiva(String auditiva) { this.auditiva = auditiva; }
+ 
+    public String getMotora() { return motora; }
+    public void setMotora(String motora) { this.motora = motora; }
+ 
+    public String getIntelectual() { return intelectual; }
+    public void setIntelectual(String intelectual) { this.intelectual = intelectual; }
+ 
+    public String getTelefoneCelular() { return telefoneCelular; }
+    public void setTelefoneCelular(String telefoneCelular) { this.telefoneCelular = telefoneCelular; }
+ 
+    public String getTelefoneResidencial() { return telefoneResidencial; }
+    public void setTelefoneResidencial(String telefoneResidencial) { this.telefoneResidencial = telefoneResidencial; }
+ 
+    public String getTelefoneComercial() { return telefoneComercial; }
+    public void setTelefoneComercial(String telefoneComercial) { this.telefoneComercial = telefoneComercial; }
+ 
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+ 
+    public String getCpf() { return cpf; }
+    public void setCpf(String cpf) { this.cpf = cpf; }
+ 
+    public String getCns() { return cns;    }
+    public void setCns(String cns) { this.cns = cns;}
+ 
+    public String getProntuario() { return prontuario; }
+    public void setProntuario(String prontuario) { this.prontuario = prontuario;  }
+ 
+    public String getEscolaridade() { return escolaridade; }
+    public void setEscolaridade(String escolaridade) { this.escolaridade = escolaridade; }
 
-    // Getter e Setter para dataNascimento
-    public String getDataNascimento() {
-        return dataNascimento;
-    }
-
-    public void setDataNascimento(String dataNascimento) {
-        this.dataNascimento = dataNascimento;
-    }
-
-    // Getter e Setter para sexo
-    public String getSexo() {
-        return sexo;
-    }
-
-    public void setSexo(String sexo) {
-        this.sexo = sexo;
-    }
-
-    // Getter e Setter para nacionalidade
-    public String getNacionalidade() {
-        return nacionalidade;
-    }
-
-    public void setNacionalidade(String nacionalidade) {
-        this.nacionalidade = nacionalidade;
-    }
-
-    // Getter e Setter para municipioNascimento
-    public String getMunicipioNascimento() {
-        return municipioNascimento;
-    }
-
-    public void setMunicipioNascimento(String municipioNascimento) {
-        this.municipioNascimento = municipioNascimento;
-    }
-
-    // Getter e Setter para racaCor
+    public String getSituacaoFamiliar() { return situacaoFamiliar; }
     public String getRacaCor() {
         return racaCor;
     }
-
     public void setRacaCor(String racaCor) {
         this.racaCor = racaCor;
     }
-
-    // Getter e Setter para frequentaEscola
-    public String getFrequentaEscola() {
-        return frequentaEscola;
+    public String getEtnia() {
+        return etnia;
     }
-
-    public void setFrequentaEscola(String frequentaEscola) {
-        this.frequentaEscola = frequentaEscola;
+    public void setEtnia(String etnia) {
+        this.etnia = etnia;
     }
-
-    // Getter e Setter para escolaridade
-    public String getEscolaridade() {
-        return escolaridade;
+    public String getEstabelecimentoVinculo() {
+        return estabelecimentoVinculo;
     }
-
-    public void setEscolaridade(String escolaridade) {
-        this.escolaridade = escolaridade;
+    public void setEstabelecimentoVinculo(String estabelecimentoVinculo) {
+        this.estabelecimentoVinculo = estabelecimentoVinculo;
     }
-
-    // Getter e Setter para situacaoFamiliar
-    public String getSituacaoFamiliar() {
-        return situacaoFamiliar;
+    public String getEstabelecimentoCadastro() {
+        return estabelecimentoCadastro;
     }
-
-    public void setSituacaoFamiliar(String situacaoFamiliar) {
-        this.situacaoFamiliar = situacaoFamiliar;
+    public void setEstabelecimentoCadastro(String estabelecimentoCadastro) {
+        this.estabelecimentoCadastro = estabelecimentoCadastro;
     }
+    public void setSituacaoFamiliar(String situacaoFamiliar) { this.situacaoFamiliar = situacaoFamiliar; }
 
-    // Getter e Setter para vinculoEstabelecimento
-    public String getVinculoEstabelecimento() {
-        return vinculoEstabelecimento;
-    }
+    public String getOcupacao() { return ocupacao; }
+    public void setOcupacao(String ocupacao) { this.ocupacao = ocupacao; }
 
-    public void setVinculoEstabelecimento(String vinculoEstabelecimento) {
-        this.vinculoEstabelecimento = vinculoEstabelecimento;
-    }
+    public String getCep() { return cep; }
+    public void setCep(String cep) { this.cep = cep; }
 
-    // Getter e Setter para deficiencia
-    public String getDeficiencia() {
-        return deficiencia;
-    }
+    public String getLogradouro() { return logradouro; }
+    public void setLogradouro(String logradouro) { this.logradouro = logradouro; }
 
-    public void setDeficiencia(String deficiencia) {
-        this.deficiencia = deficiencia;
-    }
+    public String getNumero() { return numero; }
+    public void setNumero(String numero) { this.numero = numero; }
 
-    // Getter e Setter para contatoCelular
-    public String getContatoCelular() {
-        return contatoCelular;
-    }
+    public String getBairro() { return bairro; }
+    public void setBairro(String bairro) { this.bairro = bairro; }
 
-    public void setContatoCelular(String contatoCelular) {
-        this.contatoCelular = contatoCelular;
-    }
+    public String getComplemento() { return complemento; }
+    public void setComplemento(String complemento) { this.complemento = complemento; }
 
-    // Getter e Setter para contatoResidencial
-    public String getContatoResidencial() {
-        return contatoResidencial;
-    }
+    public String getUf() { return uf; }
+    public void setUf(String uf) { this.uf = uf; }
 
-    public void setContatoResidencial(String contatoResidencial) {
-        this.contatoResidencial = contatoResidencial;
-    }
+    public String getRg() { return rg; }
+    public void setRg(String rg) { this.rg = rg; }
 
-    // Getter e Setter para contatoComercial
-    public String getContatoComercial() {
-        return contatoComercial;
-    }
+    public String getOrgaoEmissor() { return orgaoEmissor; }
+    public void setOrgaoEmissor(String orgaoEmissor) { this.orgaoEmissor = orgaoEmissor; }
 
-    public void setContatoComercial(String contatoComercial) {
-        this.contatoComercial = contatoComercial;
-    }
+    public String getPisPasepNis() { return pisPasepNis; }
+    public void setPisPasepNis(String pisPasepNis) { this.pisPasepNis = pisPasepNis; }
 
-    // Getter e Setter para contatoEmail
-    public String getContatoEmail() {
-        return contatoEmail;
-    }
+    public String getCnh() { return cnh; }
+    public void setCnh(String cnh) { this.cnh = cnh; }
 
-    public void setContatoEmail(String contatoEmail) {
-        this.contatoEmail = contatoEmail;
-    }
+    public String getCtps() { return ctps; }
+    public void setCtps(String ctps) { this.ctps = ctps; }
 
-    // Getter e Setter para cpf
-    public String getCpf() {
-        return cpf;
-    }
+    public String getTituloEleitor() { return tituloEleitor; }
+    public void setTituloEleitor(String tituloEleitor) { this.tituloEleitor = tituloEleitor; }
 
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
+    public String getPassaporte() { return passaporte; }
+    public void setPassaporte(String passaporte) { this.passaporte = passaporte; }
+
+   
 }

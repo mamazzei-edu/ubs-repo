@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service;
 
 import br.sp.gov.fatec.ubs.backend.dtos.LoginUserDto;
 import br.sp.gov.fatec.ubs.backend.dtos.RegisterUserDto;
-import br.sp.gov.fatec.ubs.backend.entities.Role;
-import br.sp.gov.fatec.ubs.backend.entities.RoleEnum;
-import br.sp.gov.fatec.ubs.backend.entities.User;
+import br.sp.gov.fatec.ubs.backend.model.Role;
+import br.sp.gov.fatec.ubs.backend.model.RoleEnum;
+import br.sp.gov.fatec.ubs.backend.model.User;
 import br.sp.gov.fatec.ubs.backend.repositories.RoleRepository;
 import br.sp.gov.fatec.ubs.backend.repositories.UserRepository;
 
@@ -58,7 +58,6 @@ public class AuthenticationService {
                         input.getEmail(),
                         input.getPassword()));
 
-        return userRepository.findByEmail(input.getEmail())
-                .orElseThrow();
+        return userRepository.findByEmail(input.getEmail());
     }
 }

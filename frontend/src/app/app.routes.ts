@@ -4,14 +4,19 @@ import { Login } from './entrada/login/login';
 import { Logado as logadoFuncionario } from './funcionario/logado/logado';
 import { Logado as logadoAdmin } from './admin/logado/logado';
 import { Logado as logadoCliente } from './cliente/logado/logado';
+import { ListaComponent } from './lista/lista.component';
+
 import { AuthGuard } from './auth-guard';
+import { CadastroComponent } from './cadastro/cadastro.component';
+import { UserCadastroComponent } from './user-cadastro/user-cadastro.component';
+import { UploadComponent } from './upload/upload.component';
 
 
 export const routes: Routes = [
 
     {
         path: '',
-        redirectTo: 'login',
+        redirectTo: 'lista',
         pathMatch: 'full'
     },
     {
@@ -19,20 +24,24 @@ export const routes: Routes = [
         component: Login
     },
     {
-        path: 'admin',
-        component: logadoAdmin,
+        path: 'user-cadastro',
+        component: UserCadastroComponent,
         canActivate: [AuthGuard]
 
     },
     {   
-        path: 'funcionario',
-        component: logadoFuncionario,
+        path: 'lista',
+        component: ListaComponent,
         canActivate: [AuthGuard]
     },
     {
-        path: 'cliente',
-        component: logadoCliente,
+        path: 'cadastro',
+        component: CadastroComponent,
         canActivate: [AuthGuard]
-    }
+    },
+    { 
+        path: 'upload',
+        component: UploadComponent 
+    },
 
 ];

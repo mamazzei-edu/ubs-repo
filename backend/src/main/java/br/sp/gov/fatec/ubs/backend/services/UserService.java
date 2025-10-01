@@ -4,9 +4,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.sp.gov.fatec.ubs.backend.dtos.RegisterUserDto;
-import br.sp.gov.fatec.ubs.backend.entities.Role;
-import br.sp.gov.fatec.ubs.backend.entities.RoleEnum;
-import br.sp.gov.fatec.ubs.backend.entities.User;
+import br.sp.gov.fatec.ubs.backend.model.Role;
+import br.sp.gov.fatec.ubs.backend.model.RoleEnum;
+import br.sp.gov.fatec.ubs.backend.model.User;
 import br.sp.gov.fatec.ubs.backend.repositories.RoleRepository;
 import br.sp.gov.fatec.ubs.backend.repositories.UserRepository;
 
@@ -17,7 +17,7 @@ import java.util.Optional;
 @Service
 public class UserService {
     private final UserRepository userRepository;
-private final RoleRepository roleRepository;
+    private final RoleRepository roleRepository;
 
     private final PasswordEncoder passwordEncoder;    
 
@@ -26,7 +26,6 @@ private final RoleRepository roleRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
     }
-
 
     public List<User> allUsers() {
         List<User> users = new ArrayList<>();
@@ -56,5 +55,37 @@ private final RoleRepository roleRepository;
 
         return userRepository.save(user);
     }
+
+    public void deleteUserById(Long id) {
+        userRepository.deleteById(id);
+    }
+
+    public User findById(Long id) {
+        return userRepository.findById(id);
+    }
+
+    public User save(User input) {
+        Optional<Role> optionalRole = roleRepository.findByName(RoleEnum.ADMIN);
+
+        if (optionalRole.isEmpty()) {
+            return null;
+        }
+
+        var user = new User()
+                .setFullName(input.getFullName())
+                .setEmail(input.getEmail())
+                .setPassword(passwordEncoder.encode(input.getPassword()))
+                .setMatricula(input.getMatricula())
+                .setUsername(input.getUsername())
+                .setRole(optionalRole.get());
+
+        return userRepository.save(user);
+    }
+
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
+
+
 
 }

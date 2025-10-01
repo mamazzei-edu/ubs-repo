@@ -6,9 +6,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import br.sp.gov.fatec.ubs.backend.dtos.RegisterUserDto;
-import br.sp.gov.fatec.ubs.backend.entities.Role;
-import br.sp.gov.fatec.ubs.backend.entities.RoleEnum;
-import br.sp.gov.fatec.ubs.backend.entities.User;
+import br.sp.gov.fatec.ubs.backend.model.Role;
+import br.sp.gov.fatec.ubs.backend.model.RoleEnum;
+import br.sp.gov.fatec.ubs.backend.model.User;
 import br.sp.gov.fatec.ubs.backend.repositories.RoleRepository;
 import br.sp.gov.fatec.ubs.backend.repositories.UserRepository;
 
@@ -39,9 +39,9 @@ public class AdminSeeder implements ApplicationListener<ContextRefreshedEvent> {
         userDto.setPassword("123456");
 
         Optional<Role> optionalRole = roleRepository.findByName(RoleEnum.SUPER_ADMIN);
-        Optional<User> optionalUser = userRepository.findByEmail(userDto.getEmail());
+        User optionalUser = userRepository.findByEmail(userDto.getEmail());
 
-        if (optionalRole.isEmpty() || optionalUser.isPresent() && optionalUser.get().getRole().getName().equals(RoleEnum.SUPER_ADMIN)) {
+        if (optionalRole.isEmpty() || optionalUser != null && optionalUser.getRole().getName().equals(RoleEnum.SUPER_ADMIN)) {
             return;
         }
 

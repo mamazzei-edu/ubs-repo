@@ -1,7 +1,7 @@
 package br.sp.gov.fatec.ubs.backend.bootstrap;
 
-import br.sp.gov.fatec.ubs.backend.entities.Role;
-import br.sp.gov.fatec.ubs.backend.entities.RoleEnum;
+import br.sp.gov.fatec.ubs.backend.model.Role;
+import br.sp.gov.fatec.ubs.backend.model.RoleEnum;
 import br.sp.gov.fatec.ubs.backend.repositories.RoleRepository;
 
 import org.springframework.context.ApplicationListener;

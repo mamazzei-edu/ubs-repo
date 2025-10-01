@@ -1,4 +1,4 @@
-package br.sp.gov.fatec.ubs.backend.entities;
+package br.sp.gov.fatec.ubs.backend.model;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;

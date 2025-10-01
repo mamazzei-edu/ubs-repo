@@ -54,12 +54,12 @@ public class PacienteService {
             paciente.setFrequentaEscola(pacienteAtualizado.getFrequentaEscola());
             paciente.setEscolaridade(pacienteAtualizado.getEscolaridade());
             paciente.setSituacaoFamiliar(pacienteAtualizado.getSituacaoFamiliar());
-            paciente.setVinculoEstabelecimento(pacienteAtualizado.getVinculoEstabelecimento());
-            paciente.setDeficiencia(pacienteAtualizado.getDeficiencia());
-            paciente.setContatoCelular(pacienteAtualizado.getContatoCelular());
-            paciente.setContatoResidencial(pacienteAtualizado.getContatoResidencial());
-            paciente.setContatoComercial(pacienteAtualizado.getContatoComercial());
-            paciente.setContatoEmail(pacienteAtualizado.getContatoEmail());
+            paciente.setEstabelecimentoVinculo(pacienteAtualizado.getEstabelecimentoVinculo());
+            paciente.setDeficiente(pacienteAtualizado.getDeficiente());
+            paciente.setTelefoneCelular(pacienteAtualizado.getTelefoneCelular());
+            paciente.setTelefoneResidencial(pacienteAtualizado.getTelefoneResidencial());
+            paciente.setTelefoneComercial(pacienteAtualizado.getTelefoneComercial());
+            paciente.setEmail(pacienteAtualizado.getEmail());
             paciente.setCpf(pacienteAtualizado.getCpf());
             
             return pacienteRepository.save(paciente);  // Salva as alterações no banco

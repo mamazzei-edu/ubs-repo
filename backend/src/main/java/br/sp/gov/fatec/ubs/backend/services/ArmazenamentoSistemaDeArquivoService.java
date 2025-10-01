@@ -60,8 +60,6 @@ public class ArmazenamentoSistemaDeArquivoService implements ArmazenamentoServic
             try(InputStream entrada = arquivo.getInputStream()) {
                 Files.copy(entrada, destino, StandardCopyOption.REPLACE_EXISTING);
             }
-            String texto = ExtraiTextoPDF.extraiTextoPDF(destino.toString());
-            System.out.println(texto);
             String texto2 = ExtraiTextoPDF.extraiTextoPDFiText(destino.toString());
             System.out.println("Itext:");
             System.out.println(texto2);
@@ -69,6 +67,7 @@ public class ArmazenamentoSistemaDeArquivoService implements ArmazenamentoServic
             // e os nomes das propriedades correspondentes
             // Exemplo: mascaras.put("nomeMae", "Nome da Mãe: (.*)");
             HashMap<String, String> mascaras = new HashMap<String, String>();
+            mascaras.put("serieProntuario","^([A-Z]\\-[0-9]{4})$");
             // Coincide com valores começando com "CNS" captura o valor com (.*) em grupo1            
             mascaras.put("cns","^CNS\\s*:\\s*(.*)$");
             // Coincide com valores terminando com "-CSE GERALDO DE PAULA SOUZA" captura o valor com (\\d+*) em grupo1
@@ -83,35 +82,74 @@ public class ArmazenamentoSistemaDeArquivoService implements ArmazenamentoServic
             // em grupo2
             mascaras.put("nomeMae", "^Mãe:\\s*(.*)\\s*Pai:\\s*?(.*?)$");
             // Adicione mascaras para cada um dos valores adicionais que você deseja extrair
+            mascaras.put("nascimento", "^Nascimento:\\s*(.*)\\s*Sexo:\\s*?(.*?)$");
+//            mascaras.put("nacionalidade", "^Nacionalidade:\\s*([^\\r\\n]+)$");
+//            mascaras.put("municipioNascimento", "^Munic[ií]pio de Nascimento:\\s*([^\\r\\n]+)$");
+            mascaras.put("nacionalidade", "^Nacionalidade:\\s*(.*)\\s*Munic[ií]pio de Nascimento:\\s*?(.*?)$");
 
-            mascaras.put("NascimentoESexo", "^Nascimento:\\s*(.*)\\s*Sexo:\\s?(.*?)$");
-            // \s*(.*)\s*
             
-            //mascaras.put("cpf", "^cpf:(\\d+)$");
-            
-            mascaras.put("NacionalidadeEMunicipio", "^Nacionalidade:\\s*(.*)\\s*Município de Nascimento:\\s*?(.*?)$");
-
-            mascaras.put("racaCor", "^Raça\\/Cor:\\s*?(.*?)\\s*Etnia:\\s*?(.*?)$");
-
-            mascaras.put("frequentaEscola", "^Frequenta Escola\\?:\\s*(.*)\\s*Escolaridade:\\s*?(.*?)$"); 
-
-            mascaras.put("Deficiencia", "^Possui alguma de.*?ciência\\?:\\s*(.*)\\s*Utiliza alguma OPM\\?:\\s*?(.*?)$");
-
-            mascaras.put("vinculoEstabelecimento", "^Estabelecimento de Vínculo:\\s*(.*)\\s*Estabelecimento de Cadastro:\\s*?(.*?)$");
+            mascaras.put("racaCorEtnia", "^Raça/Cor:\\s*(.*?)\\s*Etnia:\\s*(.*)$");
+            mascaras.put("frequentaEscolaEscolaridade", "^Frequenta Escola\\?:\\s*(Sim|Não)\\s*Escolaridade:\\s*(.*)$");
+//            mascaras.put("situacaoFamiliar", "^Situação Familiar:\\s*(.*)$");
+//            mascaras.put("ocupacao", "^Ocupação:\\s*(.*)$");
             mascaras.put("situacaoFamiliar", "^Situação Familiar:\\s*(.*)\\s*Ocupação:\\s*?(.*?)$");
 
-            mascaras.put("CelularEResidencial", "^Telefone Celular:\\s*(.*)\\s*Telefone Residencial:\\s*?(.*?)$");
+            mascaras.put("estabelecimentoVinculoCadastro", "^Estabelecimento de Vínculo:\\s*(.*?)\\s*Estabelecimento de Cadastro:\\s*(.*?)$");
+
+            mascaras.put("deficiente", "^Pessoa com Deficiência:\\s*(Sim|Não)$");
+            mascaras.put("telefones", "^Telefone Celular:\\s*(.*?)\\s*Telefone Residencial:\\s*(.*?)$");
+
+            // Origem do Endereço + CEP
+            mascaras.put("origemEnderecoCep", "^Origem do Endere[cç]o:\\s*(.*?)\\s+CEP:\\s*(\\d{5}-?\\d{3})$");
+//            mascaras.put("municipioDistrito", "^Munic[ií]pio de Resid[êe]ncia:\\s*(.*?)\\s*Distrito Administrativo:\\s*(.*?)$");
+
+            // Município de Residência + Distrito Administrativo
+            mascaras.put("municipioDistrito", "^Munic[ií]pio de Resid[êe]ncia:\\s*(.*?)\\s*Distrito Administrativo:\\s*(.*?)$");
+            mascaras.put("tipoLogradouroLogradouro", "^Tipo Logradouro:\\s*(.*?)\\s*Logradouro:\\s*(.*?)$");
+            mascaras.put("numeroBairro", "^Número:\\s*(.*?)\\s*Bairro:\\s*(.*?)$");
+            mascaras.put("complemento", "^Complemento:\\s*(.*)$");
+            mascaras.put("referencia", "^Refer[êe]ncia:\\s*(.*)$");
             
-            mascaras.put("contatoComercial", "^Telefone Comercial:\\s*(.*)\\s*Telefone Contato:\\s*?(.*?)$");
-            mascaras.put("contatoEmail", "^E-mail:\\s*(.*)\\s*Contato:\\s*?(.*?)$");
- 
-            
+            mascaras.put("telefoneComercial", "^Telefone Comercial:\\s*(.*)$");
+            mascaras.put("email", "^(E-mail|Email):\\s*(.*)$");
+
+            mascaras.put("uf", "^UF:\\s*(\\w{2})$");
+            mascaras.put("rg", "^RG:\\s*(\\d{2}\\.\\d{3}\\.\\d{3}-\\d{1})$");
+            mascaras.put("orgaoEmissorUf", "^Órgão Emissor:\\s*(.*?)\\s+UF:\\s*(\\w{2})$");
+
+            mascaras.put("pisPasepNis", "^PIS/PASEP/NIS:\\s*(.*)$");
+            mascaras.put("cnh", "^CNH:\\s*(.*)$");
+            mascaras.put("ctps", "^CTPS:\\s*(.*)$");
+            mascaras.put("tituloEleitor", "^Título de Eleitor:\\s*(.*)$");
+            mascaras.put("passaporte", "^Passaporte:\\s*(.*)$");
+                    
+
+
             Paciente paciente = new Paciente();
+            String serieProntuario = "";
+            String regexString = mascaras.get("serieProntuario");
+            Pattern pattern = Pattern.compile(regexString, Pattern.MULTILINE);
+            Matcher matcher = pattern.matcher(texto2);
+            if (matcher.find()) {
+                // Isso é para debugging, para ver o que foi encontrado
+                // Deve ser tirado ao final
+                System.out.println("Linha encontrada: " + matcher.group(0));
+                System.out.println("Propriedade: " + "serieProntuario");
+                // Se encontrou 2 propriedades, imprime os dois valores
+                if (matcher.groupCount() == 2) {
+                    System.out.println("Valor1: " + matcher.group(1));
+                    System.out.println("Valor2: " + matcher.group(2));
+                } else {
+                    // Se encontrou apenas 1 propriedade, imprime o valor
+                    System.out.println("Valor1: " + matcher.group(1));
+                }
+                serieProntuario = matcher.group(1);
+            }
             for (String propriedade : mascaras.keySet()) {
                 // Compila cada expressão regular e procura no texto
-                String regexString = mascaras.get(propriedade);
-                Pattern pattern = Pattern.compile(regexString, Pattern.MULTILINE);
-                Matcher matcher = pattern.matcher(texto2);
+                regexString = mascaras.get(propriedade);
+                pattern = Pattern.compile(regexString, Pattern.MULTILINE);
+                matcher = pattern.matcher(texto2);
                 if (matcher.find()) {
                     // Isso é para debugging, para ver o que foi encontrado
                     // Deve ser tirado ao final
@@ -127,58 +165,162 @@ public class ArmazenamentoSistemaDeArquivoService implements ArmazenamentoServic
                     }
                     switch (propriedade) {
                         // Para cada mascara, seta a propriedade correspondente no objeto Paciente
-                        // Se a mascara tiver 2 grupos, seta os dois valores    
+                        // Se a mascara tiver 2 grupos, seta os dois valores
                         case "cns":
-                            paciente.cns = matcher.group(1);
+                            paciente.setCns(matcher.group(1));
                             break;
                         case "prontuario":
-                            paciente.prontuario = matcher.group(1);
+                            paciente.setProntuario(serieProntuario + "-" + matcher.group(1));
                             break;
                         case "nomeCompleto":
-                            paciente.nomeCompleto = matcher.group(1);
-                            paciente.nomeSocial = matcher.group(2);
+                            paciente.setNomeCompleto(matcher.group(1));
+                            paciente.setNomeSocial(matcher.group(2));
                             break;
                         case "nomeMae":
-                            paciente.nomeMae = matcher.group(1);
-                            paciente.nomePai = matcher.group(2);
+                            paciente.setNomeMae(matcher.group(1));
+                            paciente.setNomePai(matcher.group(2));
                             break;
-                        case "NascimentoESexo":
-                            String data = matcher.group(1).trim();
-                            paciente.dataNascimento = data;
-                            paciente.sexo = matcher.group(2);
+
+                        case "nascimento":
+                            String dataTexto = matcher.group(1).trim();
+                            paciente.setDataNascimento(dataTexto);
+                            System.out.println(paciente.getDataNascimento());
+                            paciente.setSexo(matcher.group(2).trim());
+                            break;  
+
+                        case "nacionalidade":
+                            paciente.setNacionalidade(matcher.group(1));
+                            paciente.setMunicipioNascimento(matcher.group(2));
                             break;
-                        case "NacionalidadeEMunicipio":
-                            paciente.nacionalidade = matcher.group(1);
-                            paciente.municipioNascimento = matcher.group(2);
+                        
+                        case "municipioDistrito":
+                            paciente.setMunicipioResidencia(matcher.group(1));
+                            paciente.setDistritoAdministrativo(matcher.group(2));
                             break;
-                        case "racaCor":
-                            paciente.racaCor = matcher.group(1);
-                            break;
-                        case "frequentaEscola":
-                            paciente.frequentaEscola = matcher.group(1);
-                            paciente.escolaridade = matcher.group(2);
-                            break;
-                        case "Deficiencia":
-                            paciente.deficiencia = matcher.group(1);
-                            break;
-                        case "vinculoEstabelecimento":
-                            paciente.vinculoEstabelecimento = matcher.group(1);
-                            break;
+                        
+                        
+                        case "racaCorEtnia":
+                           paciente.setRacaCor(matcher.group(1));
+                           paciente.setEtnia(matcher.group(2));
+                           break;
+
+                        case "frequentaEscolaEscolaridade":
+                          paciente.setFrequentaEscola(matcher.group(1));
+                          paciente.setEscolaridade(matcher.group(2));
+                          break;
+                     
                         case "situacaoFamiliar":
-                            paciente.situacaoFamiliar = matcher.group(1);
+                          paciente.setSituacaoFamiliar(matcher.group(1));
+                          paciente.setOcupacao(matcher.group(2));
+                          break;
+                      
+
+                        case "estabelecimentoVinculoCadastro":
+                           paciente.setEstabelecimentoVinculo(matcher.group(1));
+                           paciente.setEstabelecimentoCadastro(matcher.group(2));
+                           break;
+                       
+                    
+
+                        case "deficiente":
+                           paciente.setDeficiente(matcher.group(1));
+                           break;
+
+                        case "visual":
+                            paciente.setVisual(matcher.group(1));
+                           break;
+   
+                        case "auditiva":
+                           paciente.setAuditiva(matcher.group(1));
+                           break;
+                        case "motora":
+                           paciente.setMotora(matcher.group(1));
+                           break;
+                        case "intelectual":
+                           paciente.setIntelectual(matcher.group(1));
+                           break;
+
+                        case "telefones":
+                           paciente.setTelefoneCelular(matcher.group(1));
+                           paciente.setTelefoneResidencial(matcher.group(2));
+                           break;
+                       
+   
+                       case "telefoneComercial":
+                           paciente.setTelefoneComercial(matcher.group(1));
+                           break;
+
+                        case "email":
+                           paciente.setEmail(matcher.group(2));
+                           break;
+                       
+
+                        case "complemento":
+                            paciente.setComplemento(matcher.group(1));
                             break;
-                        case "CelularEResidencial":
-                            paciente.contatoCelular = matcher.group(1);
-                            paciente.contatoResidencial = matcher.group(2);
+                        
+                        case "referencia":
+                            paciente.setReferencia(matcher.group(1));
                             break;
-                        case "contatoComercial":
-                            paciente.contatoComercial = matcher.group(1);
+
+                        case "origemEnderecoCep":
+                            paciente.setOrigemEndereco(matcher.group(1));
+                            paciente.setCep(matcher.group(2));
                             break;
-                        case "contatoEmail":
-                            paciente.contatoEmail = matcher.group(1);
-                            break;    
+                        
+                  
+                        case "tipoLogradouroLogradouro":
+                            paciente.setTipoLogradouro(matcher.group(1));
+                            paciente.setLogradouro(matcher.group(2));
+                            break;
+                        
+                        case "numeroBairro":
+                            paciente.setNumero(matcher.group(1));
+                            paciente.setBairro(matcher.group(2));
+                            break;
+                        
+           
+                        case "cpf":
+                            paciente.setCpf(matcher.group(1));
+                            break;
+   
+                        case "orgaoEmissorUf":
+                            paciente.setOrgaoEmissor(matcher.group(1));
+                            paciente.setUf(matcher.group(2));
+                            break;
+                        
+                     
+   
+                       case "rg":
+                           paciente.setRg(matcher.group(1));
+                           break;
+
+                  
+                       case "pisPasepNis":
+                            paciente.setPisPasepNis(matcher.group(1));
+                            break;
+
+   
+                       case "cnh":
+                           paciente.setCnh(matcher.group(1));
+                           break;
+   
+                       case "ctps":
+   
+                            paciente.setCtps(matcher.group(1));
+                            break;
+   
+                       case "tituloEleitor":
+                           paciente.setTituloEleitor(matcher.group(1));
+                           break;
+
+                        case "passaporte":
+                           paciente.setPassaporte(matcher.group(1));
+                           break;
+
                         default:
                             break;
+ 
                     }
                 }
             }

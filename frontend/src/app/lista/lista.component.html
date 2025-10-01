@@ -1,0 +1,183 @@
+<div class="container mt-4">
+  <!-- Campo de pesquisa -->
+  <div class="row mb-3">
+    <div class="col-md-9">
+      <input
+        type="text"
+        class="form-control"
+        [(ngModel)]="pesquisaId"
+        placeholder="Pesquisar paciente por código" />
+    </div>
+    <div class="col-md-3 text-end">
+      <button class="btn btn-custom-pesquisar w-100" (click)="pesquisarPacientePorId()">
+        <i class="bi bi-search"></i> Pesquisar
+      </button>      
+    </div>
+  </div>
+
+  <!-- Tabela de resultados -->
+  <div class="card">
+    <div class="card-header text-white" style="background-color: #45a897;">
+      <h5 class="mb-0">Pacientes</h5>
+    </div>    
+    <div class="card-body" >
+      <table class="table table-striped table-hover">
+        <thead style="background-color: #50BFAD !important; color: white !important;">
+          <tr>
+            <th>Código</th>
+            <th>Nome</th>
+            <th>Documento</th>
+            <th>Ações</th>
+          </tr>
+        </thead>        
+        <tbody>
+          <tr *ngFor="let paciente of pacientes">
+            <td>{{ paciente.id }}</td>
+            <td>{{ paciente.nomeCompleto }}</td>
+            <td>{{ paciente.cpf }}</td>
+            <td>
+              <button
+                class="btn btn-primary btn-sm me-2"
+                (click)="abrirModalEditar(paciente)">
+                <i class="bi bi-pencil"></i> Editar
+              </button>
+              <button
+                class="btn btn-danger btn-sm"
+                (click)="excluirPaciente(paciente.id)">
+                <i class="bi bi-trash"></i> Excluir
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="pacientes.length === 0">
+            <td colspan="4" class="text-center">
+              {{ mensagem || 'Nenhum resultado encontrado.' }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div
+    class="modal fade show d-block"
+    *ngIf="mostrarModalEditar"
+    tabindex="-1"
+    style="background-color: rgba(0, 0, 0, 0.5);"
+  >
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header bg-warning text-white">
+          <h5 class="modal-title">Editar Paciente</h5>
+          <button type="button" class="btn-close" (click)="fecharModal()"></button>
+        </div>
+        <div class="modal-body">
+          <form (ngSubmit)="atualizarPaciente()" #form="ngForm">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="id">Código:</label>
+                <input id="id" type="text" [(ngModel)]="pacienteSelecionado.id" name="id" disabled class="form-control text-muted" />
+              </div>
+
+              <div class="col-md-6">
+                <label for="nomeCompleto">Nome Completo:</label>
+                <input id="nomeCompleto" type="text" [(ngModel)]="pacienteSelecionado.nomeCompleto" name="nomeCompleto" class="form-control" />
+              </div>
+
+              <div class="col-md-6">
+                <label for="nomeSocial">Nome Social:</label>
+                <input id="nomeSocial" type="text" [(ngModel)]="pacienteSelecionado.nomeSocial" name="nomeSocial" class="form-control" />
+              </div>
+
+              <div class="col-md-6">
+                <label for="nomeMae">Nome da Mãe:</label>
+                <input id="nomeMae" type="text" [(ngModel)]="pacienteSelecionado.nomeMae" name="nomeMae" class="form-control" />
+              </div>
+
+              <div class="col-md-6">
+                <label for="nomePai">Nome do Pai:</label>
+                <input id="nomePai" type="text" [(ngModel)]="pacienteSelecionado.nomePai" name="nomePai" class="form-control" />
+              </div>
+
+              <div class="col-md-6">
+                <label for="dataNascimento">Data de Nascimento:</label>
+                <input id="dataNascimento" type="date" [(ngModel)]="pacienteSelecionado.dataNascimento" name="dataNascimento" class="form-control" />
+              </div>
+
+              <div class="col-md-6">
+                <label for="sexo">Sexo:</label>
+                <select id="sexo" [(ngModel)]="pacienteSelecionado.sexo" name="sexo" class="form-control">
+                  <option value="Masculino">Masculino</option>
+                  <option value="Feminino">Feminino</option>
+                  <option value="Outro">Outro</option>
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label for="nacionalidade">Nacionalidade:</label>
+                <input id="nacionalidade" type="text" [(ngModel)]="pacienteSelecionado.nacionalidade" name="nacionalidade" class="form-control" />
+              </div>
+
+              <div class="col-md-6">
+                <label for="municipioNascimento">Município de Nascimento:</label>
+                <input id="municipioNascimento" type="text" [(ngModel)]="pacienteSelecionado.municipioNascimento" name="municipioNascimento" class="form-control" />
+              </div>
+
+              <div class="col-md-6">
+                <label for="racaCor">Raça/Cor:</label>
+                <input id="racaCor" type="text" [(ngModel)]="pacienteSelecionado.racaCor" name="racaCor" class="form-control" />
+              </div>
+
+              <div class="col-md-6">
+                <label for="frequentaEscola">Frequenta Escola:</label>
+                <input id="frequentaEscola" type="text" [(ngModel)]="pacienteSelecionado.frequentaEscola" name="frequentaEscola" class="form-control" />
+              </div>
+
+              <div class="col-md-6">
+                <label for="escolaridade">Escolaridade:</label>
+                <input id="escolaridade" type="text" [(ngModel)]="pacienteSelecionado.escolaridade" name="escolaridade" class="form-control" />
+              </div>
+
+              <div class="col-md-6">
+                <label for="situacaoFamiliar">Situação Familiar:</label>
+                <input id="situacaoFamiliar" type="text" [(ngModel)]="pacienteSelecionado.situacaoFamiliar" name="situacaoFamiliar" class="form-control" />
+              </div>
+
+              <div class="col-md-6">
+                <label for="vinculoEstabelecimento">Vínculo com Estabelecimento:</label>
+                <input id="vinculoEstabelecimento" type="text" [(ngModel)]="pacienteSelecionado.vinculoEstabelecimento" name="vinculoEstabelecimento" class="form-control" />
+              </div>
+
+              <div class="col-md-6">
+                <label for="deficiencia">Deficiência:</label>
+                <input id="deficiencia" type="text" [(ngModel)]="pacienteSelecionado.deficiencia" name="deficiencia" class="form-control" />
+              </div>
+
+              <div class="col-md-6">
+                <label for="contatoCelular">Contato Celular:</label>
+                <input id="contatoCelular" type="text" [(ngModel)]="pacienteSelecionado.contatoCelular" name="contatoCelular" class="form-control" />
+              </div>
+
+              <div class="col-md-6">
+                <label for="contatoResidencial">Contato Residencial:</label>
+                <input id="contatoResidencial" type="text" [(ngModel)]="pacienteSelecionado.contatoResidencial" name="contatoResidencial" class="form-control" />
+              </div>
+
+              <div class="col-md-6">
+                <label for="contatoComercial">Contato Comercial:</label>
+                <input id="contatoComercial" type="text" [(ngModel)]="pacienteSelecionado.contatoComercial" name="contatoComercial" class="form-control" />
+              </div>
+
+              <div class="col-md-6">
+                <label for="contatoEmail">Email:</label>
+                <input id="contatoEmail" type="email" [(ngModel)]="pacienteSelecionado.contatoEmail" name="contatoEmail" class="form-control" />
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-warning mt-4 w-100">Salvar Alterações</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.sp.gov.fatec.ubs.backend.dtos.LoginUserDto;
 import br.sp.gov.fatec.ubs.backend.dtos.RegisterUserDto;
-import br.sp.gov.fatec.ubs.backend.entities.User;
+import br.sp.gov.fatec.ubs.backend.model.User;
 import br.sp.gov.fatec.ubs.backend.services.AuthenticationService;
 import br.sp.gov.fatec.ubs.backend.services.JwtService;
 import jakarta.servlet.http.HttpServletResponse;

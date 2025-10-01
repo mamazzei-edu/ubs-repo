@@ -36,10 +36,21 @@
     </a>
  
     <nav class="site-nav">
-      <a routerLink="/lista" routerLinkActive="active">Ver lista</a>
-      <a routerLink="/cadastro" routerLinkActive="active">Cadastro Novo</a>
-      <a routerLink="/upload" routerLinkActive="active">Carregar Ficha</a>
-      <a routerLink="/user-cadastro" routerLinkActive="active">Usuários</a>
+      @if (! authService.isLoggedIn()) {
+        <a routerLink="/login" routerLinkActive="active">Login</a>
+      } @else {
+        <a (click)="logout()" routerLink="/">Sair</a>
+        @if (authService.getRoles().includes('ROLE_SUPER_ADMIN')){
+          <a routerLink="/user-cadastro" routerLinkActive="active">Usuários</a>
+        }
+        @if (authService.getRoles().includes('ROLE_ADMIN') || authService.getRoles().includes('ROLE_SUPER_ADMIN')) {
+          <a routerLink="/lista" routerLinkActive="active">Pacientes</a>
+          <a routerLink="/cadastro" routerLinkActive="active">Cadastro Novo</a>
+          <a routerLink="/upload" routerLinkActive="active">Carregar Ficha</a>
+          <a routerLink="/user-cadastro" routerLinkActive="active">Usuários</a>
+        }
+    }
+      
     </nav>
   </div>
 </header>
@@ -68,7 +79,8 @@
       <input type="email" placeholder="Digite seu e-mail" required />
       <button type="submit"><i class="fas fa-arrow-right"></i></button>
     </form>
- 
+ </div>
+</footer>
     <!-- ul class="menu">
       <li><a href="#">Features</a></li>
       <li><a href="#">Blog</a></li>
@@ -94,4 +106,4 @@
     <img src="img3.png" alt="brand" style="height:40px;" />
     <span class="copy">© 2025. All Rights Reserved.</span>
   </div>
-</footer>
+</footer -->
