@@ -1,0 +1,57 @@
+.upload-form {
+  max-width: 500px;
+  margin: 2rem auto;
+  padding: 2rem;
+  border: 1px solid #dee2e6;
+  border-radius: 0.75rem;
+  background-color: #ffffff;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.file-drop-area {
+  border: 2px dashed #004646;
+  border-radius: 0.75rem;
+  padding: 2rem;
+  text-align: center;
+  color: #495057;
+  cursor: pointer;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+  user-select: none;
+  margin-bottom: 1rem;
+}
+
+.file-drop-area:hover {
+  background-color: #e9f2ff;
+  border-color: #004646;
+}
+
+.btn-upload {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  background-color: #004646;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.btn-upload:hover {
+  
+  transform: scale(1.01);
+}
+
+.btn-upload:active {
+  transform: scale(0.98);
+}
+
+.upload-form .form-label {
+  display: block;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #343a40;
+  margin-bottom: 0.5rem;
+}

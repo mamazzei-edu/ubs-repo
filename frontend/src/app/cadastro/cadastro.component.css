@@ -1,0 +1,106 @@
+/* Geral */
+.container {
+  background: #ffffff; /* Definido para branco */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ddd; /* Para evitar bordas muito visíveis */
+}
+
+h1 {
+  color: #4fc0c0; /* Cor do título */
+}
+
+h4 {
+  margin-top: 30px;
+  color: #4fc0c0;
+}
+
+/* Inputs e selects */
+input, select {
+  background-color: #f9f9f9; /* Fundo mais claro para inputs */
+  color: #333; /* Cor do texto */
+  border-radius: 5px;
+  border: 1px solid #ccc; /* Borda suave */
+}
+
+input:focus, select:focus {
+  border-color: #f58a6a;
+  box-shadow: 0 0 5px rgba(128, 203, 233, 0.5);
+}
+
+/* Botão */
+button {
+  background-color: #4fc0c0;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45b2b2; /* Mudança de cor ao passar o mouse */
+}
+
+/* Modal 
+.modal-content {
+  background: #ffffff;
+  color: #333;
+  border-radius: 10px;
+  padding: 20px;
+  border: 1px solid #ddd;
+}
+
+.modal-header {
+  background-color: #f58a6a;
+  color: white;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: space-between;
+}
+*/
+
+/* Estilo para labels e texto de aviso */
+label {
+  font-weight: bold;
+  color: #333;
+}
+
+small.text-danger {
+  display: block;
+  margin-top: 7px;
+  color: red;
+}
+
+.sub-category {
+  background: #eafaf1;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 15px;
+}
+
+hr {
+  border: 1px solid #ddd;
+  margin-top: 10px;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .form-floating.col-md-6 {
+      width: 100%;
+  }
+}
+
+.form-floating label {
+  font-weight: bold;
+}
+
+/* Campos obrigatórios */
+.required-field label::after {
+  content: '*';
+  color: red;
+  margin-left: 5px;
+}
