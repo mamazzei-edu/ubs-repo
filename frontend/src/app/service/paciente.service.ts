@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Paciente } from '../model/paciente.model';
@@ -10,7 +10,7 @@ import { Paciente } from '../model/paciente.model';
 export class PacienteService {
   private apiUrl = 'http://localhost:8090/api/pacientes';  // URL do backend diretamente no código
 
-  constructor(private http: HttpClient) {}
+  constructor(@Inject(HttpClient) private http: HttpClient) {}
 
   listarPacientes(): Observable<any[]> {
     return this.http.get<any[]>(this.apiUrl);  // Requisição GET para listar pacientes
