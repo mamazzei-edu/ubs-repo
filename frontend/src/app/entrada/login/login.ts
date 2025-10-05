@@ -47,7 +47,7 @@ export class Login implements OnInit {
   onSubmit() {
     this.loginService.logar(this.loginCliente).subscribe({
       next: (response: LoginResponse) => {
-        if (response.userId == null || response.userId === undefined) {
+        if (response.roles == null || response.roles.length === 0) {
           this.errorMessage = 'Erro na autenticação não foi possível efetuar o login. Verifique seu usuário e senha.';
           return;
         } else {
