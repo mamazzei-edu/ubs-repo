@@ -1,33 +1,3 @@
-<!-- mat-toolbar color="primary">
-  <span>Projeto Base</span>
-  <span class="spacer"></span>
-  @if (! authService.isLoggedIn()) {
-    <a routerLink="/login">
-      <mat-icon fontIcon="login"></mat-icon>Login</a>
-  } @else {
-    @if (authService.getRoles().includes('ROLE_SUPER_ADMIN')){
-      <a routerLink="/admin">
-        <mat-icon fontIcon="settings"></mat-icon>Admin</a>
-      <a routerLink="/funcionario">
-        <mat-icon fontIcon="badge"></mat-icon>Funcionário</a>
-      }
-    @if (authService.getRoles().includes('ROLE_ADMIN')) {
-      <a routerLink="/funcionario">
-        <mat-icon fontIcon="badge"></mat-icon>Funcionário</a>
-      }
-    @if (authService.getRoles().includes('ROLE_USER')) {
-      <a routerLink="/cliente">
-        <mat-icon fontIcon="person"></mat-icon>Cliente</a>
-      }
-    @if (authService.isLoggedIn()) {
-      <a (click)="logout()" routerLink="/">
-        <mat-icon fontIcon="logout"></mat-icon>Sair
-      </a>
-      } 
-  }
-
-</mat-toolbar -->
-
 <header class="site-header">
   <div class="site-header__inner">
  

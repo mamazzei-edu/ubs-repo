@@ -14,7 +14,6 @@ import { Router } from '@angular/router';
 import { LoginService } from './login-service';
 import { LoginResponse } from './login-models';
 import { AuthService } from '../logado/auth-service';
-import { NullLiteral } from 'typescript';
 
 @Component({
   selector: 'app-login',
@@ -48,7 +47,7 @@ export class Login implements OnInit {
   onSubmit() {
     this.loginService.logar(this.loginCliente).subscribe({
       next: (response: LoginResponse) => {
-        if (response.token == null || response.token === undefined) {
+        if (response.userId == null || response.userId === undefined) {
           this.errorMessage = 'Erro na autenticação não foi possível efetuar o login. Verifique seu usuário e senha.';
           return;
         } else {
