@@ -1,0 +1,104 @@
+<!-- mat-toolbar color="primary">
+  <span>Projeto Base</span>
+  <span class="spacer"></span>
+  @if (! authService.isLoggedIn()) {
+    <a routerLink="/login">
+      <mat-icon fontIcon="login"></mat-icon>Login</a>
+  } @else {
+    @if (authService.getRoles().includes('ROLE_SUPER_ADMIN')){
+      <a routerLink="/admin">
+        <mat-icon fontIcon="settings"></mat-icon>Admin</a>
+      <a routerLink="/funcionario">
+        <mat-icon fontIcon="badge"></mat-icon>Funcionário</a>
+      }
+    @if (authService.getRoles().includes('ROLE_ADMIN')) {
+      <a routerLink="/funcionario">
+        <mat-icon fontIcon="badge"></mat-icon>Funcionário</a>
+      }
+    @if (authService.getRoles().includes('ROLE_USER')) {
+      <a routerLink="/cliente">
+        <mat-icon fontIcon="person"></mat-icon>Cliente</a>
+      }
+    @if (authService.isLoggedIn()) {
+      <a (click)="logout()" routerLink="/">
+        <mat-icon fontIcon="logout"></mat-icon>Sair
+      </a>
+      } 
+  }
+
+</mat-toolbar -->
+
+<header class="site-header">
+  <div class="site-header__inner">
+ 
+    <a class="brand" routerLink="/">
+      <img src="img1.png" alt="Centro de Saúde Escola" />
+    </a>
+ 
+    <nav class="site-nav">
+      @if (! authService.isLoggedIn()) {
+        <a routerLink="/login" routerLinkActive="active">Login</a>
+      } @else {
+        @if (authService.getRoles().includes('ROLE_SUPER_ADMIN')){
+          <a routerLink="/user-cadastro" routerLinkActive="active">Usuários</a>
+        }
+        @if (authService.getRoles().includes('ROLE_ADMIN') || authService.getRoles().includes('ROLE_SUPER_ADMIN')) {
+          <a routerLink="/lista" routerLinkActive="active">Pacientes</a>
+          <a routerLink="/cadastro" routerLinkActive="active">Cadastro Novo</a>
+          <a routerLink="/upload" routerLinkActive="active">Carregar Ficha</a>
+        }
+        <a (click)="logout()" routerLink="/">Sair</a>
+    }
+      
+    </nav>
+  </div>
+</header>
+ 
+<a class="sr-anchor" routerLink="/" routerLinkActive="site-root-active" aria-hidden="true"></a>
+ 
+<div class="container">
+  <div class="image-single-wrapper">
+    <div class="image-single">
+      <img src="img2.png" alt="Imagem principal" />
+    </div>
+  </div>
+ 
+  <router-outlet></router-outlet>
+ 
+  <h1>Cuidando da sua saúde com excelência</h1>
+  <p class="lead">
+    Há mais de 90 anos oferecendo serviços de saúde de qualidade para a comunidade,
+    combinando tradição, inovação e cuidado humanizado.
+  </p>
+</div>
+ 
+<footer class="footer">
+  <div class="top-footer">
+ </div>
+</footer>
+    <!-- ul class="menu">
+      <li><a href="#">Features</a></li>
+      <li><a href="#">Blog</a></li>
+      <li><a href="#">Pricing</a></li>
+      <li><a href="#">Services</a></li>
+    </ul -- >
+ 
+    <div class="socials">
+      <a href="#"><i class="fab fa-twitter"></i></a>
+      <a href="#"><i class="fab fa-instagram"></i></a>
+      <a href="#"><i class="fab fa-facebook-f"></i></a>
+      <a href="#"><i class="fab fa-pinterest-p"></i></a>
+    </div>
+  </div>
+ 
+  <div class="bottom-footer">
+    <ul class="links">
+      <li><a href="#">Terms</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Privacy</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+    <img src="img3.png" alt="brand" style="height:40px;" />
+    <span class="copy">© 2025. All Rights Reserved.</span>
+  </div>
+</footer -->

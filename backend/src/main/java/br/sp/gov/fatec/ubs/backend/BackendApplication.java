@@ -5,20 +5,18 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 
-import br.sp.gov.fatec.ubs.backend.armazenamento.ArmazenamentoPropriedades;
-import br.sp.gov.fatec.ubs.backend.armazenamento.ArmazenamentoService;
+import br.sp.gov.fatec.ubs.backend.configs.ArmazenamentoPropriedades;
+import br.sp.gov.fatec.ubs.backend.services.ArmazenamentoService;
 
-@ComponentScan("br.sp.gov.fatec.ubs.backend.model")
-@ComponentScan("br.sp.gov.fatec.ubs.backend.armazenamento")
-@EnableConfigurationProperties(ArmazenamentoPropriedades.class)	
 @SpringBootApplication
+@EnableConfigurationProperties(ArmazenamentoPropriedades.class)	
 public class BackendApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(BackendApplication.class, args);
 	}
+
 
 	@Bean
 	CommandLineRunner init(ArmazenamentoService armazenamentoService) {

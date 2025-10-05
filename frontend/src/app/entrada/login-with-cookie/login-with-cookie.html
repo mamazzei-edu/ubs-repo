@@ -1,0 +1,33 @@
+<div>
+  <mat-card class="login">
+      <mat-card-header>
+        <mat-card-title>Login</mat-card-title>
+      </mat-card-header>
+      <form [formGroup]='loginForm'>
+        <mat-card-content>
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>E-mail</mat-label>
+            <input formControlName="email" matInput type="email" placeholder="Digite seu e-mail">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Senha</mat-label>
+            <input formControlName="password" matInput type="password" placeholder="Digite sua senha">
+          </mat-form-field>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-flat-button color="primary" (click)="onSubmit()">
+            Entrar
+          </button>
+        </mat-card-actions>
+        <p class="ml-10">Ainda não possui conta?
+          <a><strong><u>Clique aqui para se cadastrar!</u></strong></a>
+        </p>
+
+      </form>
+  </mat-card>
+
+
+</div>
+
+
