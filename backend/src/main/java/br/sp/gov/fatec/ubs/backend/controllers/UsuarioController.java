@@ -4,7 +4,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import br.sp.gov.fatec.ubs.backend.model.User;
-import br.sp.gov.fatec.ubs.backend.services.RoleService;
 import br.sp.gov.fatec.ubs.backend.services.UserService;
 
 import java.util.List;
@@ -44,6 +43,8 @@ public class UsuarioController {
         usuario.setEmail(usuarioAtualizado.getEmail());
         usuario.setUsername(usuarioAtualizado.getUsername());
         usuario.setPassword(usuarioAtualizado.getPassword());
+        usuario.setCrm(usuarioAtualizado.getCrm());
+        usuario.setRole(usuarioAtualizado.getRole());
         return userService.save(usuario);
     }
 

@@ -31,7 +31,7 @@
         <tbody>
           <tr *ngFor="let usuario of usuarios">
             <td>{{ usuario.matricula }}</td>
-            <td>{{ usuario.nomeCompleto }}</td>
+            <td>{{ usuario.fullName }}</td>
             <td>{{ usuario.email }}</td>
             <td>
               <button class="btn btn-primary btn-sm me-2" (click)="abrirModalEditar(usuario)">
@@ -63,21 +63,56 @@
           <div class="modal-body">
             <form (ngSubmit)="atualizarUsuario()" #form="ngForm">
               <div class="row g-3">
+
                 <div class="col-md-12">
-                  <label for="id">Código:</label>
-                  <input id="id" type="text" [(ngModel)]="usuarioSelecionado.id" name="id" disabled
-                    class="form-control text-muted" />
+                  <label for="id">Id</label>
+                  <input id="id" disabled=true type="text" [(ngModel)]="usuarioSelecionado.id" name="id" class="form-control" />
                 </div>
 
                 <div class="col-md-12">
-                  <label for="nomeCompleto">Nome Completo:</label>
-                  <input id="nomeCompleto" type="text" [(ngModel)]="usuarioSelecionado.nomeCompleto" name="nomeCompleto"
+                  <label for="matricula">Matricula</label>
+                  <input id="matricula" type="text" [(ngModel)]="usuarioSelecionado.matricula" name="matricula"
+                    class="form-control" />
+                </div>
+
+                <div class="col-md-12">
+                  <label for="fullName">Nome Completo:</label>
+                  <input id="fullName" type="text" [(ngModel)]="usuarioSelecionado.fullName" name="fullName"
                     class="form-control" />
                 </div>
 
                 <div class="col-md-12">
                   <label for="email">Email:</label>
                   <input id="email" type="text" [(ngModel)]="usuarioSelecionado.email" name="email"
+                    class="form-control" />
+                </div>
+
+                <div class="col-md-12">
+                  <label for="username">Nome do usuário:</label>
+                  <input id="username" type="text" [(ngModel)]="usuarioSelecionado.username" name="username"
+                    class="form-control" />
+                </div>
+
+                <div class="col-md-12">
+                  <label for="crm">CRM:</label>
+                  <input id="crm" type="text" [(ngModel)]="usuarioSelecionado.crm" name="crm" class="form-control" />
+                </div>
+
+
+                <div class="col-md-12">
+                                    
+
+                  <label for="role">Função: {{ roleSelecionado?.name }}</label>
+                  <div *ngFor="let role of roles">
+                    <input type="radio" name="roleInputEdit" [value]="role.id" [disabled]="roleSelecionado?.name == 'SUPER_ADMIN'" (click)="roleSelecionado = role" (select)="roleSelecionado = role"
+                      [checked]="roleSelecionado?.id === role.id">
+                    <label>{{ role.name }}</label>
+                  </div>
+                </div>
+
+                <div class="col-md-12">
+                  <label for="password">Senha:</label>
+                  <input id="password" type="password" [(ngModel)]="usuarioSelecionado.password" name="password"
                     class="form-control" />
                 </div>
                 <button type="submit" class="btn btn-warning mt-4 w-100">Salvar Alterações</button>
@@ -90,7 +125,7 @@
     </div>
 
 
-        <!-- Modal Cadastro -->
+    <!-- Modal Cadastro -->
     <div class="modal fade show d-block" *ngIf="mostrarModalCadastro" tabindex="-1"
       style="background-color: rgba(0, 0, 0, 0.5);">
       <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
@@ -102,42 +137,45 @@
           <div class="modal-body">
             <form (ngSubmit)="salvarUsuario()" #form="ngForm">
               <div class="row g-3">
-                
+
                 <div class="col-md-12">
                   <label for="matricula">Matricula</label>
-                  <input id="matricula" type="text" [(ngModel)]="matricula" name="matricula"
-                    class="form-control" />
+                  <input id="matricula" type="text" [(ngModel)]="matricula" name="matricula" class="form-control" />
                 </div>
-                
+
                 <div class="col-md-12">
                   <label for="fullName">Nome Completo:</label>
-                  <input id="fullName" type="text" [(ngModel)]="fullName" name="fullName"
-                    class="form-control" />
+                  <input id="fullName" type="text" [(ngModel)]="fullName" name="fullName" class="form-control" />
                 </div>
 
                 <div class="col-md-12">
                   <label for="email">Email:</label>
-                  <input id="email" type="text" [(ngModel)]="email" name="email"
-                    class="form-control" />
+                  <input id="email" type="text" [(ngModel)]="email" name="email" class="form-control" />
                 </div>
 
                 <div class="col-md-12">
                   <label for="username">Nome do usuário:</label>
-                  <input id="username" type="text" [(ngModel)]="username" name="username"
-                    class="form-control" />
+                  <input id="username" type="text" [(ngModel)]="username" name="username" class="form-control" />
                 </div>
-                
-                <!-- div class="col-md-12">
-                  <label for="role">Função:</label>
-                  <input id="role" type="text" [(ngModel)]="role" name="role"
-                    class="form-control" />
-                </div -->
+
+                <div class="col-md-12">
+                  <label for="crm">CRM:</label>
+                  <input id="crm" type="text" [(ngModel)]="crm" name="crm" class="form-control" />
+                </div>
+
+
+                <div class="col-md-12">
+                  <label for="role">Função: {{ roleSelecionado?.name }}</label>
+                  <div *ngFor="let role of roles">
+                    <input type="radio" name="roleInput" [value]="role.id" (click)="roleSelecionado = role">
+                    <label>{{ role.name }}</label>
+                  </div>
+                </div>
 
                 <div class="col-md-12">
                   <label for="password">Senha:</label>
-                  <input id="password" type="password" [(ngModel)]="password" name="password"
-                    class="form-control" />
-                    </div>                
+                  <input id="password" type="password" [(ngModel)]="password" name="password" class="form-control" />
+                </div>
 
                 <button type="submit" class="btn btn-warning mt-4 w-100">Salvar Alterações</button>
               </div>

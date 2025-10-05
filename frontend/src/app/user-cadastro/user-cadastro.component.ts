@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../service/user-service.service';
+import { Role } from '../model/role.model';
+import { RoleService } from '../service/role-service.service';
 
 @Component({
   selector: 'app-user-cadastro',
@@ -9,33 +11,50 @@ import { UserService } from '../service/user-service.service';
   standalone: true,
   templateUrl: './user-cadastro.component.html',
   styleUrl: './user-cadastro.component.css',
-    providers: [UserService]
+    providers: [UserService, RoleService]
 })
 export class UserCadastroComponent implements OnInit {
   usuarios: any[] = [];
+  roles: Role[] = [];
   mensagem: string = '';
   pesquisaId: string = '';
   usuarioSelecionado: any = null;
   mostrarModalEditar: boolean = false;
   mostrarModalCadastro: boolean = false;
+  roleSelecionado?: Role;
 
+  constructor(private usuarioservice: UserService, private roleService: RoleService) { }
+
+  ngOnInit(): void {
+    this.carregarUsuarios();
+    this.carregarRoles();
+  }
+
+  carregarRoles(): void {
+    this.roleService.listarRoles().subscribe({
+      next: (dados) => {
+        this.roles = dados;
+      },
+      error: () => {
+        this.mensagem = 'Erro ao carregar a lista de funções.';
+      },
+    });
+  }
+
+  id:number = 0;
   fullName: string = '';
   matricula: string = '';
   email: string = '';
   username: string = '';
   password: string = '';
+  crm: string = '';
+  role: Role | null = null;
   
-  constructor(private usuarioservice : UserService){}
-  
-  ngOnInit(): void {
-    this.carregarUsuarios();
-  }
-
     carregarUsuarios(): void {
     this.usuarioservice.listarUsuarios().subscribe({
       next: (dados) => {
         this.usuarios = dados;
-        this.mensagem = this.usuarios.length === 0 ? 'Nenhum paciente encontrado.' : '';
+        this.mensagem = this.usuarios.length === 0 ? 'Nenhum funcionário encontrado.' : '';
       },
       error: () => {
         this.mensagem = 'Erro ao carregar a lista de usuários.';
@@ -49,12 +68,12 @@ export class UserCadastroComponent implements OnInit {
       return;
     }
     this.usuarioservice.buscarUsuarioPorId(this.pesquisaId).subscribe({
-      next: (paciente) => {
-        this.usuarios = paciente ? [paciente] : [];
-        this.mensagem = paciente ? '' : 'Nenhum paciente encontrado com o ID fornecido.';
+      next: (usuario) => {
+        this.usuarios = usuario ? [usuario] : [];
+        this.mensagem = usuario ? '' : 'Nenhum funcionário encontrado com o ID fornecido.';
       },
       error: () => {
-        this.mensagem = 'Erro ao buscar paciente.';
+        this.mensagem = 'Erro ao buscar funcionário.';
       },
     });
   }
@@ -75,6 +94,7 @@ export class UserCadastroComponent implements OnInit {
 
     abrirModalEditar(usuario: any): void {
     this.usuarioSelecionado = { ...usuario };
+    this.roleSelecionado = this.roles.find(role => role.id === this.usuarioSelecionado.role.id) || undefined;
     this.mostrarModalEditar = true;
   }
 
@@ -106,7 +126,9 @@ export class UserCadastroComponent implements OnInit {
       matricula: this.matricula,
       email: this.email,
       username: this.username,
-      password: this.password
+      password: this.password,
+      crm: this.crm,
+      role: this.roleSelecionado ? this.roleSelecionado.id : null
     };
 
     this.usuarioservice.criarUsuario(usuario).subscribe({

@@ -51,7 +51,13 @@ public class UserService {
                 .setFullName(input.getFullName())
                 .setEmail(input.getEmail())
                 .setPassword(passwordEncoder.encode(input.getPassword()))
+                .setMatricula(input.getMatricula())
+                .setUsername(input.getUsername())
                 .setRole(optionalRole.get());
+                
+        if (input.getCrm() != null) {
+            user.setCrm(input.getCrm());
+        }
 
         return userRepository.save(user);
     }
@@ -65,7 +71,8 @@ public class UserService {
     }
 
     public User save(User input) {
-        Optional<Role> optionalRole = roleRepository.findByName(RoleEnum.ADMIN);
+//        Optional<Role> optionalRole = roleRepository.findByName(RoleEnum.ADMIN);
+        Optional<Role> optionalRole = roleRepository.findById(input.getRole().getId());
 
         if (optionalRole.isEmpty()) {
             return null;
@@ -78,6 +85,9 @@ public class UserService {
                 .setMatricula(input.getMatricula())
                 .setUsername(input.getUsername())
                 .setRole(optionalRole.get());
+        if (input.getCrm() != null) {
+            user.setCrm(input.getCrm());
+        }
 
         return userRepository.save(user);
     }
