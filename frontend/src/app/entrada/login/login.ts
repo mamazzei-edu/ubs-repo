@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
 import { LoginService } from './login-service';
 import { LoginResponse } from './login-models';
 import { AuthService } from '../logado/auth-service';
+import { NullLiteral } from 'typescript';
 
 @Component({
   selector: 'app-login',
@@ -23,6 +24,7 @@ import { AuthService } from '../logado/auth-service';
 })
 
 export class Login implements OnInit {
+  errorMessage: string | null = null;
   loginResponse!: LoginResponse | undefined;
   loginCliente: LoginCliente = LoginCliente.newLoginCliente();
   loginForm: FormGroup<{ email: FormControl<string | null>; password: FormControl<string | null>; }>;
@@ -45,9 +47,9 @@ export class Login implements OnInit {
   }
   onSubmit() {
     this.loginService.logar(this.loginCliente).subscribe({
-      next: (response: LoginResponse | undefined) => {
-        if (response === undefined) {
-          console.error('Erro na autenticação: Resposta de login não definida');
+      next: (response: LoginResponse) => {
+        if (response.token == null || response.token === undefined) {
+          this.errorMessage = 'Erro na autenticação não foi possível efetuar o login. Verifique seu usuário e senha.';
           return;
         } else {
           console.log('Login bem-sucedido:', response);

@@ -2,6 +2,8 @@
   <mat-card class="login">
       <mat-card-header>
         <mat-card-title>Login</mat-card-title>
+        <mat-card-subtitle>Entre com seu e-mail e senha</mat-card-subtitle>
+        <mat-error *ngIf="errorMessage">{{ errorMessage }}</mat-error>
       </mat-card-header>
       <form [formGroup]='loginForm'>
         <mat-card-content>

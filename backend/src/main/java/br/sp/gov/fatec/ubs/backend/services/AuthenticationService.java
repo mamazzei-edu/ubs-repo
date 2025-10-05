@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -53,11 +54,20 @@ public class AuthenticationService {
     }
 
     public User authenticate(LoginUserDto input) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        input.getEmail(),
-                        input.getPassword()));
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            input.getEmail(),
+                            input.getPassword()));
+            User usuario = userRepository.findByEmail(input.getEmail());
+            if (usuario == null) {
+                throw new UsernameNotFoundException("Usuário não encontrado");
+            } else {
+                return usuario;
+            }
 
-        return userRepository.findByEmail(input.getEmail());
+        }catch (Exception e) {
+            throw new UsernameNotFoundException("Usuário não encontrado");
+        }
     }
 }
