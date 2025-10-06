@@ -9,12 +9,62 @@
 # https://github.com/docker/awesome-compose
 services:
   server:
-    build:
-      context: .
+    build: ./backend
+    restart: always
+    depends_on:
+      - mysql
     environment:
       NODE_ENV: production
+      SPRING_DATASOURCE_URL: ${JDBC_DATABASE_URL:-jdbc:mariadb://mysql:3306/ubs}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME:-dbuser}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD:-123456}
+      SPRING_DATASOURCE_DRIVER-CLASS-NAME: ${SPRING_DATASOURCE_DRIVER-CLASS-NAME:-org.mariadb.jdbc.Driver}
+      SPRING_JPA_DATABASE_PLATFORM: ${SPRING_JPA_DATABASE_PLATFORM:-org.hibernate.dialect.MySQLDialect}
+      SPRING_JPA_GENERATE_DDL: ${SPRING_JPA_GENERATE_DDL:-true}
+      SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA: ${SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA:-ubs}
+      SPRING_JPA_SHOW_SQL: ${SPRING_JPA_SHOW_SQL:-true}
+      SERVER_PORT: ${SERVER_PORT:-8080}
+      SPRING_SECURITY_ENABLED: ${SPRING_SECURITY_ENABLED:-true}
+      SECURITY_JWT_EXPIRATION: ${SECURITY_JWT_EXPIRATION:-3600000}
+      SPRING_JWT_SECRET: ${SECURITY_JWT_SECRET:-mySecretKey}
+      DB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-123456}
+      DB_NAME: ${DB_NAME:-ubs}
+      DB_USER: ${DB_USER:-dbuser}
+      DB_HOST: ${DB_HOST:-mysql}
+      DB_PORT: ${DB_PORT:-3306}
+      DB_SCHEMA: ${DB_SCHEMA:-ubs}
+      DB_PASSWORD: ${DB_PASSWORD:-123456}
     ports:
-      - 4200:4200
+      - ${SERVER_PORT:-8080}:${SERVER_PORT:-8080}
+    networks:
+      - app-network
+
+  mysql:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_HOST: ${DB_HOST}
+      MYSQL_PORT: ${DB_PORT}
+      MYSQL_SCHEMA: ${DB_SCHEMA}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - ${DB_PORT}:${DB_PORT}
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - app-network
+
+
+  frontend:
+    build: ./frontend
+    restart: always
+    ports:
+      - ${ANGULAR_PORT:-4200}:${ANGULAR_PORT:-4200}
+    networks:
+      - app-network
 
 # The commented out section below is an example of how to define a PostgreSQL
 # database that your application can use. `depends_on` tells Docker Compose to
@@ -49,3 +99,9 @@ services:
 #   db-password:
 #     file: db/password.txt
 
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mysql-data:
