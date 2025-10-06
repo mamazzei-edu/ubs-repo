@@ -1,21 +1,16 @@
-<button class="btn btn-secondary" (click)="abrirModalCadastro()">Cadastrar novo usuario</button>
-
-<div class="container mt-4">
-  <!-- Campo de pesquisa -->
-  <div class="row mb-3">
+<div class="row mb-3">
     <div class="col-md-9">
       <input type="text" class="form-control" [(ngModel)]="pesquisaId" placeholder="Pesquisar paciente por código" />
     </div>
     <div class="col-md-3 text-end">
-      <button class="btn btn-success w-100" (click)="pesquisarUsuarioPorId()">
+      <button class="btn w-100" style="background-color: #50BFAD; color: white;" (click)="pesquisarUsuarioPorId()">
         <i class="bi bi-search"></i> Pesquisar
       </button>
     </div>
-  </div>
+  
 
-  <!-- Tabela de resultados -->
   <div class="card">
-    <div class="card-header bg-success text-white">
+    <div class="card-header text-white" style="background-color: #50BFAD;">
       <h5 class="mb-0">Usuarios</h5>
     </div>
     <div class="card-body">
@@ -51,57 +46,46 @@
       </table>
     </div>
 
-    <!-- Modal Editar -->
     <div class="modal fade show d-block" *ngIf="mostrarModalEditar" tabindex="-1"
       style="background-color: rgba(0, 0, 0, 0.5);">
       <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
-          <div class="modal-header bg-warning text-white">
+          <div class="modal-header text-white" style="background-color: #50BFAD;">
             <h5 class="modal-title">Editar Usuario</h5>
             <button type="button" class="btn-close" (click)="fecharModal()"></button>
           </div>
           <div class="modal-body">
             <form (ngSubmit)="atualizarUsuario()" #form="ngForm">
               <div class="row g-3">
-
                 <div class="col-md-12">
                   <label for="id">Id</label>
                   <input id="id" disabled=true type="text" [(ngModel)]="usuarioSelecionado.id" name="id" class="form-control" />
                 </div>
-
                 <div class="col-md-12">
                   <label for="matricula">Matricula</label>
                   <input id="matricula" type="text" [(ngModel)]="usuarioSelecionado.matricula" name="matricula"
                     class="form-control" />
                 </div>
-
                 <div class="col-md-12">
                   <label for="fullName">Nome Completo:</label>
                   <input id="fullName" type="text" [(ngModel)]="usuarioSelecionado.fullName" name="fullName"
                     class="form-control" />
                 </div>
-
                 <div class="col-md-12">
                   <label for="email">Email:</label>
                   <input id="email" type="text" [(ngModel)]="usuarioSelecionado.email" name="email"
                     class="form-control" />
                 </div>
-
                 <div class="col-md-12">
                   <label for="username">Nome do usuário:</label>
                   <input id="username" type="text" [(ngModel)]="usuarioSelecionado.username" name="username"
                     class="form-control" />
                 </div>
-
                 <div class="col-md-12">
                   <label for="crm">CRM:</label>
                   <input id="crm" type="text" [(ngModel)]="usuarioSelecionado.crm" name="crm" class="form-control" />
                 </div>
-
-
                 <div class="col-md-12">
-                                    
-
                   <label for="role">Função: {{ roleSelecionado?.name }}</label>
                   <div *ngFor="let role of roles">
                     <input type="radio" name="roleInputEdit" [value]="role.id" [disabled]="roleSelecionado?.name == 'SUPER_ADMIN'" (click)="roleSelecionado = role" (select)="roleSelecionado = role"
@@ -109,61 +93,50 @@
                     <label>{{ role.name }}</label>
                   </div>
                 </div>
-
                 <div class="col-md-12">
                   <label for="password">Senha:</label>
                   <input id="password" type="password" [(ngModel)]="usuarioSelecionado.password" name="password"
                     class="form-control" />
                 </div>
-                <button type="submit" class="btn btn-warning mt-4 w-100">Salvar Alterações</button>
+                <button type="submit" class="btn mt-4 w-100" style="background-color: #50BFAD; color: white;">Salvar Alterações</button>
               </div>
             </form>
-
           </div>
         </div>
       </div>
     </div>
 
-
-    <!-- Modal Cadastro -->
     <div class="modal fade show d-block" *ngIf="mostrarModalCadastro" tabindex="-1"
       style="background-color: rgba(0, 0, 0, 0.5);">
       <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
-          <div class="modal-header bg-warning text-white">
+          <div class="modal-header text-white" style="background-color: #50BFAD;">
             <h5 class="modal-title">Cadastrar Usuário</h5>
             <button type="button" class="btn-close" (click)="fecharModal()"></button>
           </div>
           <div class="modal-body">
             <form (ngSubmit)="salvarUsuario()" #form="ngForm">
               <div class="row g-3">
-
                 <div class="col-md-12">
                   <label for="matricula">Matricula</label>
                   <input id="matricula" type="text" [(ngModel)]="matricula" name="matricula" class="form-control" />
                 </div>
-
                 <div class="col-md-12">
                   <label for="fullName">Nome Completo:</label>
                   <input id="fullName" type="text" [(ngModel)]="fullName" name="fullName" class="form-control" />
                 </div>
-
                 <div class="col-md-12">
                   <label for="email">Email:</label>
                   <input id="email" type="text" [(ngModel)]="email" name="email" class="form-control" />
                 </div>
-
                 <div class="col-md-12">
                   <label for="username">Nome do usuário:</label>
                   <input id="username" type="text" [(ngModel)]="username" name="username" class="form-control" />
                 </div>
-
                 <div class="col-md-12">
                   <label for="crm">CRM:</label>
                   <input id="crm" type="text" [(ngModel)]="crm" name="crm" class="form-control" />
                 </div>
-
-
                 <div class="col-md-12">
                   <label for="role">Função: {{ roleSelecionado?.name }}</label>
                   <div *ngFor="let role of roles">
@@ -171,21 +144,16 @@
                     <label>{{ role.name }}</label>
                   </div>
                 </div>
-
                 <div class="col-md-12">
                   <label for="password">Senha:</label>
                   <input id="password" type="password" [(ngModel)]="password" name="password" class="form-control" />
                 </div>
-
-                <button type="submit" class="btn btn-warning mt-4 w-100">Salvar Alterações</button>
+                <button type="submit" class="btn mt-4 w-100" style="background-color: #50BFAD; color: white;">Salvar Alterações</button>
               </div>
             </form>
-
           </div>
         </div>
       </div>
     </div>
-
-
   </div>
 </div>

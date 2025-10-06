@@ -25,6 +25,8 @@ export class App {
   pacienteService: PacienteService;
   router: Router;
 
+  public mostrarModalCadastro: boolean = false;
+
   private cookieService: CookieService;
   constructor(authService: AuthService, logoutService: LogoutService, cookieService: CookieService, pacienteService: PacienteService, router: Router) {
     this.authService = authService;
@@ -32,6 +34,9 @@ export class App {
     this.cookieService = cookieService;
     this.pacienteService = pacienteService;
     this.router = router;
+  }
+  public abrirModalCadastro() {
+    this.mostrarModalCadastro = true;
   }
   protected readonly title = signal('frontend');
   logout() {
