@@ -1,0 +1,183 @@
+<div class="agendamento-container">
+  <h1>Sistema de Agendamentos</h1>
+
+  <!-- Formulário de Agendamento -->
+  <mat-card class="agendamento-form">
+    <mat-card-header>
+      <mat-card-title>Novo Agendamento</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="agendamentoForm" (ngSubmit)="onSubmit()">
+        <div class="form-row">
+          <!-- Seleção de Paciente -->
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Paciente</mat-label>
+            <mat-select formControlName="pacienteId">
+              <mat-option *ngFor="let paciente of pacientes" [value]="paciente.id">
+                {{ paciente.nomeCompleto }} - {{ paciente.cpf }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <!-- Seleção de Médico -->
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Médico</mat-label>
+            <mat-select formControlName="medicoId">
+              <mat-option *ngFor="let medico of medicos" [value]="medico.id">
+                Dr(a). {{ medico.fullName }} - CRM: {{ medico.crm }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <!-- Data da Consulta -->
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Data da Consulta</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="dataConsulta">
+            <mat-hint>Selecione a data da consulta</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+
+          <!-- Hora da Consulta -->
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Hora da Consulta</mat-label>
+            <input matInput type="time" formControlName="horaConsulta">
+            <mat-hint>Formato: HH:MM</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <!-- Tipo de Consulta -->
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Tipo de Consulta</mat-label>
+            <mat-select formControlName="tipoConsulta">
+              <mat-option *ngFor="let tipo of tiposConsulta" [value]="tipo">
+                {{ tipo }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <!-- Observações -->
+          <mat-form-field appearance="outline" class="form-field-full">
+            <mat-label>Observações</mat-label>
+            <textarea matInput rows="3" formControlName="observacoes" placeholder="Observações adicionais..."></textarea>
+          </mat-form-field>
+        </div>
+
+        <div class="form-actions">
+          <button mat-flat-button color="primary" type="submit" [disabled]="!agendamentoForm.valid">
+            <mat-icon>event</mat-icon>
+            Criar Agendamento
+          </button>
+          <button mat-stroked-button type="button" (click)="agendamentoForm.reset()">
+            <mat-icon>clear</mat-icon>
+            Limpar
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Lista de Agendamentos -->
+  <mat-card class="agendamentos-list">
+    <mat-card-header>
+      <mat-card-title>Agendamentos</mat-card-title>
+      <mat-card-subtitle>Total: {{ agendamentos.length }} agendamentos</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="table-container">
+        <table mat-table [dataSource]="agendamentos" class="agendamentos-table">
+          
+          <!-- Coluna Paciente -->
+          <ng-container matColumnDef="paciente">
+            <th mat-header-cell *matHeaderCellDef>Paciente</th>
+            <td mat-cell *matCellDef="let agendamento">
+              <div class="paciente-info">
+                <strong>{{ agendamento.paciente?.nomeCompleto || 'N/A' }}</strong>
+                <small>{{ agendamento.paciente?.telefoneCelular || 'N/A' }}</small>
+              </div>
+            </td>
+          </ng-container>
+
+          <!-- Coluna Médico -->
+          <ng-container matColumnDef="medico">
+            <th mat-header-cell *matHeaderCellDef>Médico</th>
+            <td mat-cell *matCellDef="let agendamento">
+              <div class="medico-info">
+                <strong>Dr(a). {{ agendamento.medico?.fullName || 'N/A' }}</strong>
+                <small>CRM: {{ agendamento.medico?.crm || 'N/A' }}</small>
+              </div>
+            </td>
+          </ng-container>
+
+          <!-- Coluna Data e Hora -->
+          <ng-container matColumnDef="dataHora">
+            <th mat-header-cell *matHeaderCellDef>Data e Hora</th>
+            <td mat-cell *matCellDef="let agendamento">
+              {{ formatarDataHora(agendamento.dataHoraConsulta) }}
+            </td>
+          </ng-container>
+
+          <!-- Coluna Tipo de Consulta -->
+          <ng-container matColumnDef="tipoConsulta">
+            <th mat-header-cell *matHeaderCellDef>Tipo</th>
+            <td mat-cell *matCellDef="let agendamento">
+              {{ agendamento.tipoConsulta }}
+            </td>
+          </ng-container>
+
+          <!-- Coluna Status -->
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef>Status</th>
+            <td mat-cell *matCellDef="let agendamento">
+              <mat-chip [color]="getStatusColor(agendamento.status)">
+                {{ agendamento.status }}
+              </mat-chip>
+            </td>
+          </ng-container>
+
+          <!-- Coluna Ações -->
+          <ng-container matColumnDef="acoes">
+            <th mat-header-cell *matHeaderCellDef>Ações</th>
+            <td mat-cell *matCellDef="let agendamento">
+              <div class="acoes-buttons">
+                <button 
+                  mat-icon-button 
+                  color="accent" 
+                  *ngIf="agendamento.status === 'AGENDADO'"
+                  (click)="confirmarAgendamento(agendamento.id)"
+                  title="Confirmar">
+                  <mat-icon>check_circle</mat-icon>
+                </button>
+                
+                <button 
+                  mat-icon-button 
+                  color="warn" 
+                  *ngIf="agendamento.status !== 'CANCELADO'"
+                  (click)="cancelarAgendamento(agendamento.id)"
+                  title="Cancelar">
+                  <mat-icon>cancel</mat-icon>
+                </button>
+              </div>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <!-- Mensagem quando não há agendamentos -->
+        <div *ngIf="agendamentos.length === 0" class="no-data">
+          <mat-icon>event_busy</mat-icon>
+          <p>Nenhum agendamento encontrado</p>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

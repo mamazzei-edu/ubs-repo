@@ -1,0 +1,193 @@
+.agendamento-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  h1 {
+    color: #2c5aa0;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+}
+
+.agendamento-form {
+  margin-bottom: 30px;
+
+  .form-row {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      gap: 0;
+    }
+  }
+
+  .form-field {
+    flex: 1;
+    min-width: 250px;
+
+    @media (max-width: 768px) {
+      min-width: 100%;
+    }
+  }
+
+  .form-field-full {
+    width: 100%;
+  }
+
+  .form-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-top: 20px;
+
+    @media (max-width: 768px) {
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    button {
+      min-width: 140px;
+    }
+  }
+}
+
+.agendamentos-list {
+  .table-container {
+    overflow-x: auto;
+    max-height: 600px;
+    overflow-y: auto;
+  }
+
+  .agendamentos-table {
+    width: 100%;
+    min-width: 800px;
+
+    th {
+      background-color: #f5f5f5;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .paciente-info,
+    .medico-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+
+      strong {
+        font-weight: 500;
+        color: #333;
+      }
+
+      small {
+        color: #666;
+        font-size: 12px;
+      }
+    }
+
+    .acoes-buttons {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+    }
+  }
+
+  .no-data {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+
+    mat-icon {
+      font-size: 48px;
+      height: 48px;
+      width: 48px;
+      color: #ccc;
+      margin-bottom: 16px;
+    }
+
+    p {
+      margin: 0;
+      font-size: 16px;
+    }
+  }
+}
+
+// Estilização específica dos chips de status
+mat-chip {
+  font-size: 12px;
+  font-weight: 500;
+  
+  &[color="primary"] {
+    background-color: #2196f3;
+    color: white;
+  }
+  
+  &[color="accent"] {
+    background-color: #4caf50;
+    color: white;
+  }
+  
+  &[color="warn"] {
+    background-color: #f44336;
+    color: white;
+  }
+}
+
+// Responsividade para dispositivos móveis
+@media (max-width: 768px) {
+  .agendamento-container {
+    padding: 12px;
+  }
+
+  .agendamentos-list {
+    .table-container {
+      max-height: 400px;
+    }
+
+    .agendamentos-table {
+      font-size: 14px;
+
+      th, td {
+        padding: 8px 4px;
+      }
+    }
+  }
+}
+
+// Melhorias na aparência dos campos de formulário
+.mat-mdc-form-field {
+  .mat-mdc-form-field-subscript-wrapper {
+    margin-top: 4px;
+  }
+}
+
+// Estilização dos botões
+.mat-mdc-raised-button,
+.mat-mdc-outlined-button {
+  .mat-icon {
+    margin-right: 8px;
+  }
+}
+
+// Cor personalizada para o tema da UBS
+:root {
+  --primary-color: #2c5aa0;
+  --accent-color: #4caf50;
+  --warn-color: #f44336;
+}
+
+.mat-primary {
+  background-color: var(--primary-color) !important;
+}
+
+.mat-accent {
+  background-color: var(--accent-color) !important;
+}
+
+.mat-warn {
+  background-color: var(--warn-color) !important;
+}
