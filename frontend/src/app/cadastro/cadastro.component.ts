@@ -8,7 +8,7 @@ import { RouterModule, Router } from '@angular/router'; // ✅ IMPORTAÇÃO DO R
 @Component({
   selector: 'app-cadastro',
   standalone: true,
-  imports: [CommonModule, FormsModule, HttpClientModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './cadastro.component.html',
   styleUrls: ['./cadastro.component.css'],
   providers: [PacienteService]
@@ -75,7 +75,7 @@ export class CadastroComponent {
       cpf: this.cpf,
     };
 
-    this.http.post('http://localhost:8090/api/pacientes', paciente).subscribe({
+    this.http.post('http://backend_server:8080/api/pacientes', paciente).subscribe({
       next: (data) => {
         console.log('Paciente salvo com sucesso:', data);
         this.openModal(); // Abre a modal

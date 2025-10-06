@@ -10,7 +10,7 @@ import { LoginResponseCookie } from './login-models-cookie';
 })
 
 export class LoginServiceCookie {
-  private apiUrl = 'http://localhost:8090/auth/logincookie';
+  private apiUrl = 'http://backend_server:8080/auth/logincookie';
   constructor(private http: HttpClient) { }
 
   logar(loginCliente: LoginClienteCookie): Observable<LoginResponseCookie> {

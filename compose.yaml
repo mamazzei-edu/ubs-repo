@@ -8,39 +8,41 @@
 # database or a cache. For examples, see the Awesome Compose repository:
 # https://github.com/docker/awesome-compose
 services:
-  server:
+  backend:
     build: ./backend
+    container_name: backend_server
     restart: always
     depends_on:
       - mysql
     environment:
       NODE_ENV: production
-      SPRING_DATASOURCE_URL: ${JDBC_DATABASE_URL:-jdbc:mariadb://mysql:3306/ubs}
-      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME:-dbuser}
-      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD:-123456}
-      SPRING_DATASOURCE_DRIVER-CLASS-NAME: ${SPRING_DATASOURCE_DRIVER-CLASS-NAME:-org.mariadb.jdbc.Driver}
-      SPRING_JPA_DATABASE_PLATFORM: ${SPRING_JPA_DATABASE_PLATFORM:-org.hibernate.dialect.MySQLDialect}
-      SPRING_JPA_GENERATE_DDL: ${SPRING_JPA_GENERATE_DDL:-true}
-      SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA: ${SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA:-ubs}
-      SPRING_JPA_SHOW_SQL: ${SPRING_JPA_SHOW_SQL:-true}
-      SERVER_PORT: ${SERVER_PORT:-8080}
-      SPRING_SECURITY_ENABLED: ${SPRING_SECURITY_ENABLED:-true}
-      SECURITY_JWT_EXPIRATION: ${SECURITY_JWT_EXPIRATION:-3600000}
-      SPRING_JWT_SECRET: ${SECURITY_JWT_SECRET:-mySecretKey}
-      DB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-123456}
-      DB_NAME: ${DB_NAME:-ubs}
-      DB_USER: ${DB_USER:-dbuser}
-      DB_HOST: ${DB_HOST:-mysql}
-      DB_PORT: ${DB_PORT:-3306}
-      DB_SCHEMA: ${DB_SCHEMA:-ubs}
-      DB_PASSWORD: ${DB_PASSWORD:-123456}
+      SPRING_DATASOURCE_URL: ${JDBC_DATABASE_URL}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      SPRING_DATASOURCE_DRIVER-CLASS-NAME: ${SPRING_DATASOURCE_DRIVER-CLASS-NAME}
+      SPRING_JPA_DATABASE_PLATFORM: ${SPRING_JPA_DATABASE_PLATFORM}
+      SPRING_JPA_GENERATE_DDL: ${SPRING_JPA_GENERATE_DDL}
+      SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA: ${SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA}
+      SPRING_JPA_SHOW_SQL: ${SPRING_JPA_SHOW_SQL}
+      SERVER_PORT: ${SERVER_PORT}
+      SPRING_SECURITY_ENABLED: ${SPRING_SECURITY_ENABLED}
+      SECURITY_JWT_EXPIRATION: ${SECURITY_JWT_EXPIRATION}
+      SPRING_JWT_SECRET: ${SECURITY_JWT_SECRET}
+      DB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_SCHEMA: ${DB_SCHEMA}
+      DB_PASSWORD: ${DB_PASSWORD}
     ports:
-      - ${SERVER_PORT:-8080}:${SERVER_PORT:-8080}
+      - ${SERVER_PORT}:${SERVER_PORT}
     networks:
       - app-network
 
   mysql:
     image: mysql:latest
+    container_name: mysql_server
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
@@ -60,9 +62,10 @@ services:
 
   frontend:
     build: ./frontend
+    container_name: angular_client
     restart: always
     ports:
-      - ${ANGULAR_PORT:-4200}:${ANGULAR_PORT:-4200}
+      - ${ANGULAR_PORT}:${ANGULAR_PORT}
     networks:
       - app-network
 
