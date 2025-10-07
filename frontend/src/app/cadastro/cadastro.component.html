@@ -1,71 +1,167 @@
 <div class="container" style="border: 1px solid black;">
   <h1>Cadastro de Paciente</h1>
- 
-  <!-- Formulário para cadastrar um paciente -->
+
   <form (ngSubmit)="salvarPaciente()">
-    <!-- Informações Pessoais -->
+    <!-- INFORMAÇÕES PESSOAIS -->
+    <h4>Informações Pessoais</h4>
+
     <div class="form-group">
       <label for="nomeCompleto">Nome Completo*</label>
       <input type="text" id="nomeCompleto" class="form-control"
-             [(ngModel)]="nomeCompleto" name="nomeCompleto" minlength="10" required #nomeCompletoField="ngModel" />
+             [(ngModel)]="nomeCompleto" name="nomeCompleto"
+             minlength="10" required #nomeCompletoField="ngModel" />
       <div *ngIf="nomeCompletoField.invalid && (nomeCompletoField.dirty || nomeCompletoField.touched)" class="text-danger">
         <small *ngIf="nomeCompletoField.errors?.['required']">Nome Completo é obrigatório.</small>
-        <small *ngIf="nomeCompletoField.errors?.['minlength']">Nome Completo deve ter pelo menos 10 caracteres.</small>
+        <small *ngIf="nomeCompletoField.errors?.['minlength']">Deve ter pelo menos 10 caracteres.</small>
       </div>
     </div>
- 
+
     <div class="form-group">
       <label for="nomeSocial">Nome Social</label>
-      <input type="text" id="nomeSocial" class="form-control" [(ngModel)]="nomeSocial" name="nomeSocial" />
+      <input type="text" id="nomeSocial" class="form-control"
+             [(ngModel)]="nomeSocial" name="nomeSocial" />
     </div>
- 
+
     <div class="form-group">
       <label for="nomeMae">Nome da Mãe</label>
-      <input type="text" id="nomeMae" class="form-control" [(ngModel)]="nomeMae" name="nomeMae" />
+      <input type="text" id="nomeMae" class="form-control"
+             [(ngModel)]="nomeMae" name="nomeMae" />
     </div>
- 
+
     <div class="form-group">
       <label for="nomePai">Nome do Pai</label>
-      <input type="text" id="nomePai" class="form-control" [(ngModel)]="nomePai" name="nomePai" />
+      <input type="text" id="nomePai" class="form-control"
+             [(ngModel)]="nomePai" name="nomePai" />
     </div>
- 
+
     <div class="form-group">
-      <label for="cpf">CPF</label>
-      <input type="number" id="cpf" class="form-control" [(ngModel)]="cpf" name="cpf" required />
+      <label for="cpf">CPF*</label>
+      <input type="text" id="cpf" class="form-control"
+             [(ngModel)]="cpf" name="cpf" required placeholder="000.000.000-00" />
     </div>
- 
+
     <div class="form-group">
-      <label for="dataNascimento">Data de Nascimento</label>
-      <input type="date" id="dataNascimento" class="form-control" [(ngModel)]="dataNascimento" name="dataNascimento" />
+      <label for="dataNascimento">Data de Nascimento*</label>
+      <input type="date" id="dataNascimento" class="form-control"
+             [(ngModel)]="dataNascimento" name="dataNascimento" required />
     </div>
- 
+
     <div class="form-group">
-      <label for="sexo">Sexo</label>
-      <select id="sexo" class="form-control" [(ngModel)]="sexo" name="sexo">
+      <label for="sexo">Sexo*</label>
+      <select id="sexo" class="form-control" [(ngModel)]="sexo" name="sexo" required>
         <option value="">Selecione</option>
-        <option value="M">Masculino</option>
-        <option value="F">Feminino</option>
-        <option value="O">Outro</option>
+        <option value="Masculino">Masculino</option>
+        <option value="Feminino">Feminino</option>
+        <option value="Outro">Outro</option>
       </select>
     </div>
- 
-    <!-- Localidade -->
+
+    <!-- LOCALIDADE -->
+    <h4>Localidade</h4>
+
     <div class="form-group">
-      <label for="nacionalidade">Nacionalidade</label>
-      <input type="text" id="nacionalidade" class="form-control" [(ngModel)]="nacionalidade" name="nacionalidade" />
+      <label for="nacionalidade">Nacionalidade*</label>
+      <input type="text" id="nacionalidade" class="form-control"
+             [(ngModel)]="nacionalidade" name="nacionalidade" required />
     </div>
- 
+
     <div class="form-group">
-      <label for="municipioNascimento">Município de Nascimento</label>
-      <input type="text" id="municipioNascimento" class="form-control" [(ngModel)]="municipioNascimento" name="municipioNascimento" />
+      <label for="municipioNascimento">Município de Nascimento*</label>
+      <input type="text" id="municipioNascimento" class="form-control"
+             [(ngModel)]="municipioNascimento" name="municipioNascimento" required />
     </div>
- 
-    <!-- Dados Complementares -->
+
+    <!-- ENDEREÇO -->
+    <h4>Endereço</h4>
+
     <div class="form-group">
-      <label for="racaCor">Raça/Cor</label>
-      <input type="text" id="racaCor" class="form-control" [(ngModel)]="racaCor" name="racaCor" />
+      <label for="cep">CEP</label>
+      <input type="text" id="cep" class="form-control"
+             [(ngModel)]="cep" name="cep" placeholder="00000-000" />
     </div>
- 
+
+    <div class="form-group">
+      <label for="logradouro">Logradouro</label>
+      <input type="text" id="logradouro" class="form-control"
+             [(ngModel)]="logradouro" name="logradouro" />
+    </div>
+
+    <div class="form-group">
+      <label for="numero">Número</label>
+      <input type="text" id="numero" class="form-control"
+             [(ngModel)]="numero" name="numero" />
+    </div>
+
+    <div class="form-group">
+      <label for="bairro">Bairro</label>
+      <input type="text" id="bairro" class="form-control"
+             [(ngModel)]="bairro" name="bairro" />
+    </div>
+
+    <div class="form-group">
+      <label for="complemento">Complemento</label>
+      <input type="text" id="complemento" class="form-control"
+             [(ngModel)]="complemento" name="complemento" />
+    </div>
+
+    <!-- DOCUMENTOS -->
+    <h4>Documentos</h4>
+
+    <div class="form-group">
+      <label for="rg">RG</label>
+      <input type="text" id="rg" class="form-control" [(ngModel)]="rg" name="rg" />
+    </div>
+
+    <div class="form-group">
+      <label for="orgaoEmissor">Órgão Emissor</label>
+      <input type="text" id="orgaoEmissor" class="form-control" [(ngModel)]="orgaoEmissor" name="orgaoEmissor" />
+    </div>
+
+    <div class="form-group">
+      <label for="uf">UF</label>
+      <input type="text" id="uf" class="form-control" [(ngModel)]="uf" name="uf" maxlength="2" />
+    </div>
+
+    <div class="form-group">
+      <label for="pisPasepNis">PIS/PASEP/NIS</label>
+      <input type="text" id="pisPasepNis" class="form-control" [(ngModel)]="pisPasepNis" name="pisPasepNis" />
+    </div>
+
+    <div class="form-group">
+      <label for="cnh">CNH</label>
+      <input type="text" id="cnh" class="form-control" [(ngModel)]="cnh" name="cnh" />
+    </div>
+
+    <div class="form-group">
+      <label for="ctps">CTPS</label>
+      <input type="text" id="ctps" class="form-control" [(ngModel)]="ctps" name="ctps" />
+    </div>
+
+    <div class="form-group">
+      <label for="tituloEleitor">Título de Eleitor</label>
+      <input type="text" id="tituloEleitor" class="form-control" [(ngModel)]="tituloEleitor" name="tituloEleitor" />
+    </div>
+
+    <div class="form-group">
+      <label for="passaporte">Passaporte</label>
+      <input type="text" id="passaporte" class="form-control" [(ngModel)]="passaporte" name="passaporte" />
+    </div>
+
+    <!-- DADOS COMPLEMENTARES -->
+    <h4>Dados Complementares</h4>
+
+    <div class="form-group">
+      <label for="racaCor">Raça/Cor*</label>
+      <select id="racaCor" class="form-control" [(ngModel)]="racaCor" name="racaCor" required>
+        <option value="">Selecione</option>
+        <option value="Branca">Branca</option>
+        <option value="Preta">Preta</option>
+        <option value="Parda">Parda</option>
+        <option value="Amarela">Amarela</option>
+        <option value="Indígena">Indígena</option>
+      </select>
+    </div>
+
     <div class="form-group">
       <label for="frequentaEscola">Frequenta Escola</label>
       <select id="frequentaEscola" class="form-control" [(ngModel)]="frequentaEscola" name="frequentaEscola">
@@ -74,81 +170,125 @@
         <option value="Não">Não</option>
       </select>
     </div>
- 
+
     <div class="form-group">
       <label for="escolaridade">Escolaridade</label>
       <input type="text" id="escolaridade" class="form-control" [(ngModel)]="escolaridade" name="escolaridade" />
     </div>
- 
+
     <div class="form-group">
       <label for="situacaoFamiliar">Situação Familiar</label>
       <input type="text" id="situacaoFamiliar" class="form-control" [(ngModel)]="situacaoFamiliar" name="situacaoFamiliar" />
     </div>
- 
+
     <div class="form-group">
-      <label for="vinculoEstabelecimento">Vínculo com Estabelecimento</label>
-      <input type="text" id="vinculoEstabelecimento" class="form-control" [(ngModel)]="vinculoEstabelecimento" name="vinculoEstabelecimento" />
+      <label for="ocupacao">Ocupação</label>
+      <input type="text" id="ocupacao" class="form-control" [(ngModel)]="ocupacao" name="ocupacao" />
     </div>
- 
+
     <div class="form-group">
-      <label for="deficiencia">Deficiência</label>
-      <input type="text" id="deficiencia" class="form-control" [(ngModel)]="deficiencia" name="deficiencia" />
+      <label for="utilizaAlgumaOPM">Utiliza alguma OPM?</label>
+      <select id="utilizaAlgumaOPM" class="form-control" [(ngModel)]="utilizaAlgumaOPM" name="utilizaAlgumaOPM">
+        <option value="">Selecione</option>
+        <option value="Sim">Sim</option>
+        <option value="Não">Não</option>
+      </select>
     </div>
- 
-    <!-- Contato -->
+
+    <!-- DEFICIÊNCIAS -->
+    <h4>Deficiências</h4>
+
     <div class="form-group">
-      <label for="contatoCelular">Contato Celular</label>
-      <input type="text" id="contatoCelular" class="form-control" [(ngModel)]="contatoCelular" name="contatoCelular" />
+      <label for="deficiente">Deficiente</label>
+      <select id="deficiente" class="form-control" [(ngModel)]="deficiente" name="deficiente">
+        <option value="">Selecione</option>
+        <option value="Sim">Sim</option>
+        <option value="Não">Não</option>
+      </select>
     </div>
- 
+
     <div class="form-group">
-      <label for="contatoResidencial">Contato Residencial</label>
+      <label for="visual">Visual</label>
+      <select id="visual" class="form-control" [(ngModel)]="visual" name="visual">
+        <option value="">Selecione</option>
+        <option value="Sim">Sim</option>
+        <option value="Não">Não</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="auditiva">Auditiva</label>
+      <select id="auditiva" class="form-control" [(ngModel)]="auditiva" name="auditiva">
+        <option value="">Selecione</option>
+        <option value="Sim">Sim</option>
+        <option value="Não">Não</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="motora">Motora</label>
+      <select id="motora" class="form-control" [(ngModel)]="motora" name="motora">
+        <option value="">Selecione</option>
+        <option value="Sim">Sim</option>
+        <option value="Não">Não</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="intelectual">Intelectual</label>
+      <select id="intelectual" class="form-control" [(ngModel)]="intelectual" name="intelectual">
+        <option value="">Selecione</option>
+        <option value="Sim">Sim</option>
+        <option value="Não">Não</option>
+      </select>
+    </div>
+
+    <!-- CONTATO -->
+    <h4>Contato</h4>
+
+    <div class="form-group">
+      <label for="contatoCelular">Celular*</label>
+      <input type="text" id="contatoCelular" class="form-control" [(ngModel)]="contatoCelular" name="contatoCelular" required />
+    </div>
+
+    <div class="form-group">
+      <label for="contatoResidencial">Telefone Residencial</label>
       <input type="text" id="contatoResidencial" class="form-control" [(ngModel)]="contatoResidencial" name="contatoResidencial" />
     </div>
- 
+
     <div class="form-group">
-      <label for="contatoComercial">Contato Comercial</label>
+      <label for="contatoComercial">Telefone Comercial</label>
       <input type="text" id="contatoComercial" class="form-control" [(ngModel)]="contatoComercial" name="contatoComercial" />
     </div>
- 
+
     <div class="form-group">
-      <label for="contatoEmail">E-mail</label>
-      <input type="email" id="contatoEmail" class="form-control" [(ngModel)]="contatoEmail" name="contatoEmail" required/>
+      <label for="contatoEmail">E-mail*</label>
+      <input type="email" id="contatoEmail" class="form-control" [(ngModel)]="contatoEmail" name="contatoEmail" required />
     </div>
- 
+
     <button type="submit" class="btn btn-success mt-3">Salvar Paciente</button>
   </form>
- 
+
+  <!-- MODAL DE CONFIRMAÇÃO -->
   <div
-  class="modal fade"
-  tabindex="-1"
-  [class.show]="isModalVisible"
-  [style.display]="isModalVisible ? 'block' : 'none'"
-  (click)="closeModal()">
-  <div
-    class="modal-dialog"
-    (click)="$event.stopPropagation()"> <!-- Impede o clique na modal de fechá-la -->
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Mensagem</h5>
-        <button
-          type="button"
-          class="btn-close"
-          (click)="closeModal()"
-          aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <p>Paciente salvo com sucesso!</p>
-      </div>
-      <div class="modal-footer">
-        <button
-          type="button"
-          class="btn btn-secondary"
-          (click)="closeModal()">Fechar</button>
+    class="modal fade"
+    tabindex="-1"
+    [class.show]="isModalVisible"
+    [style.display]="isModalVisible ? 'block' : 'none'"
+    (click)="closeModal()">
+    <div class="modal-dialog" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Mensagem</h5>
+          <button type="button" class="btn-close" (click)="closeModal()" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Paciente salvo com sucesso!</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closeModal()">Fechar</button>
+        </div>
       </div>
     </div>
   </div>
 </div>
- 
-</div>
- 
