@@ -2,6 +2,8 @@
   <mat-card class="login">
       <mat-card-header>
         <mat-card-title>Login</mat-card-title>
+        <mat-card-subtitle>Entre com seu e-mail e senha</mat-card-subtitle>
+        <mat-error *ngIf="errorMessage">{{ errorMessage }}</mat-error>
       </mat-card-header>
       <form [formGroup]='loginForm'>
         <mat-card-content>
@@ -20,9 +22,10 @@
             Entrar
           </button>
         </mat-card-actions>
-        <p class="ml-10">Ainda não possui conta?
+        <p class="ml-10"><strong>Serviço para usuários do Centro de Saúde Escola Geraldo de Paula Souza.<br />Se você faz parte do corpo de funcionários, entre em contato com a administração para obter seu usuário e senha.</strong></p>
+        <!-- p class="ml-10">Ainda não possui conta?
           <a><strong><u>Clique aqui para se cadastrar!</u></strong></a>
-        </p>
+        </p -->
 
       </form>
   </mat-card>

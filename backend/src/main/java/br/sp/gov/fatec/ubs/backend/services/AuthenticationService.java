@@ -4,14 +4,15 @@ import java.util.Optional;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.sp.gov.fatec.ubs.backend.dtos.LoginUserDto;
 import br.sp.gov.fatec.ubs.backend.dtos.RegisterUserDto;
-import br.sp.gov.fatec.ubs.backend.entities.Role;
-import br.sp.gov.fatec.ubs.backend.entities.RoleEnum;
-import br.sp.gov.fatec.ubs.backend.entities.User;
+import br.sp.gov.fatec.ubs.backend.model.Role;
+import br.sp.gov.fatec.ubs.backend.model.RoleEnum;
+import br.sp.gov.fatec.ubs.backend.model.User;
 import br.sp.gov.fatec.ubs.backend.repositories.RoleRepository;
 import br.sp.gov.fatec.ubs.backend.repositories.UserRepository;
 
@@ -53,12 +54,20 @@ public class AuthenticationService {
     }
 
     public User authenticate(LoginUserDto input) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        input.getEmail(),
-                        input.getPassword()));
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            input.getEmail(),
+                            input.getPassword()));
+            User usuario = userRepository.findByEmail(input.getEmail());
+            if (usuario == null) {
+                throw new UsernameNotFoundException("Usuário não encontrado");
+            } else {
+                return usuario;
+            }
 
-        return userRepository.findByEmail(input.getEmail())
-                .orElseThrow();
+        }catch (Exception e) {
+            throw new UsernameNotFoundException("Usuário não encontrado");
+        }
     }
 }

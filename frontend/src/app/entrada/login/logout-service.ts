@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { LoginCliente } from './login-cliente';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -11,7 +11,7 @@ import { LoginResponse } from './login-models';
 
 export class LogoutService {
   private apiUrl = 'http://localhost:8090/auth/logout';
-  constructor(private http: HttpClient) { }
+  constructor(@Inject(HttpClient) private http: HttpClient) { }
 
   logout(): Observable<LoginResponse> {
     console.log('Tentando logar com:', this.apiUrl);

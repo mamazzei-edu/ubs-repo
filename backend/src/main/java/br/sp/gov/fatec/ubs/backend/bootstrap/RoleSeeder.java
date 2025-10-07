@@ -1,7 +1,7 @@
 package br.sp.gov.fatec.ubs.backend.bootstrap;
 
-import br.sp.gov.fatec.ubs.backend.entities.Role;
-import br.sp.gov.fatec.ubs.backend.entities.RoleEnum;
+import br.sp.gov.fatec.ubs.backend.model.Role;
+import br.sp.gov.fatec.ubs.backend.model.RoleEnum;
 import br.sp.gov.fatec.ubs.backend.repositories.RoleRepository;
 
 import org.springframework.context.ApplicationListener;
@@ -25,8 +25,9 @@ public class RoleSeeder implements ApplicationListener<ContextRefreshedEvent> {
     }
 
     private void loadRoles() {
-        RoleEnum[] roleNames = new RoleEnum[] { RoleEnum.USER, RoleEnum.ADMIN, RoleEnum.SUPER_ADMIN };
+        RoleEnum[] roleNames = new RoleEnum[] { RoleEnum.MEDICO, RoleEnum.USER, RoleEnum.ADMIN, RoleEnum.SUPER_ADMIN };
         Map<RoleEnum, String> roleDescriptionMap = Map.of(
+            RoleEnum.MEDICO, "Usuário médico",
             RoleEnum.USER, "Usuário default",
             RoleEnum.ADMIN, "Usuário administrativo",
             RoleEnum.SUPER_ADMIN, "Super usuário administrativo com privilégios extras"

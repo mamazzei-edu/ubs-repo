@@ -1,4 +1,4 @@
-package br.sp.gov.fatec.ubs.backend.entities;
+package br.sp.gov.fatec.ubs.backend.model;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -9,6 +9,13 @@ import java.util.Date;
 @Table(name = "roles")
 @Entity
 public class Role {
+
+    public Role() {
+    }
+    public Role(Integer id) {
+        this.id = id;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false)

@@ -1,4 +1,4 @@
-package br.sp.gov.fatec.ubs.backend.entities;
+package br.sp.gov.fatec.ubs.backend.model;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -27,6 +27,16 @@ public class User implements UserDetails {
 
     @Column(nullable = false)
     private String password;
+
+    @Column(nullable = false)
+    private String matricula;
+
+    @Column(nullable = false)
+    private String username;
+
+    @Column(nullable = true) // para cadastro dos usuários médicos 
+    private String crm;
+
 
     @CreationTimestamp
     @Column(updatable = false, name = "created_at")
@@ -120,6 +130,16 @@ public class User implements UserDetails {
         this.updatedAt = updatedAt;
     }
 
+    public String getCrm() {
+        return crm;
+    }
+
+    public User setCrm(String crm) {
+        this.crm = crm;
+        return this;
+    }
+
+
     // Getters and setters para roles
 
     @ManyToOne(cascade = CascadeType.REMOVE)
@@ -135,5 +155,20 @@ public class User implements UserDetails {
 
         return this;
     }
+
+    public String getMatricula() {
+        return matricula;
+    }
+
+    public User setMatricula(String matricula) {
+        this.matricula = matricula;
+        return this;
+    }
+
+    public User setUsername(String username) {
+        this.username = username;
+        return this;
+    }
+    
 
 }

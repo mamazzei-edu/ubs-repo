@@ -23,6 +23,7 @@ import { AuthService } from '../logado/auth-service';
 })
 
 export class Login implements OnInit {
+  errorMessage: string | null = null;
   loginResponse!: LoginResponse | undefined;
   loginCliente: LoginCliente = LoginCliente.newLoginCliente();
   loginForm: FormGroup<{ email: FormControl<string | null>; password: FormControl<string | null>; }>;
@@ -45,20 +46,20 @@ export class Login implements OnInit {
   }
   onSubmit() {
     this.loginService.logar(this.loginCliente).subscribe({
-      next: (response: LoginResponse | undefined) => {
-        if (response === undefined) {
-          console.error('Erro na autenticação: Resposta de login não definida');
+      next: (response: LoginResponse) => {
+        if (response.roles == null || response.roles.length === 0) {
+          this.errorMessage = 'Erro na autenticação não foi possível efetuar o login. Verifique seu usuário e senha.';
           return;
         } else {
           console.log('Login bem-sucedido:', response);
           this.loginResponse = response;
           this.authService.saveToken(this.loginResponse);
           if (this.loginResponse.roles.includes('ROLE_SUPER_ADMIN')) {
-            this.router.navigate(['/admin']);
+            this.router.navigate(['/user-cadastro']);
           } else if (this.loginResponse.roles.includes('ROLE_ADMIN')) {
-            this.router.navigate(['/funcionario']);
+            this.router.navigate(['/lista']);
           } else {
-            this.router.navigate(['/cliente']);
+            this.router.navigate(['/upload']);
           }
         }
       },

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.sp.gov.fatec.ubs.backend.dtos.RegisterUserDto;
-import br.sp.gov.fatec.ubs.backend.entities.User;
+import br.sp.gov.fatec.ubs.backend.model.User;
 import br.sp.gov.fatec.ubs.backend.services.UserService;
 
 @RequestMapping("/admins")
