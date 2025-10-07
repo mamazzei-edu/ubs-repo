@@ -61,7 +61,7 @@ export class UploadComponent implements OnInit {
     if (this.file) {
       const formData = new FormData();
       formData.append('ficha', this.file, this.file.name);
-      this.http.post('http://backend:8080/arquivos', formData)
+      this.http.post('http://localhost:8080/arquivos', formData)
         .subscribe({
           next: (dados) => {
             this.mostrarModalEditar = true;

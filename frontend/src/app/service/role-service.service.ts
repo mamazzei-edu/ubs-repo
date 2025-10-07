@@ -8,7 +8,7 @@ import { Role } from "../model/role.model";
     providedIn: 'root',
 })
 export class RoleService {
-    private apiUrl = 'http://backend:8080/api/roles';  // URL do backend diretamente no código
+    private apiUrl = 'http://localhost:8080/api/roles';  // URL do backend diretamente no código
 
     constructor(private http: HttpClient) { }
 

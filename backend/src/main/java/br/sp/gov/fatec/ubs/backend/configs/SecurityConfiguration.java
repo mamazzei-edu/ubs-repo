@@ -65,7 +65,9 @@ public class SecurityConfiguration {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 //        configuration.setAllowedOrigins(List.of("*"));
-        configuration.setAllowedOriginPatterns(List.of("http://frontend:8080", "https://frontend:8080", "http://localhost:4200", "https://localhost:4200"));
+        List<String> allowedOrigins = Arrays.asList(System.getenv("LISTA_HOSTS").split(","));
+        System.out.println("Allowed origins: " + System.getenv("LISTA_HOSTS"));
+        configuration.setAllowedOriginPatterns(allowedOrigins);
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowCredentials(true); // para aceitar os login com cookies
         configuration.setAllowedHeaders(Arrays.asList("authorization", "content-type", "x-auth-token"));

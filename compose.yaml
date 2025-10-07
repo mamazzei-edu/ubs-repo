@@ -37,8 +37,10 @@ services:
       DB_PORT: ${DB_PORT}
       DB_SCHEMA: ${DB_SCHEMA}
       DB_PASSWORD: ${DB_PASSWORD}
+      LISTA_HOSTS: ${LISTA_HOSTS}
+
     ports:
-      - "8090:8080"
+      - "8080:8080"
     networks:
       - app-network
 
