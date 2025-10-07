@@ -10,7 +10,7 @@ import { LoginResponse } from './login-models';
 })
 
 export class LogoutService {
-  private apiUrl = 'http://backend_server:8080/auth/logout';
+  private apiUrl = 'http://backend:8080/auth/logout';
   constructor(@Inject(HttpClient) private http: HttpClient) { }
 
   logout(): Observable<LoginResponse> {

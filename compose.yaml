@@ -10,24 +10,26 @@
 services:
   backend:
     build: ./backend
-    container_name: backend_server
     restart: always
     depends_on:
-      - mysql
+      - mysql_server
     environment:
+      SPRING_JPA_HIBERNATE_DDL_AUTO: ${SPRING_JPA_HIBERNATE_DDL_AUTO}
       NODE_ENV: production
-      SPRING_DATASOURCE_URL: ${JDBC_DATABASE_URL}
+      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
       SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
       SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
-      SPRING_DATASOURCE_DRIVER-CLASS-NAME: ${SPRING_DATASOURCE_DRIVER-CLASS-NAME}
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: ${SPRING_DATASOURCE_DRIVER_CLASS_NAME}      
       SPRING_JPA_DATABASE_PLATFORM: ${SPRING_JPA_DATABASE_PLATFORM}
       SPRING_JPA_GENERATE_DDL: ${SPRING_JPA_GENERATE_DDL}
-      SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA: ${SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA}
+      SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA: ${SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA}      
       SPRING_JPA_SHOW_SQL: ${SPRING_JPA_SHOW_SQL}
+
       SERVER_PORT: ${SERVER_PORT}
       SPRING_SECURITY_ENABLED: ${SPRING_SECURITY_ENABLED}
-      SECURITY_JWT_EXPIRATION: ${SECURITY_JWT_EXPIRATION}
-      SPRING_JWT_SECRET: ${SECURITY_JWT_SECRET}
+      SECURITY_JWT_EXPIRATION_TIME: ${SECURITY_JWT_EXPIRATION_TIME}
+      SPRING_JWT_SECRET_KEY: ${SECURITY_JWT_SECRET_KEY}
+  
       DB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
       DB_NAME: ${DB_NAME}
       DB_USER: ${DB_USER}
@@ -36,13 +38,12 @@ services:
       DB_SCHEMA: ${DB_SCHEMA}
       DB_PASSWORD: ${DB_PASSWORD}
     ports:
-      - ${SERVER_PORT}:${SERVER_PORT}
+      - "8090:8080"
     networks:
       - app-network
 
-  mysql:
+  mysql_server:
     image: mysql:latest
-    container_name: mysql_server
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
@@ -53,7 +54,7 @@ services:
       MYSQL_SCHEMA: ${DB_SCHEMA}
       MYSQL_PASSWORD: ${DB_PASSWORD}
     ports:
-      - ${DB_PORT}:${DB_PORT}
+      - "3307:3306"
     volumes:
       - mysql-data:/var/lib/mysql
     networks:
@@ -62,10 +63,9 @@ services:
 
   frontend:
     build: ./frontend
-    container_name: angular_client
     restart: always
     ports:
-      - ${ANGULAR_PORT}:${ANGULAR_PORT}
+      - "4200:8080"
     networks:
       - app-network
 

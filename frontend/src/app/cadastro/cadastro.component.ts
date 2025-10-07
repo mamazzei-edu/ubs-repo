@@ -75,7 +75,7 @@ export class CadastroComponent {
       cpf: this.cpf,
     };
 
-    this.http.post('http://backend_server:8080/api/pacientes', paciente).subscribe({
+    this.http.post('http://backend:8080/api/pacientes', paciente).subscribe({
       next: (data) => {
         console.log('Paciente salvo com sucesso:', data);
         this.openModal(); // Abre a modal
