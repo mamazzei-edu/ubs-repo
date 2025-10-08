@@ -4,7 +4,7 @@
   margin: 0 auto;
 
   h1 {
-    color: #2c5aa0;
+    color: #4fc0c0;
     margin-bottom: 30px;
     text-align: center;
   }
@@ -51,6 +51,25 @@
 
     button {
       min-width: 140px;
+      display: inline-flex;
+      align-items: center;
+      border-radius: 24px;
+      justify-content: center;
+      white-space: nowrap; 
+      text-transform: none;
+      background-color: #4fc0c0;
+    }
+
+    > button:first-of-type {
+      margin-right: 5px;
+    }
+    .limpar-button {
+      color: red;
+      background-color: #f5f5f5;
+
+      &:hover {
+        background-color: #e0e0e0;
+      }
     }
   }
 }
@@ -116,7 +135,7 @@
   }
 }
 
-// Estilização específica dos chips de status
+
 mat-chip {
   font-size: 12px;
   font-weight: 500;
@@ -127,7 +146,7 @@ mat-chip {
   }
   
   &[color="accent"] {
-    background-color: #4caf50;
+    background-color: #4fc0c0;
     color: white;
   }
   
@@ -176,7 +195,7 @@ mat-chip {
 // Cor personalizada para o tema da UBS
 :root {
   --primary-color: #2c5aa0;
-  --accent-color: #4caf50;
+  --accent-color: #4fc0c0;
   --warn-color: #f44336;
 }
 

@@ -47,7 +47,8 @@ import { User } from '../model/user.model';
     MatNativeDateModule
   ],
   templateUrl: './agendamento.component.html',
-  styleUrl: './agendamento.component.scss'
+  styleUrls: ['./agendamento.component.scss'],
+  standalone: true
 })
 export class AgendamentoComponent implements OnInit {
   

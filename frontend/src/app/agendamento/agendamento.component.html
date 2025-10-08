@@ -70,11 +70,10 @@
         </div>
 
         <div class="form-actions">
-          <button mat-flat-button color="primary" type="submit" [disabled]="!agendamentoForm.valid">
-            <mat-icon>event</mat-icon>
+          <button mat-flat-button color="black" type="submit">
             Criar Agendamento
           </button>
-          <button mat-stroked-button type="button" (click)="agendamentoForm.reset()">
+          <button mat-stroked-button type="button" class="limpar-button" (click)="agendamentoForm.reset()">
             <mat-icon>clear</mat-icon>
             Limpar
           </button>
