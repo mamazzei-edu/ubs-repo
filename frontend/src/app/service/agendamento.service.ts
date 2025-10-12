@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Agendamento, AgendamentoRequest, StatusAgendamento } from '../model/agendamento.model';
+import {
+  Agendamento,
+  AgendamentoRequest,
+  StatusAgendamento
+} from '../model/agendamento.model';
 
 @Injectable({
   providedIn: 'root'
@@ -9,59 +13,104 @@ import { Agendamento, AgendamentoRequest, StatusAgendamento } from '../model/age
 export class AgendamentoService {
   private apiUrl = 'http://localhost:8090/api/agendamentos';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-  // Criar novo agendamento
-  criarAgendamento(agendamento: AgendamentoRequest): Observable<Agendamento> {
-    return this.http.post<Agendamento>(this.apiUrl, agendamento);
+  criarAgendamento(req: AgendamentoRequest): Observable<Agendamento> {
+    return this.http.post<Agendamento>(this.apiUrl, req);
   }
 
-  // Listar todos os agendamentos
   listarTodos(): Observable<Agendamento[]> {
     return this.http.get<Agendamento[]>(this.apiUrl);
   }
 
-  // Buscar agendamento por ID
   buscarPorId(id: number): Observable<Agendamento> {
     return this.http.get<Agendamento>(`${this.apiUrl}/${id}`);
   }
 
-  // Listar agendamentos por paciente
   listarPorPaciente(pacienteId: number): Observable<Agendamento[]> {
-    return this.http.get<Agendamento[]>(`${this.apiUrl}/paciente/${pacienteId}`);
+    return this.http.get<Agendamento[]>(
+      `http://localhost:8090/api/agendamentos/paciente/${pacienteId}`
+    );
   }
 
-  // Listar agendamentos por médico
   listarPorMedico(medicoId: number): Observable<Agendamento[]> {
-    return this.http.get<Agendamento[]>(`${this.apiUrl}/medico/${medicoId}`);
+    return this.http.get<Agendamento[]>(
+      `http://localhost:8090/api/agendamentos/medico/${medicoId}`
+    );
   }
 
-  // Atualizar status do agendamento
-  atualizarStatus(id: number, status: StatusAgendamento): Observable<Agendamento> {
-    return this.http.put<Agendamento>(`${this.apiUrl}/${id}/status`, { status });
+  verificarDisponibilidade(
+    medicoId: number,
+    dataHora: string
+  ): Observable<{ disponivel: boolean }> {
+    return this.http.get<{ disponivel: boolean }>(
+      `http://localhost:8090/api/agendamentos/medico/${medicoId}/disponibilidade`,
+      { params: { dataHora } }
+    );
   }
 
-  // Cancelar agendamento
   cancelarAgendamento(id: number): Observable<Agendamento> {
     return this.http.put<Agendamento>(`${this.apiUrl}/${id}/cancelar`, {});
   }
 
-  // Confirmar agendamento
   confirmarAgendamento(id: number): Observable<Agendamento> {
     return this.http.put<Agendamento>(`${this.apiUrl}/${id}/confirmar`, {});
   }
 
-  // Atualizar observações
-  atualizarObservacoes(id: number, observacoes: string): Observable<Agendamento> {
-    return this.http.put<Agendamento>(`${this.apiUrl}/${id}/observacoes`, { observacoes });
+  marcarComoRealizado(id: number): Observable<Agendamento> {
+    return this.http.put<Agendamento>(`${this.apiUrl}/${id}/realizado`, {});
   }
 
-  // Buscar próximos agendamentos do paciente
-  buscarProximosAgendamentos(pacienteId: number): Observable<Agendamento[]> {
-    return this.http.get<Agendamento[]>(`${this.apiUrl}/paciente/${pacienteId}/proximos`);
+  marcarFalta(id: number): Observable<Agendamento> {
+    return this.http.put<Agendamento>(`${this.apiUrl}/${id}/falta`, {});
   }
 
-  // Deletar agendamento
+  reagendar(
+    id: number,
+    dataHoraConsulta: string
+  ): Observable<Agendamento> {
+    return this.http.put<Agendamento>(
+      `${this.apiUrl}/${id}/reagendar`,
+      { dataHoraConsulta }
+    );
+  }
+
+  atualizarStatus(
+    id: number,
+    status: StatusAgendamento
+  ): Observable<Agendamento> {
+    return this.http.put<Agendamento>(
+      `${this.apiUrl}/${id}/status`,
+      { status }
+    );
+  }
+
+  atualizarObservacoes(
+    id: number,
+    observacoes: string
+  ): Observable<Agendamento> {
+    return this.http.put<Agendamento>(
+      `${this.apiUrl}/${id}/observacoes`,
+      { observacoes }
+    );
+  }
+
+  buscarProximosAgendamentos(
+    pacienteId: number
+  ): Observable<Agendamento[]> {
+    return this.http.get<Agendamento[]>(
+      `http://localhost:8090/api/agendamentos/paciente/${pacienteId}/proximos`
+    );
+  }
+
+  buscarProximosAgendamentosMedico(
+    medicoId: number
+  ): Observable<Agendamento[]> {
+    return this.http.get<Agendamento[]>(
+      `http://localhost:8090/api/agendamentos/medico/${medicoId}/proximos`
+    );
+  }
+
   deletarAgendamento(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }

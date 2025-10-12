@@ -1,111 +1,80 @@
 package br.sp.gov.fatec.ubs.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import java.util.List;
 
 @Entity(name = "paciente")
 public class Paciente {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)  
-      public Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public Long id;
 
-      public String nomeCompleto;
-      public String nomeSocial;
-      public String nomeMae;
-      public String nomePai;
+    public String nomeCompleto;
+    public String nomeSocial;
+    public String nomeMae;
+    public String nomePai;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")  
-      public String dataNascimento;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    public String dataNascimento;
 
-      public String cns;
-      public String prontuario;
-      public String sexo;
-      public String nacionalidade;
-      public String municipioNascimento;
-      public String racaCor;
-      public String etnia;
-      public String frequentaEscola;
-      public String deficiente;
-      public String opm;
-      public String visual;
-      public String auditiva;
-      public String motora;
-      public String intelectual;
-      public String telefoneCelular;
-      public String telefoneResidencial;
-      public String telefoneComercial;
-      public String email;
-      public String cpf;
+    public String cns;
+    public String prontuario;
+    public String sexo;
+    public String nacionalidade;
+    public String municipioNascimento;
+    public String racaCor;
+    public String etnia;
+    public String frequentaEscola;
+    public String deficiente;
+    public String opm;
+    public String visual;
+    public String auditiva;
+    public String motora;
+    public String intelectual;
+    public String telefoneCelular;
+    public String telefoneResidencial;
+    public String telefoneComercial;
+    public String email;
+    public String cpf;
 
     // Novos campos do PDF
-      public String escolaridade;
-      public String situacaoFamiliar;
-      public String ocupacao;
-      public String estabelecimentoVinculo;
-      public String estabelecimentoCadastro;
-      public String cep;
-      public String logradouro;
-      public String numero;
-      public String bairro;
-      public String complemento;
-      public String uf;
-      public String rg;
-      public String orgaoEmissor;
-      public String pisPasepNis;
-      public String cnh;
-      public String ctps;
-      public String tituloEleitor;
-      public String passaporte;
-      public String origemEndereco;
-      public String municipioResidencia;
-      public String distritoAdministrativo;
-      public String tipoLogradouro;
-    
-    public String getMunicipioResidencia() {
-        return municipioResidencia;
-    }
-    public void setMunicipioResidencia(String municipioResidencia) {
-        this.municipioResidencia = municipioResidencia;
-    }
-    
-    public String getOpm() {
-        return opm;
-    }
-    public void setOpm(String opm) {
-        this.opm = opm;
-    }
-    public String getOrigemEndereco() {
-        return origemEndereco;
-    }
-    public void setOrigemEndereco(String origemEndereco) {
-        this.origemEndereco = origemEndereco;
-    }
-    public String getDistritoAdministrativo() {
-        return distritoAdministrativo;
-    }
-    public void setDistritoAdministrativo(String distritoAdministrativo) {
-        this.distritoAdministrativo = distritoAdministrativo;
-    }
-    public String getTipoLogradouro() {
-        return tipoLogradouro;
-    }
-    public void setTipoLogradouro(String tipoLogradouro) {
-        this.tipoLogradouro = tipoLogradouro;
-    }
-    public String getReferencia() {
-        return referencia;
-    }
-    public void setReferencia(String referencia) {
-        this.referencia = referencia;
-    }
-      String referencia;
+    public String escolaridade;
+    public String situacaoFamiliar;
+    public String ocupacao;
+    public String estabelecimentoVinculo;
+    public String estabelecimentoCadastro;
+    public String cep;
+    public String logradouro;
+    public String numero;
+    public String bairro;
+    public String complemento;
+    public String uf;
+    public String rg;
+    public String orgaoEmissor;
+    public String pisPasepNis;
+    public String cnh;
+    public String ctps;
+    public String tituloEleitor;
+    public String passaporte;
+    public String origemEndereco;
+    public String municipioResidencia;
+    public String distritoAdministrativo;
+    public String tipoLogradouro;
+    String referencia;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL, fetch = FetchType.LAZY) // <-- NOVO
+    private List<Agendamento> agendamentos; 
 
     // Getters e Setters
-    // (Incluindo os novos campos adicionados abaixo)
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
  
@@ -226,6 +195,8 @@ public class Paciente {
     public String getRg() { return rg; }
     public void setRg(String rg) { this.rg = rg; }
 
+
+
     public String getOrgaoEmissor() { return orgaoEmissor; }
     public void setOrgaoEmissor(String orgaoEmissor) { this.orgaoEmissor = orgaoEmissor; }
 
@@ -243,6 +214,50 @@ public class Paciente {
 
     public String getPassaporte() { return passaporte; }
     public void setPassaporte(String passaporte) { this.passaporte = passaporte; }
+    
+    public String getMunicipioResidencia() {
+        return municipioResidencia;
+    }
+    public void setMunicipioResidencia(String municipioResidencia) {
+        this.municipioResidencia = municipioResidencia;
+    }
+    
+    public String getOpm() {
+        return opm;
+    }
+    public void setOpm(String opm) {
+        this.opm = opm;
+    }
+    public String getOrigemEndereco() {
+        return origemEndereco;
+    }
+    public void setOrigemEndereco(String origemEndereco) {
+        this.origemEndereco = origemEndereco;
+    }
+    public String getDistritoAdministrativo() {
+        return distritoAdministrativo;
+    }
+    public void setDistritoAdministrativo(String distritoAdministrativo) {
+        this.distritoAdministrativo = distritoAdministrativo;
+    }
+    public String getTipoLogradouro() {
+        return tipoLogradouro;
+    }
+    public void setTipoLogradouro(String tipoLogradouro) {
+        this.tipoLogradouro = tipoLogradouro;
+    }
+    public String getReferencia() {
+        return referencia;
+    }
+    public void setReferencia(String referencia) {
+        this.referencia = referencia;
+    }
 
-   
+    public List<Agendamento> getAgendamentos() {
+        return agendamentos;
+    }
+
+    public void setAgendamentos(List<Agendamento> agendamentos) {
+        this.agendamentos = agendamentos;
+    }
 }

@@ -1,212 +1,147 @@
-.agendamento-container {
-  padding: 20px;
-  max-width: 1200px;
-  margin: 0 auto;
-
-  h1 {
-    color: #4fc0c0;
-    margin-bottom: 30px;
-    text-align: center;
-  }
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 16px;
 }
 
-.agendamento-form {
-  margin-bottom: 30px;
+mat-card {
+  max-width: 800px;
+  margin: auto;
+  background: #fafafa;
+  border-radius: 8px;
 
-  .form-row {
-    display: flex;
-    gap: 16px;
+  mat-card-title {
+    font-size: 1.5rem;
     margin-bottom: 16px;
-    flex-wrap: wrap;
-
-    @media (max-width: 768px) {
-      flex-direction: column;
-      gap: 0;
-    }
   }
 
-  .form-field {
-    flex: 1;
-    min-width: 250px;
+  mat-card-content {
+    form {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 24px;
+      width: 100%;
 
-    @media (max-width: 768px) {
-      min-width: 100%;
-    }
-  }
+      mat-form-field {
+        width: 100%;
+        margin-top: 8px;
 
-  .form-field-full {
-    width: 100%;
-  }
+        .mat-form-field-wrapper {
+          padding-bottom: 4px;
+        }
 
-  .form-actions {
-    display: flex;
-    gap: 12px;
-    justify-content: flex-end;
-    margin-top: 20px;
+        .mat-form-field-label {
+          top: -6px;
+          background: white;
+          padding: 0 4px;
+          z-index: 1;
+        }
+      }
 
-    @media (max-width: 768px) {
-      justify-content: center;
-      flex-wrap: wrap;
-    }
+      mat-form-field.full-width {
+        grid-column: span 2;
+      }
 
-    button {
-      min-width: 140px;
-      display: inline-flex;
-      align-items: center;
-      border-radius: 24px;
-      justify-content: center;
-      white-space: nowrap; 
-      text-transform: none;
-      background-color: #4fc0c0;
-    }
-
-    > button:first-of-type {
-      margin-right: 5px;
-    }
-    .limpar-button {
-      color: red;
-      background-color: #f5f5f5;
-
-      &:hover {
-        background-color: #e0e0e0;
+      .form-actions {
+        grid-column: span 2;
+        display: flex;
+        justify-content: flex-end;
+        gap: 16px;
+        margin-top: 24px;
       }
     }
   }
 }
 
-.agendamentos-list {
-  .table-container {
-    overflow-x: auto;
-    max-height: 600px;
-    overflow-y: auto;
+.list-card {
+  max-width: 1000px;
+  margin: auto;
+  background: #fafafa;
+  border-radius: 8px;
+
+  mat-card-title {
+    font-size: 1.5rem;
+    margin-bottom: 16px;
   }
 
-  .agendamentos-table {
-    width: 100%;
-    min-width: 800px;
-
-    th {
-      background-color: #f5f5f5;
-      font-weight: 600;
-      color: #333;
-    }
-
-    .paciente-info,
-    .medico-info {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-
-      strong {
-        font-weight: 500;
-        color: #333;
-      }
-
-      small {
-        color: #666;
-        font-size: 12px;
-      }
-    }
-
-    .acoes-buttons {
-      display: flex;
-      gap: 8px;
-      justify-content: center;
-    }
-  }
-
-  .no-data {
-    text-align: center;
-    padding: 40px;
-    color: #666;
-
-    mat-icon {
-      font-size: 48px;
-      height: 48px;
-      width: 48px;
-      color: #ccc;
-      margin-bottom: 16px;
-    }
-
-    p {
-      margin: 0;
-      font-size: 16px;
-    }
-  }
-}
-
-
-mat-chip {
-  font-size: 12px;
-  font-weight: 500;
-  
-  &[color="primary"] {
-    background-color: #2196f3;
-    color: white;
-  }
-  
-  &[color="accent"] {
-    background-color: #4fc0c0;
-    color: white;
-  }
-  
-  &[color="warn"] {
-    background-color: #f44336;
-    color: white;
-  }
-}
-
-// Responsividade para dispositivos móveis
-@media (max-width: 768px) {
-  .agendamento-container {
-    padding: 12px;
-  }
-
-  .agendamentos-list {
+  mat-card-content {
     .table-container {
-      max-height: 400px;
+      overflow-x: auto;
     }
 
-    .agendamentos-table {
-      font-size: 14px;
+    table {
+      width: 100%;
+      border-spacing: 0;
+      border-collapse: separate;
 
       th, td {
-        padding: 8px 4px;
+        padding: 12px 16px;
+        text-align: left;
       }
+
+      th {
+        background: #e0e0e0;
+      }
+
+      tr:nth-child(even) {
+        background: #f5f5f5;
+      }
+    }
+
+    .no-data {
+      padding: 24px;
+      text-align: center;
+      color: #666;
+      font-style: italic;
     }
   }
 }
 
-// Melhorias na aparência dos campos de formulário
-.mat-mdc-form-field {
-  .mat-mdc-form-field-subscript-wrapper {
-    margin-top: 4px;
+@media (max-width: 600px) {
+  :host {
+    padding: 8px;
+  }
+  mat-card, .list-card {
+    margin: 0;
+  }
+  mat-card-content form {
+    grid-template-columns: 1fr !important;
+  }
+  .form-actions {
+    justify-content: center !important;
   }
 }
 
-// Estilização dos botões
-.mat-mdc-raised-button,
-.mat-mdc-outlined-button {
-  .mat-icon {
-    margin-right: 8px;
+.filter-form {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 2fr 1fr 1fr auto;
+  align-items: center;
+  margin-bottom: 24px;
+  padding: 16px;
+  background-color: #f0f0f0;
+  border-radius: 8px;
+
+  .filter-field {
+    width: 100%;
+  }
+  
+  .filter-actions {
+    display: flex;
+    justify-content: flex-start;
   }
 }
 
-// Cor personalizada para o tema da UBS
-:root {
-  --primary-color: #2c5aa0;
-  --accent-color: #4fc0c0;
-  --warn-color: #f44336;
+.mat-row .mat-cell.no-data-cell {
+    text-align: center;
+    padding: 20px;
+    font-style: italic;
+    color: grey;
 }
 
-.mat-primary {
-  background-color: var(--primary-color) !important;
-}
-
-.mat-accent {
-  background-color: var(--accent-color) !important;
-}
-
-.mat-warn {
-  background-color: var(--warn-color) !important;
+@media (max-width: 960px) {
+  .filter-form {
+    grid-template-columns: 1fr;
+  }
 }

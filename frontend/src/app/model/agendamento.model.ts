@@ -1,25 +1,5 @@
-export interface Agendamento {
-  id?: number;
-  paciente: {
-    id: number;
-    nomeCompleto: string;
-    cpf: string;
-    telefoneCelular: string;
-    email: string;
-  };
-  medico: {
-    id: number;
-    fullName: string;
-    crm: string;
-    email: string;
-  };
-  dataHoraConsulta: string;
-  status: StatusAgendamento;
-  observacoes?: string;
-  tipoConsulta: string;
-  createdAt?: string;
-  updatedAt?: string;
-}
+import { Paciente } from './paciente.model';
+import { Medico } from './medico.model';
 
 export enum StatusAgendamento {
   AGENDADO = 'AGENDADO',
@@ -27,6 +7,18 @@ export enum StatusAgendamento {
   CANCELADO = 'CANCELADO',
   REALIZADO = 'REALIZADO',
   FALTOU = 'FALTOU'
+}
+
+export interface Agendamento {
+  id: number;
+  paciente: Paciente;
+  medico: Medico;
+  dataHoraConsulta: string;
+  status: StatusAgendamento;
+  tipoConsulta: string;
+  observacoes?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface AgendamentoRequest {
@@ -38,16 +30,17 @@ export interface AgendamentoRequest {
 }
 
 export const TIPOS_CONSULTA = [
-  'Consulta Médica Geral',
-  'Consulta Pediatria',
-  'Consulta Ginecologia',
   'Consulta Cardiologia',
   'Consulta Dermatologia',
-  'Consulta Psicologia',
-  'Consulta Enfermagem',
+  'Consulta Endocrinologia',
+  'Consulta Gastroenterologia',
+  'Consulta Ginecologia',
+  'Consulta Neurologia',
+  'Consulta Oftalmologia',
+  'Consulta Ortopedia',
+  'Consulta Pediatria',
+  'Consulta Psiquiatria',
+  'Consulta Clínica Geral',
   'Exame de Rotina',
-  'Acompanhamento',
-  'Retorno'
-] as const;
-
-export type TipoConsulta = typeof TIPOS_CONSULTA[number];
+  'Consulta de Retorno'
+];
