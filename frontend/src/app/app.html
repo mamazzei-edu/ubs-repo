@@ -9,7 +9,7 @@
       } @else {
         @if (authService.getRoles().includes('ROLE_SUPER_ADMIN')){
           <a routerLink="/user-cadastro" routerLinkActive="active">Usuários</a>
-           <a routerLink="/" routerLinkActive="active">Cadastro Usuário</a>
+ 
         
         }
         @if (authService.getRoles().includes('ROLE_ADMIN') || authService.getRoles().includes('ROLE_SUPER_ADMIN')) {

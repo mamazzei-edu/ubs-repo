@@ -66,8 +66,8 @@
     style="background-color: rgba(0, 0, 0, 0.5);"
   >
   <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-      <div class="modal-content">
-        <div class="modal-header bg-warning text-white">
+           <div class="modal-content">
+        <div class="modal-header text-white" style="background-color: #50BFAD;">
           <h5 class="modal-title">Editar Paciente</h5>
           <button type="button" class="btn-close" (click)="fecharModal()"></button>
         </div>
@@ -173,8 +173,8 @@
                 <input id="contatoEmail" type="email" [(ngModel)]="pacienteSelecionado.contatoEmail" name="contatoEmail" class="form-control" />
               </div>
             </div>
+        <button type="submit" class="btn mt-4 w-100" style="background-color: #50BFAD; color: white;">Salvar Alterações</button>
 
-            <button type="submit" class="btn btn-warning mt-4 w-100">Salvar Alterações</button>
           </form>
         </div>
       </div>
