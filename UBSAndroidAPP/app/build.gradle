@@ -39,6 +39,9 @@ dependencies {
     implementation libs.constraintlayout
     implementation libs.navigation.fragment
     implementation libs.navigation.ui
+    implementation("androidx.datastore:datastore-preferences-core:1.1.7")
+    implementation libs.datastore.rxjava3
+    implementation libs.datastore.preferences.rxjava3
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
