@@ -6,6 +6,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import com.fasterxml.jackson.annotation.JsonIgnore; 
 
 import java.util.Collection;
 import java.util.Date;
@@ -34,9 +35,8 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String username;
 
-    @Column(nullable = true) // para cadastro dos usuários médicos 
+    @Column(nullable = true) // para cadastro dos usuários médicos
     private String crm;
-
 
     @CreationTimestamp
     @Column(updatable = false, name = "created_at")
@@ -46,6 +46,8 @@ public class User implements UserDetails {
     @Column(name = "updated_at")
     private Date updatedAt;
 
+    
+    @JsonIgnore 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + role.getName().toString());
@@ -139,9 +141,7 @@ public class User implements UserDetails {
         return this;
     }
 
-
     // Getters and setters para roles
-
     @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false)
     private Role role;
@@ -169,6 +169,4 @@ public class User implements UserDetails {
         this.username = username;
         return this;
     }
-    
-
 }

@@ -20,8 +20,7 @@ public class AdminSeeder implements ApplicationListener<ContextRefreshedEvent> {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-
-    public AdminSeeder(RoleRepository roleRepository, UserRepository  userRepository, PasswordEncoder passwordEncoder) {
+    public AdminSeeder(RoleRepository roleRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
@@ -39,9 +38,9 @@ public class AdminSeeder implements ApplicationListener<ContextRefreshedEvent> {
         userDto.setPassword("123456");
 
         Optional<Role> optionalRole = roleRepository.findByName(RoleEnum.SUPER_ADMIN);
-        User optionalUser = userRepository.findByEmail(userDto.getEmail());
+        User optionalUser = userRepository.findByEmail(userDto.getEmail()).orElse(null); 
 
-        if (optionalRole.isEmpty() || optionalUser != null && optionalUser.getRole().getName().equals(RoleEnum.SUPER_ADMIN)) {
+        if (optionalRole.isEmpty() || (optionalUser != null && optionalUser.getRole().getName().equals(RoleEnum.SUPER_ADMIN))) {
             return;
         }
 
