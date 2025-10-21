@@ -6,7 +6,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import com.fasterxml.jackson.annotation.JsonIgnore; 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.Collection;
 import java.util.Date;
@@ -15,6 +15,7 @@ import java.util.List;
 @Table(name = "users")
 @Entity
 public class User implements UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false)
@@ -46,12 +47,18 @@ public class User implements UserDetails {
     @Column(name = "updated_at")
     private Date updatedAt;
 
-    
-    @JsonIgnore 
+    // Relação corrigida — sem CascadeType.REMOVE
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false)
+    private Role role;
+
+    // ======================== Métodos de segurança ========================
+
+    @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + role.getName().toString());
-
+        SimpleGrantedAuthority authority =
+                new SimpleGrantedAuthority("ROLE_" + role.getName().toString());
         return List.of(authority);
     }
 
@@ -84,6 +91,8 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    // ======================== Getters e Setters ========================
 
     public Integer getId() {
         return id;
@@ -141,18 +150,12 @@ public class User implements UserDetails {
         return this;
     }
 
-    // Getters and setters para roles
-    @ManyToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false)
-    private Role role;
-
     public Role getRole() {
         return role;
     }
 
     public User setRole(Role role) {
         this.role = role;
-
         return this;
     }
 

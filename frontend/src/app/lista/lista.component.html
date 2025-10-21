@@ -1,3 +1,17 @@
+<div class="d-flex justify-content-center gap-2 mb-4">
+    
+    <ng-container *ngIf="isAdmin">
+        <button routerLink="/user-lista" class="btn btn-menu">Usuários</button>
+        <button routerLink="/user-cadastro" class="btn btn-menu">Cadastro Usuário</button>
+    </ng-container>
+
+    <button routerLink="/lista" class="btn btn-menu">Pacientes</button>
+    <button routerLink="/cadastro" class="btn btn-menu">Cadastro Paciente</button>
+    <button routerLink="/upload" class="btn btn-menu">Carregar Ficha</button>
+    <button (click)="logout()" class="btn btn-menu sair">Sair</button>
+    
+</div>
+
 <div class="container mt-4">
   <!-- Campo de pesquisa -->
   <div class="row mb-3">
