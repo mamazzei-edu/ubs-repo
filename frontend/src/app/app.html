@@ -1,56 +1,25 @@
-<!-- mat-toolbar color="primary">
-  <span>Projeto Base</span>
-  <span class="spacer"></span>
-  @if (! authService.isLoggedIn()) {
-    <a routerLink="/login">
-      <mat-icon fontIcon="login"></mat-icon>Login</a>
-  } @else {
-    @if (authService.getRoles().includes('ROLE_SUPER_ADMIN')){
-      <a routerLink="/admin">
-        <mat-icon fontIcon="settings"></mat-icon>Admin</a>
-      <a routerLink="/funcionario">
-        <mat-icon fontIcon="badge"></mat-icon>Funcionário</a>
-      }
-    @if (authService.getRoles().includes('ROLE_ADMIN')) {
-      <a routerLink="/funcionario">
-        <mat-icon fontIcon="badge"></mat-icon>Funcionário</a>
-      }
-    @if (authService.getRoles().includes('ROLE_USER')) {
-      <a routerLink="/cliente">
-        <mat-icon fontIcon="person"></mat-icon>Cliente</a>
-      }
-    @if (authService.isLoggedIn()) {
-      <a (click)="logout()" routerLink="/">
-        <mat-icon fontIcon="logout"></mat-icon>Sair
-      </a>
-      } 
-  }
-
-</mat-toolbar -->
-
 <header class="site-header">
   <div class="site-header__inner">
- 
     <a class="brand" routerLink="/">
       <img src="img1.png" alt="Centro de Saúde Escola" />
     </a>
- 
     <nav class="site-nav">
       @if (! authService.isLoggedIn()) {
         <a routerLink="/login" routerLinkActive="active">Login</a>
       } @else {
         @if (authService.getRoles().includes('ROLE_SUPER_ADMIN')){
           <a routerLink="/user-cadastro" routerLinkActive="active">Usuários</a>
+ 
+        
         }
         @if (authService.getRoles().includes('ROLE_ADMIN') || authService.getRoles().includes('ROLE_SUPER_ADMIN')) {
           <a routerLink="/lista" routerLinkActive="active">Pacientes</a>
-          <a routerLink="/cadastro" routerLinkActive="active">Cadastro Novo</a>
+          <a routerLink="/cadastro" routerLinkActive="active">Cadastro Paciente</a>
           <a routerLink="/upload" routerLinkActive="active">Carregar Ficha</a>
           <a routerLink="/agendamento" routerLinkActive="active">Agendamentos</a>
         }
         <a (click)="logout()" routerLink="/">Sair</a>
-    }
-      
+      }
     </nav>
   </div>
 </header>
@@ -66,7 +35,7 @@
  
   <router-outlet></router-outlet>
  
-  <h1>Cuidando da sua saúde com excelência</h1>
+  <h4>Cuidando da sua saúde com excelência</h4>
   <p class="lead">
     Há mais de 90 anos oferecendo serviços de saúde de qualidade para a comunidade,
     combinando tradição, inovação e cuidado humanizado.

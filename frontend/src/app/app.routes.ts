@@ -31,7 +31,7 @@ export const routes: Routes = [
         canActivate: [AuthGuard]
 
     },
-    {   
+    {  
         path: 'lista',
         component: ListaComponent,
         canActivate: [AuthGuard]
@@ -41,9 +41,11 @@ export const routes: Routes = [
         component: CadastroComponent,
         canActivate: [AuthGuard]
     },
-    { 
+    {
+        // CORREÇÃO AQUI: Adicionando o guarda de rota 'AuthGuard'
         path: 'upload',
-        component: UploadComponent 
+        component: UploadComponent,
+        canActivate: [AuthGuard] // <--- LINHA ADICIONADA/CORRIGIDA
     },
     {
         path: 'agendamento',
