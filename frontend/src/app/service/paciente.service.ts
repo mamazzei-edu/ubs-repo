@@ -8,7 +8,7 @@ import { Paciente } from '../model/paciente.model';
 })
 
 export class PacienteService {
-  private apiUrl = 'http://localhost:8090/api/pacientes';  // URL do backend diretamente no código
+  private apiUrl = 'http://localhost:8080/api/pacientes';  // URL do backend diretamente no código
 
   constructor(@Inject(HttpClient) private http: HttpClient) {}
 

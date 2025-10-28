@@ -125,7 +125,7 @@ export class CadastroComponent {
       intelectual: this.intelectual,
     };
 
-    this.http.post('http://localhost:8090/api/pacientes', paciente).subscribe({
+    this.http.post('http://localhost:8080/api/pacientes', paciente).subscribe({
       next: (data) => {
         console.log('✅ Paciente salvo com sucesso:', data);
         this.openModal();

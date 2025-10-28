@@ -10,7 +10,7 @@ import { LoginResponse } from './login-models';
 })
 
 export class LoginService {
-  private apiUrl = 'http://localhost:8090/auth/login';
+  private apiUrl = 'http://localhost:8080/auth/login';
   constructor(private http: HttpClient) { }
 
   logar(loginCliente: LoginCliente): Observable<LoginResponse> {
