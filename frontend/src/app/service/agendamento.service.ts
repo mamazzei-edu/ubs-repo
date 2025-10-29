@@ -11,7 +11,7 @@ import {
   providedIn: 'root'
 })
 export class AgendamentoService {
-  private apiUrl = 'http://localhost:8090/api/agendamentos';
+  private apiUrl = 'http://localhost:8080/api/agendamentos';
 
   constructor(private http: HttpClient) {}
 
@@ -29,13 +29,13 @@ export class AgendamentoService {
 
   listarPorPaciente(pacienteId: number): Observable<Agendamento[]> {
     return this.http.get<Agendamento[]>(
-      `http://localhost:8090/api/agendamentos/paciente/${pacienteId}`
+      `http://localhost:8080/api/agendamentos/paciente/${pacienteId}`
     );
   }
 
   listarPorMedico(medicoId: number): Observable<Agendamento[]> {
     return this.http.get<Agendamento[]>(
-      `http://localhost:8090/api/agendamentos/medico/${medicoId}`
+      `http://localhost:8080/api/agendamentos/medico/${medicoId}`
     );
   }
 
@@ -44,7 +44,7 @@ export class AgendamentoService {
     dataHora: string
   ): Observable<{ disponivel: boolean }> {
     return this.http.get<{ disponivel: boolean }>(
-      `http://localhost:8090/api/agendamentos/medico/${medicoId}/disponibilidade`,
+      `http://localhost:8080/api/agendamentos/medico/${medicoId}/disponibilidade`,
       { params: { dataHora } }
     );
   }
@@ -99,7 +99,7 @@ export class AgendamentoService {
     pacienteId: number
   ): Observable<Agendamento[]> {
     return this.http.get<Agendamento[]>(
-      `http://localhost:8090/api/agendamentos/paciente/${pacienteId}/proximos`
+      `http://localhost:8080/api/agendamentos/paciente/${pacienteId}/proximos`
     );
   }
 
@@ -107,7 +107,7 @@ export class AgendamentoService {
     medicoId: number
   ): Observable<Agendamento[]> {
     return this.http.get<Agendamento[]>(
-      `http://localhost:8090/api/agendamentos/medico/${medicoId}/proximos`
+      `http://localhost:8080/api/agendamentos/medico/${medicoId}/proximos`
     );
   }
 
