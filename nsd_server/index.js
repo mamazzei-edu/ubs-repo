@@ -1,8 +1,10 @@
-const bonjour = require('bonjour')(); // Inicializa o Bonjour
+import { Bonjour } from 'bonjour-service'
 
-const http = require('http');
-HOSTIP= '';
-const express = require('express');
+const bonjour = new Bonjour()
+
+let HOSTIP= '';
+
+import express from 'express';
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
@@ -35,9 +37,9 @@ app.post('/set-ip', (req, res) => {
     HOSTIP = ip;
     res.send(`Endereço IP do servidor atualizado para: ${HOSTIP}`);
   bonjour.publish({ 
-    name: 'UBSAuth1', 
+    name: 'UBSAuth', 
     type: 'http', 
-    host: '10.67.173.21', // Esse endereço é o que deve ser atualizado quando da instalação no cliente
+    host: '0.0.0.0', // Esse endereço é o que deve ser atualizado quando da instalação no cliente
     protocol: 'tcp',
     port: PORT,
     txt: { authPort: PORT_AUTH.toString(), apiPort: PORT_API.toString(), hostIP: HOSTIP } 
@@ -60,7 +62,7 @@ const PORT = 3000;
 const PORT_AUTH = 8080;
 const PORT_API = 8081;
  // Porta para o serviço de autenticação
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`Servidor rodando na porta ${PORT}`);
 });
 

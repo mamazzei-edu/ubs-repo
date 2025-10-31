@@ -26,6 +26,7 @@ import io.reactivex.rxjava3.core.Single;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.Toast;
 
 import java.io.UnsupportedEncodingException;
@@ -125,23 +126,30 @@ public class MainActivity extends AppCompatActivity implements NsdClient.Service
             String mensagemIP = null;
             try {
                 mensagemIP = "IP:" + new String(host, "UTF-8");
+
             } catch (UnsupportedEncodingException e) {
                 throw new RuntimeException(e);
             }
             Toast.makeText(this, mensagemIP, Toast.LENGTH_LONG).show();
 
             Log.d(TAG, mensagemIP);
+            Button b = findViewById(R.id.login);
+            b.setEnabled(true);
 
             Single<Preferences> updateResult =  dataStore.updateDataAsync(prefsIn -> {
-                Preferences.Key<String> chaveServer = PreferencesKeys.stringKey("USBAuth");
+                String nomeChave =  "UBSAuth";
+                Preferences.Key<String> chaveServer = PreferencesKeys.stringKey(nomeChave);
                 MutablePreferences mutablePreferences = prefsIn.toMutablePreferences();
                 String valor = prefsIn.get(chaveServer);
-                Log.d(TAG, valor);
-//                String nomeChave =  "UBSAuth";
-//                String chave = prefsIn.get(STRING_KEY);
-//                mutablePreferences.set("UBSAuth", chave);
+                if (valor != null) {
+                    Log.d(TAG, valor);
+                }
+                Preferences.Key<String> key = PreferencesKeys.stringKey(nomeChave);
+                mutablePreferences.set(key, new String(host, "UTF-8"));
+                Log.d(TAG, "Registrado IP: " + mutablePreferences.get(key));
                 return Single.just(mutablePreferences);
             });
+            updateResult.subscribe();
 // The update is completed once updateResult is completed.
 
 

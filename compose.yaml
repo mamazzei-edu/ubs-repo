@@ -74,10 +74,10 @@ services:
   nsd_server:
     build: ./nsd_server
     restart: always
-    ports:
-      - "3000:3000"
-    networks:
-      - app-network
+    
+    network_mode: "host"
+#    networks:
+#      - app-network
 
 
 # The commented out section below is an example of how to define a PostgreSQL
