@@ -5,7 +5,9 @@ import android.net.nsd.NsdManager;
 import android.net.nsd.NsdServiceInfo;
 import android.util.Log;
 
+import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
+import java.util.Map;
 
 public class NsdClient {
 
@@ -17,7 +19,7 @@ public class NsdClient {
     private final ServiceDiscoveryListener listener;
 
     public interface ServiceDiscoveryListener {
-        void onServiceFound(String serviceName, int port);
+        void onServiceFound(String serviceName, int port, Map<String, byte[]> attributes);
         void onServiceLost(String serviceName);
     }
 
@@ -42,8 +44,9 @@ public class NsdClient {
                 InetAddress host = serviceInfo.getHost();
                 int port = serviceInfo.getPort();
                 String serviceName = serviceInfo.getServiceName();
+                Map<String, byte[]> attributes = serviceInfo.getAttributes();
                 if (listener != null) {
-                    listener.onServiceFound(serviceName, port);
+                    listener.onServiceFound(serviceName, port, attributes);
                 }
             }
         };
@@ -62,6 +65,17 @@ public class NsdClient {
                 if (serviceInfo.getServiceType().equals(serviceType)) {
                     Log.d(TAG, "Attempting to resolve service: " + serviceInfo.getServiceName());
                     if (serviceInfo.getServiceName().equals("UBSAuth")) {
+                        Map<String,byte[]> attributes = serviceInfo.getAttributes();
+                        for (Map.Entry<String, byte[]> item: attributes.entrySet()) {
+                            String chave = item.getKey();
+                            String valor = null;
+                            try {
+                                valor = new String(item.getValue(), "UTF-8");
+                            } catch (UnsupportedEncodingException e) {
+                                throw new RuntimeException(e);
+                            }
+                            Log.d(TAG, "Encontrada chave: " + chave + " com valor: " + valor);
+                        }
                         nsdManager.resolveService(serviceInfo, resolveListener);
                     }
                 }

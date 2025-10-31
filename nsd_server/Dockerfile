@@ -17,4 +17,6 @@ RUN --mount=type=cache,target=/root/.npm npm ci
 COPY . .
 
 EXPOSE 3000
+EXPOSE 5353/udp
+
 CMD ["node", "index.js"]

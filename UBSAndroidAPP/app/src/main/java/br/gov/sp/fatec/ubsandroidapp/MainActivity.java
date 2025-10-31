@@ -11,18 +11,27 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
+import androidx.datastore.preferences.core.MutablePreferences;
+import androidx.datastore.preferences.core.Preferences;
+import androidx.datastore.preferences.core.PreferencesKeys;
+import androidx.datastore.preferences.rxjava3.RxPreferenceDataStoreBuilder;
+import androidx.datastore.rxjava3.RxDataStore;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import br.gov.sp.fatec.ubsandroidapp.databinding.ActivityMainBinding;
+import io.reactivex.rxjava3.core.Single;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.Toast;
 
+import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements NsdClient.ServiceDiscoveryListener {
 
@@ -32,7 +41,8 @@ public class MainActivity extends AppCompatActivity implements NsdClient.Service
     private static final String SERVICE_TYPE = "_http._tcp.";
     private NsdClient nsdClient;
 
-    private String ipServer;
+    private RxDataStore<Preferences> dataStore;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +57,8 @@ public class MainActivity extends AppCompatActivity implements NsdClient.Service
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+        dataStore =
+                new RxPreferenceDataStoreBuilder(this, "ubsdatastore").build();
 
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,11 +118,40 @@ public class MainActivity extends AppCompatActivity implements NsdClient.Service
     }
 
     @Override
-    public void onServiceFound(String serviceName, int port) {
+    public void onServiceFound(String serviceName, int port, Map<String,byte[]> items) {
         runOnUiThread(() -> {
             String message = "Service found: " + serviceName +  ":" + port;
+            byte[] host = items.get("hostIP");
             Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-            Log.d(TAG, message);
+            String mensagemIP = null;
+            try {
+                mensagemIP = "IP:" + new String(host, "UTF-8");
+
+            } catch (UnsupportedEncodingException e) {
+                throw new RuntimeException(e);
+            }
+            Toast.makeText(this, mensagemIP, Toast.LENGTH_LONG).show();
+
+            Log.d(TAG, mensagemIP);
+            Button b = findViewById(R.id.login);
+            b.setEnabled(true);
+
+            Single<Preferences> updateResult =  dataStore.updateDataAsync(prefsIn -> {
+                String nomeChave =  "UBSAuth";
+                Preferences.Key<String> chaveServer = PreferencesKeys.stringKey(nomeChave);
+                MutablePreferences mutablePreferences = prefsIn.toMutablePreferences();
+                String valor = prefsIn.get(chaveServer);
+                if (valor != null) {
+                    Log.d(TAG, valor);
+                }
+                Preferences.Key<String> key = PreferencesKeys.stringKey(nomeChave);
+                mutablePreferences.set(key, new String(host, "UTF-8"));
+                Log.d(TAG, "Registrado IP: " + mutablePreferences.get(key));
+                return Single.just(mutablePreferences);
+            });
+            updateResult.subscribe();
+// The update is completed once updateResult is completed.
+
 
             // You can now establish a connection with the server using the host and port
             // e.g., new Thread(() -> connectToServer(host, port)).start();

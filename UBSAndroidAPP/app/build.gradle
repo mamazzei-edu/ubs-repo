@@ -30,6 +30,7 @@ android {
     }
     buildFeatures {
         viewBinding true
+        dataBinding true
     }
 }
 
@@ -39,7 +40,20 @@ dependencies {
     implementation libs.constraintlayout
     implementation libs.navigation.fragment
     implementation libs.navigation.ui
+    implementation("androidx.datastore:datastore-preferences-core:1.1.7")
+    implementation libs.datastore.rxjava3
+    implementation libs.datastore.preferences.rxjava3
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
+
+    // Retrofit for network requests
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+
+    // OkHttp for HTTP operations
+    implementation 'com.squareup.okhttp3:okhttp:4.9.1'
+
+    // JWT decoding library
+    implementation 'com.auth0:java-jwt:3.10.3'    
 }
