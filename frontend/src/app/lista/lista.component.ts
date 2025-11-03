@@ -1,27 +1,26 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router'; // <-- Adicionado RouterLink
+import { Router, RouterLink } from '@angular/router';
 import { PacienteService } from '../service/paciente.service';
+
+declare var $: any; // necessário para usar o DataTables com jQuery
 
 @Component({
   selector: 'app-lista',
   templateUrl: './lista.component.html',
   styleUrls: ['./lista.component.css'],
   standalone: true,
-  // CORREÇÃO: Adicionando RouterLink nos imports para que os botões funcionem
-  imports: [CommonModule, FormsModule, RouterLink], 
+  imports: [CommonModule, FormsModule, RouterLink],
 })
-export class ListaComponent implements OnInit {
-  pacientes: any[] = [];
+export class ListaComponent implements OnInit, AfterViewInit, OnDestroy {
   pesquisaId: string = '';
   mensagem: string = '';
+  userRole: string = '';
+  isAdmin: boolean = false;
+  tabela: any;
   pacienteSelecionado: any = null;
   mostrarModalEditar: boolean = false;
-  userRole: string = '';
-  
-  // NOVO: Propriedade usada no *ngIf do HTML para o menu de Admin
-  isAdmin: boolean = false; 
 
   constructor(
     private pacienteService: PacienteService,
@@ -29,63 +28,147 @@ export class ListaComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // 1. Carrega o papel do usuário
     this.userRole = localStorage.getItem('role') || '';
-    
-    // 2. Define a variável de controle para o *ngIf do menu de Admin
-    // Inclui ADMIN e SUPER_ADMIN, já que ambos são administradores
-    this.isAdmin = this.userRole === 'ADMIN' || this.userRole === 'SUPER_ADMIN'; 
-
-    // 3. Carrega os pacientes (funcionalidade principal da tela)
-    this.carregarPacientes();
-  }
-  
-  // NOVO: Função para verificar se o usuário é MEDICO/USER, se necessário
-  // Você pode usar isso para esconder os botões 'Editar' e 'Excluir' da tabela, se quiser.
-  hasAccess(roles: string[]): boolean {
-    return roles.includes(this.userRole);
+    this.isAdmin = this.userRole === 'ADMIN' || this.userRole === 'SUPER_ADMIN';
   }
 
-
-  carregarPacientes(): void {
-    this.pacienteService.listarPacientes().subscribe({
-      next: (dados) => {
-        this.pacientes = dados;
-        this.mensagem =
-          this.pacientes.length === 0
-            ? 'Nenhum paciente encontrado.'
-            : '';
-      },
-      error: () => {
-        this.mensagem = 'Erro ao carregar a lista de pacientes.';
-      },
-    });
+  ngAfterViewInit(): void {
+    this.inicializarTabela();
   }
 
-  pesquisarPacientePorId(): void {
-    if (!this.pesquisaId) {
-      this.carregarPacientes();
-      return;
+  ngOnDestroy(): void {
+    if (this.tabela) {
+      this.tabela.destroy(true);
     }
-    this.pacienteService.buscarPacientePorId(this.pesquisaId).subscribe({
+  }
+
+  inicializarTabela(): void {
+    this.tabela = $('#tabelaPacientes').DataTable({
+      pagingType: 'full_numbers',
+      pageLength: 10,
+      serverSide: true,
+      processing: true,
+      ajax: (dataTablesParameters: any, callback: any) => {
+        // Se o usuário digitou um ID, busca apenas esse paciente
+        if (this.pesquisaId.trim()) {
+          this.pacienteService.buscarPacientePorId(this.pesquisaId).subscribe({
+            next: (paciente) => {
+              callback({
+                recordsTotal: 1,
+                recordsFiltered: 1,
+                data: [paciente],
+              });
+            },
+            error: () => {
+              callback({
+                recordsTotal: 0,
+                recordsFiltered: 0,
+                data: [],
+              });
+              this.mensagem = 'Paciente não encontrado.';
+            },
+          });
+        } else {
+          // Caso contrário, lista normal com paginação
+          this.pacienteService
+            .listarPacientesAjax(dataTablesParameters)
+            .subscribe({
+              next: (resp) => {
+                callback({
+                  recordsTotal: resp.recordsTotal,
+                  recordsFiltered: resp.recordsFiltered,
+                  data: resp.data,
+                });
+              },
+              error: () => {
+                this.mensagem = 'Erro ao carregar pacientes.';
+              },
+            });
+        }
+      },
+      columns: [
+        { title: 'Código', data: 'codigo' },
+        { title: 'Nome Completo', data: 'nomeCompleto' },
+        { title: 'Data de Nascimento', data: 'dataNascimento' },
+        { title: 'Sexo', data: 'sexo' },
+        { title: 'Contato', data: 'contatoCelular' },
+        {
+          title: 'Ações',
+          data: null,
+          orderable: false,
+          render: (data: any) => {
+            return `
+              <button class="btn btn-sm btn-primary editar" data-id="${data.codigo}">Editar</button>
+              <button class="btn btn-sm btn-danger excluir" data-id="${data.codigo}">Excluir</button>
+            `;
+          },
+        },
+      ],
+      language: {
+        url: '//cdn.datatables.net/plug-ins/1.10.25/i18n/Portuguese-Brasil.json',
+      },
+      destroy: true, // permite reinicializar a tabela ao recarregar
+    });
+
+    // Eventos de ação nos botões (usando arrow function para preservar o "this")
+    $('#tabelaPacientes tbody').on('click', 'button.editar', (event: any) => {
+      const id = $(event.currentTarget).data('id');
+      this.abrirModalEditar(id);
+    });
+
+    $('#tabelaPacientes tbody').on('click', 'button.excluir', (event: any) => {
+      const id = $(event.currentTarget).data('id');
+      this.excluirPaciente(id);
+    });
+  }
+
+  // 🔍 Pesquisa por ID (botão “Pesquisar” do HTML)
+  pesquisarPacientePorId(): void {
+    this.mensagem = '';
+    if (this.tabela) {
+      this.tabela.ajax.reload(); // recarrega a tabela com o filtro aplicado
+    }
+  }
+
+  // ✏️ Abrir modal de edição
+  abrirModalEditar(id: number): void {
+    this.pacienteService.buscarPacientePorId(id.toString()).subscribe({
       next: (paciente) => {
-        // CORREÇÃO: Garante que 'pacientes' seja um array para o *ngFor
-        this.pacientes = paciente ? [paciente] : []; 
-        this.mensagem = paciente
-          ? ''
-          : 'Nenhum paciente encontrado com o ID fornecido.';
+        this.pacienteSelecionado = paciente;
+        this.mostrarModalEditar = true;
       },
       error: () => {
-        this.mensagem = 'Erro ao buscar paciente.';
+        this.mensagem = 'Erro ao buscar paciente para edição.';
       },
     });
+  }
+
+  fecharModal(): void {
+    this.mostrarModalEditar = false;
+    this.pacienteSelecionado = null;
+  }
+
+  atualizarPaciente(): void {
+    if (!this.pacienteSelecionado) return;
+    this.pacienteService
+      .editarPaciente(this.pacienteSelecionado.codigo, this.pacienteSelecionado)
+      .subscribe({
+        next: () => {
+          this.fecharModal();
+          this.tabela.ajax.reload();
+          this.mensagem = 'Paciente atualizado com sucesso.';
+        },
+        error: () => {
+          this.mensagem = 'Erro ao atualizar paciente.';
+        },
+      });
   }
 
   excluirPaciente(id: string): void {
     if (confirm('Tem certeza que deseja excluir este paciente?')) {
       this.pacienteService.excluirPaciente(id).subscribe({
         next: () => {
-          this.carregarPacientes();
+          this.tabela.ajax.reload();
           this.mensagem = 'Paciente excluído com sucesso.';
         },
         error: () => {
@@ -95,31 +178,6 @@ export class ListaComponent implements OnInit {
     }
   }
 
-  abrirModalEditar(paciente: any): void {
-    this.pacienteSelecionado = { ...paciente };
-    this.mostrarModalEditar = true;
-  }
-
-  fecharModal(): void {
-    this.mostrarModalEditar = false;
-    this.pacienteSelecionado = null;
-  }
-
-  atualizarPaciente(): void {
-    this.pacienteService
-      .editarPaciente(this.pacienteSelecionado.id, this.pacienteSelecionado)
-      .subscribe({
-        next: () => {
-          this.fecharModal();
-          this.carregarPacientes();
-        },
-        error: () => {
-          this.mensagem = 'Erro ao atualizar paciente.';
-        },
-      });
-  }
-
-  // 🚪 Função para logout
   logout(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('role');

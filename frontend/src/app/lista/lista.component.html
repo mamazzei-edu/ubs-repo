@@ -45,28 +45,7 @@
           </tr>
         </thead>        
         <tbody>
-          <tr *ngFor="let paciente of pacientes">
-            <td>{{ paciente.id }}</td>
-            <td>{{ paciente.nomeCompleto }}</td>
-            <td>{{ paciente.cpf }}</td>
-            <td>
-              <button
-                class="btn btn-primary btn-sm me-2"
-                (click)="abrirModalEditar(paciente)">
-                <i class="bi bi-pencil"></i> Editar
-              </button>
-              <button
-                class="btn btn-danger btn-sm"
-                (click)="excluirPaciente(paciente.id)">
-                <i class="bi bi-trash"></i> Excluir
-              </button>
-            </td>
-          </tr>
-          <tr *ngIf="pacientes.length === 0">
-            <td colspan="4" class="text-center">
-              {{ mensagem || 'Nenhum resultado encontrado.' }}
-            </td>
-          </tr>
+         
         </tbody>
       </table>
     </div>

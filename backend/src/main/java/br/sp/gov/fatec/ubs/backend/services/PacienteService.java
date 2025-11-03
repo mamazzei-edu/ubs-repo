@@ -19,6 +19,9 @@ public class PacienteService {
     public List<Paciente> listarPacientes() {
         return pacienteRepository.findAll();  // Busca todos os pacientes no banco
     }
+    public List<Paciente> listarPacientesAjax() {
+        return pacienteRepository.findAll();  // Busca todos os pacientes no banco
+    }
 
     // Método para buscar um paciente pelo ID
     public Optional<Paciente> buscarPacientePorId(Long id) {
