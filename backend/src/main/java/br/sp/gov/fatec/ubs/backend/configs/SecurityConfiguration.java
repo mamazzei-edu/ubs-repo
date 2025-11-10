@@ -15,6 +15,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.core.env.Environment; // Necessario para usar variaveis de ambiente
 
 import java.util.Arrays;
 import java.util.List;
@@ -28,6 +29,12 @@ public class SecurityConfiguration {
     private boolean securityEnabled;
 
     private final JwtAuthenticationFilter jwtRequestFilter;
+
+    // Também é necessário para utilizar o Environment
+    // e também é possível usar @Value para pegar variáveis de ambiente
+    @Autowired      
+    private Environment environment;
+
 
     @Autowired
     public SecurityConfiguration(JwtAuthenticationFilter jwtRequestFilter) {
@@ -65,8 +72,11 @@ public class SecurityConfiguration {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 //        configuration.setAllowedOrigins(List.of("*"));
-        List<String> allowedOrigins = Arrays.asList(System.getenv("LISTA_HOSTS").split(","));
-        System.out.println("Allowed origins: " + System.getenv("LISTA_HOSTS"));
+//        List<String> allowedOrigins = Arrays.asList(System.getenv("LISTA_HOSTS").split(","));
+//        System.out.println("Allowed origins: " + System.getenv("LISTA_HOSTS"));
+        List<String> allowedOrigins = Arrays.asList(environment.getProperty("LISTA_HOSTS").split(","));
+        System.out.println("Allowed origins: " + environment.getProperty("LISTA_HOSTS").split(","));
+
         configuration.setAllowedOriginPatterns(allowedOrigins);
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowCredentials(true); // para aceitar os login com cookies
