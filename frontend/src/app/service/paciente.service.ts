@@ -16,6 +16,10 @@ export class PacienteService {
     return this.http.get<any[]>(this.apiUrl);  // Requisição GET para listar pacientes
   }
 
+  listarPacientesPaginados(page: number, size: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}?page=${page}&size=${size}`);
+  }
+
   buscarPacientePorId(id: string): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${id}`);  // Requisição GET passando o ID do paciente
   }

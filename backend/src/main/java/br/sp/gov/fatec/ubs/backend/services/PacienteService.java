@@ -1,6 +1,9 @@
 package br.sp.gov.fatec.ubs.backend.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.sp.gov.fatec.ubs.backend.model.Paciente;
@@ -18,6 +21,12 @@ public class PacienteService {
     // Método para listar todos os pacientes
     public List<Paciente> listarPacientes() {
         return pacienteRepository.findAll();  // Busca todos os pacientes no banco
+    }
+
+    // Método para listar pacientes com paginação
+    public Page<Paciente> listarPacientesPaginados(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return pacienteRepository.findAll(pageable);
     }
 
     // Método para buscar um paciente pelo ID

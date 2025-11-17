@@ -21,7 +21,14 @@ export class ListaComponent implements OnInit {
   userRole: string = '';
   
   // NOVO: Propriedade usada no *ngIf do HTML para o menu de Admin
-  isAdmin: boolean = false; 
+  isAdmin: boolean = false;
+
+  // Paginação
+  currentPage: number = 0;
+  pageSize: number = 10;
+  totalPages: number = 0;
+  totalElements: number = 0;
+  maxVisiblePages: number = 5; 
 
   constructor(
     private pacienteService: PacienteService,
@@ -48,9 +55,11 @@ export class ListaComponent implements OnInit {
 
 
   carregarPacientes(): void {
-    this.pacienteService.listarPacientes().subscribe({
-      next: (dados) => {
-        this.pacientes = dados;
+    this.pacienteService.listarPacientesPaginados(this.currentPage, this.pageSize).subscribe({
+      next: (response) => {
+        this.pacientes = response.content;
+        this.totalPages = response.totalPages;
+        this.totalElements = response.totalElements;
         this.mensagem =
           this.pacientes.length === 0
             ? 'Nenhum paciente encontrado.'
@@ -60,6 +69,42 @@ export class ListaComponent implements OnInit {
         this.mensagem = 'Erro ao carregar a lista de pacientes.';
       },
     });
+  }
+
+  proximaPagina(): void {
+    if (this.currentPage < this.totalPages - 1) {
+      this.currentPage++;
+      this.carregarPacientes();
+    }
+  }
+
+  paginaAnterior(): void {
+    if (this.currentPage > 0) {
+      this.currentPage--;
+      this.carregarPacientes();
+    }
+  }
+
+  irParaPagina(page: number): void {
+    this.currentPage = page;
+    this.carregarPacientes();
+  }
+
+  getVisiblePages(): number[] {
+    const pages: number[] = [];
+    let startPage = Math.max(0, this.currentPage - Math.floor(this.maxVisiblePages / 2));
+    let endPage = Math.min(this.totalPages - 1, startPage + this.maxVisiblePages - 1);
+    
+    // Ajustar se não houver páginas suficientes antes
+    if (endPage - startPage + 1 < this.maxVisiblePages) {
+      startPage = Math.max(0, endPage - this.maxVisiblePages + 1);
+    }
+    
+    for (let i = startPage; i <= endPage; i++) {
+      pages.push(i);
+    }
+    
+    return pages;
   }
 
   pesquisarPacientePorId(): void {

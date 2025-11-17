@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import br.sp.gov.fatec.ubs.backend.model.Paciente;
 import br.sp.gov.fatec.ubs.backend.services.PacienteService;
 
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -27,11 +26,12 @@ public class PacienteController {
         return new ResponseEntity<>(pacienteSalvo, HttpStatus.CREATED);
     }
 
-    // Endpoint para listar todos os pacientes
+    // Endpoint para listar todos os pacientes com paginação
     @GetMapping
-    public ResponseEntity<List<Paciente>> listarPacientes() {
-        List<Paciente> pacientes = pacienteService.listarPacientes();
-        return new ResponseEntity<>(pacientes, HttpStatus.OK);
+    public ResponseEntity<?> listarPacientes(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return new ResponseEntity<>(pacienteService.listarPacientesPaginados(page, size), HttpStatus.OK);
     }
 
     // Endpoint para buscar um paciente pelo ID

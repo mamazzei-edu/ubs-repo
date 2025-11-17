@@ -1,17 +1,3 @@
-<div class="d-flex justify-content-center gap-2 mb-4">
-    
-    <ng-container *ngIf="isAdmin">
-        <button routerLink="/user-lista" class="btn btn-menu">Usuários</button>
-        <button routerLink="/user-cadastro" class="btn btn-menu">Cadastro Usuário</button>
-    </ng-container>
-
-    <button routerLink="/lista" class="btn btn-menu">Pacientes</button>
-    <button routerLink="/cadastro" class="btn btn-menu">Cadastro Paciente</button>
-    <button routerLink="/upload" class="btn btn-menu">Carregar Ficha</button>
-    <button (click)="logout()" class="btn btn-menu sair">Sair</button>
-    
-</div>
-
 <div class="container mt-4">
   <!-- Campo de pesquisa -->
   <div class="row mb-3">
@@ -69,6 +55,31 @@
           </tr>
         </tbody>
       </table>
+    </div>
+    
+    <!-- Paginação -->
+    <div class="card-footer d-flex justify-content-between align-items-center">
+      <div>
+        <span>Mostrando {{ pacientes.length }} de {{ totalElements }} pacientes</span>
+      </div>
+      <nav>
+        <ul class="pagination mb-0">
+          <li class="page-item" [class.disabled]="currentPage === 0">
+            <button class="page-link" (click)="paginaAnterior()" [disabled]="currentPage === 0">
+              Anterior
+            </button>
+          </li>
+          <li class="page-item" *ngFor="let page of getVisiblePages()" 
+              [class.active]="page === currentPage">
+            <button class="page-link" (click)="irParaPagina(page)">{{ page + 1 }}</button>
+          </li>
+          <li class="page-item" [class.disabled]="currentPage === totalPages - 1">
+            <button class="page-link" (click)="proximaPagina()" [disabled]="currentPage === totalPages - 1">
+              Próxima
+            </button>
+          </li>
+        </ul>
+      </nav>
     </div>
   </div>
 
