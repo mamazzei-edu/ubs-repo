@@ -170,7 +170,7 @@ public class ArmazenamentoSistemaDeArquivoService implements ArmazenamentoServic
                             paciente.setCns(matcher.group(1));
                             break;
                         case "prontuario":
-                            paciente.setProntuario(serieProntuario + "-" + matcher.group(1));
+                            paciente.setProntuario(serieProntuario);
                             break;
                         case "nomeCompleto":
                             paciente.setNomeCompleto(matcher.group(1));
