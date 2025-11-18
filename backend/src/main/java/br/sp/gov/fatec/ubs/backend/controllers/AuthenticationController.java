@@ -50,7 +50,7 @@ public class AuthenticationController {
             LoginResponse loginResponse = new LoginResponse();
             loginResponse.setCreatedAt(System.currentTimeMillis());
             loginResponse.setUserId(authenticatedUser.getId());
-            // loginResponse.setToken(jwtToken);
+            loginResponse.setToken(jwtToken); // ← DESCOMENTADO para funcionar com app Android
             String[] roles = new String[authenticatedUser.getAuthorities().size()];
             int contador = 0;
             for (String roleString : authenticatedUser.getAuthorities().stream().map(auth -> auth.getAuthority())
@@ -75,8 +75,10 @@ public class AuthenticationController {
             return ResponseEntity.ok(loginResponse);
 
         } catch (Exception e) {
+            System.err.println("❌ Erro no login: " + e.getMessage());
+            e.printStackTrace();
             LoginResponse loginResponse = new LoginResponse();
-            return ResponseEntity.ok(loginResponse);
+            return ResponseEntity.status(401).body(loginResponse);
         }
 
     }

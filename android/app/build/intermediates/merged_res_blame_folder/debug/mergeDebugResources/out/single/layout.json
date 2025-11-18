@@ -1,0 +1,22 @@
+[
+    {
+        "merged": "br.sp.gov.fatec.ubs.android.app-mergeDebugResources-51:/layout/item_paciente.xml",
+        "source": "br.sp.gov.fatec.ubs.android.app-main-54:/layout/item_paciente.xml"
+    },
+    {
+        "merged": "C:\\Users\\ryanb\\.gradle\\daemon\\8.13\\br.sp.gov.fatec.ubs.android.app-mergeDebugResources-51:\\layout\\activity_login.xml",
+        "source": "C:\\Users\\ryanb\\.gradle\\daemon\\8.13\\br.sp.gov.fatec.ubs.android.app-main-54:\\layout\\activity_login.xml"
+    },
+    {
+        "merged": "C:\\Users\\ryanb\\.gradle\\daemon\\8.13\\br.sp.gov.fatec.ubs.android.app-mergeDebugResources-51:\\layout\\item_paciente.xml",
+        "source": "C:\\Users\\ryanb\\.gradle\\daemon\\8.13\\br.sp.gov.fatec.ubs.android.app-main-54:\\layout\\item_paciente.xml"
+    },
+    {
+        "merged": "C:\\Users\\ryanb\\.gradle\\daemon\\8.13\\br.sp.gov.fatec.ubs.android.app-mergeDebugResources-51:\\layout\\activity_cadastro_paciente.xml",
+        "source": "C:\\Users\\ryanb\\.gradle\\daemon\\8.13\\br.sp.gov.fatec.ubs.android.app-main-54:\\layout\\activity_cadastro_paciente.xml"
+    },
+    {
+        "merged": "C:\\Users\\ryanb\\.gradle\\daemon\\8.13\\br.sp.gov.fatec.ubs.android.app-mergeDebugResources-51:\\layout\\activity_main.xml",
+        "source": "C:\\Users\\ryanb\\.gradle\\daemon\\8.13\\br.sp.gov.fatec.ubs.android.app-main-54:\\layout\\activity_main.xml"
+    }
+]

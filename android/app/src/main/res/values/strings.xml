@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">UBS Sistema</string>
+    
+    <!-- Login -->
+    <string name="login_title">Login</string>
+    <string name="email_hint">Email</string>
+    <string name="password_hint">Senha</string>
+    <string name="btn_login">Entrar</string>
+    
+    <!-- Main -->
+    <string name="pacientes_title">Pacientes</string>
+    <string name="action_logout">Sair</string>
+    <string name="add_paciente">Adicionar Paciente</string>
+    
+    <!-- Paciente -->
+    <string name="nome_completo">Nome Completo</string>
+    <string name="prontuario">Prontuário</string>
+    <string name="data_nascimento">Data de Nascimento</string>
+    <string name="cpf">CPF</string>
+    <string name="telefone">Telefone</string>
+    <string name="email">Email</string>
+    
+    <!-- Messages -->
+    <string name="loading">Carregando…</string>
+    <string name="error_generic">Ocorreu um erro. Tente novamente.</string>
+    <string name="no_data">Nenhum dado encontrado</string>
+</resources>

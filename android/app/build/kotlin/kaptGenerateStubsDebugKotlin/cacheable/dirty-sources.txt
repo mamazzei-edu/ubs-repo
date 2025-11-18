@@ -1,0 +1,12 @@
+C:\Users\ryanb\CascadeProjects\ubs-repo\android\app\src\main\java\br\sp\gov\fatec\ubs\android\ui\login\LoginViewModel.kt
+C:\Users\ryanb\CascadeProjects\ubs-repo\android\app\src\main\java\br\sp\gov\fatec\ubs\android\ui\paciente\PacienteAdapter.kt
+C:\Users\ryanb\CascadeProjects\ubs-repo\android\app\src\main\java\br\sp\gov\fatec\ubs\android\UBSApplication.kt
+C:\Users\ryanb\CascadeProjects\ubs-repo\android\app\src\main\java\br\sp\gov\fatec\ubs\android\ui\paciente\PacienteViewModel.kt
+C:\Users\ryanb\CascadeProjects\ubs-repo\android\app\src\main\java\br\sp\gov\fatec\ubs\android\data\api\ApiService.kt
+C:\Users\ryanb\CascadeProjects\ubs-repo\android\app\src\main\java\br\sp\gov\fatec\ubs\android\ui\login\LoginActivity.kt
+C:\Users\ryanb\CascadeProjects\ubs-repo\android\app\src\main\java\br\sp\gov\fatec\ubs\android\data\model\Paciente.kt
+C:\Users\ryanb\CascadeProjects\ubs-repo\android\app\src\main\java\br\sp\gov\fatec\ubs\android\data\repository\AuthRepository.kt
+C:\Users\ryanb\CascadeProjects\ubs-repo\android\app\src\main\java\br\sp\gov\fatec\ubs\android\ui\MainActivity.kt
+C:\Users\ryanb\CascadeProjects\ubs-repo\android\app\src\main\java\br\sp\gov\fatec\ubs\android\data\model\LoginRequest.kt
+C:\Users\ryanb\CascadeProjects\ubs-repo\android\app\src\main\java\br\sp\gov\fatec\ubs\android\data\api\RetrofitClient.kt
+C:\Users\ryanb\CascadeProjects\ubs-repo\android\app\src\main\java\br\sp\gov\fatec\ubs\android\data\repository\PacienteRepository.kt

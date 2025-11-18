@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Cores do tema UBS - Sistema de Saúde -->
+    <color name="primary">#0d6efd</color>
+    <color name="primary_dark">#0b5ed7</color>
+    <color name="primary_light">#4a9eff</color>
+    <color name="accent">#198754</color>
+    
+    <color name="background">#F5F5F5</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="error">#dc3545</color>
+    
+    <color name="text_primary">#212529</color>
+    <color name="text_secondary">#6c757d</color>
+    <color name="text_hint">#adb5bd</color>
+    
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+</resources>

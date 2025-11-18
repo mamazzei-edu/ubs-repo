@@ -1,0 +1,20 @@
+{
+    "logs": [
+        {
+            "outputFile": "br.sp.gov.fatec.ubs.android.app-mergeDebugResources-50:/values-watch-v20/values-watch-v20.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\ryanb\\.gradle\\caches\\8.13\\transforms\\56d6ccbfeb9d73a3ae967a8b3f0615cf\\transformed\\appcompat-1.6.1\\res\\values-watch-v20\\values-watch-v20.xml",
+                    "from": {
+                        "startLines": "2,5,8",
+                        "startColumns": "4,4,4",
+                        "startOffsets": "55,214,385",
+                        "endLines": "4,7,10",
+                        "endColumns": "12,12,12",
+                        "endOffsets": "209,380,553"
+                    }
+                }
+            ]
+        }
+    ]
+}
