@@ -61,17 +61,97 @@ export class CadastroComponent {
   auditiva: string = '';
   motora: string = '';
   intelectual: string = '';
+  prontuario: string = '';
 
   // 🔹 Controle de modal
   showModal: boolean = false;
   modalMessage: string = '';
   isModalVisible: boolean = false;
 
-  constructor(private http: HttpClient, private router: Router) {}
+  // 🔹 Controle de modo edição
+  modoEdicao: boolean = false;
+  pacienteId: number | null = null;
+  showDuplicateModal: boolean = false;
+
+  constructor(private http: HttpClient, private router: Router, private pacienteService: PacienteService) {}
+
+  verificarProntuario() {
+    if (this.prontuario && this.prontuario.trim() !== '') {
+      this.pacienteService.buscarPacientePorProntuario(this.prontuario).subscribe({
+        next: (pacienteExistente) => {
+          // Paciente encontrado - abrir modal e carregar dados
+          this.showDuplicateModal = true;
+          this.carregarDadosPaciente(pacienteExistente);
+        },
+        error: () => {
+          // Prontuário não existe - continuar normalmente
+          this.modoEdicao = false;
+        }
+      });
+    }
+  }
+
+  carregarDadosPaciente(paciente: any) {
+    this.pacienteId = paciente.id;
+    this.modoEdicao = true;
+    this.nomeCompleto = paciente.nomeCompleto || '';
+    this.nomeSocial = paciente.nomeSocial || '';
+    this.nomeMae = paciente.nomeMae || '';
+    this.nomePai = paciente.nomePai || '';
+    this.dataNascimento = paciente.dataNascimento || '';
+    this.sexo = paciente.sexo || '';
+    this.nacionalidade = paciente.nacionalidade || '';
+    this.municipioNascimento = paciente.municipioNascimento || '';
+    this.racaCor = paciente.racaCor || '';
+    this.frequentaEscola = paciente.frequentaEscola || '';
+    this.escolaridade = paciente.escolaridade || '';
+    this.situacaoFamiliar = paciente.situacaoFamiliar || '';
+    this.vinculoEstabelecimento = paciente.vinculoEstabelecimento || '';
+    this.deficiente = paciente.deficiente || '';
+    this.contatoCelular = paciente.telefoneCelular || '';
+    this.contatoResidencial = paciente.telefoneResidencial || '';
+    this.contatoComercial = paciente.telefoneComercial || '';
+    this.contatoEmail = paciente.email || '';
+    this.cpf = paciente.cpf || '';
+    this.rg = paciente.rg || '';
+    this.orgaoEmissor = paciente.orgaoEmissor || '';
+    this.uf = paciente.uf || '';
+    this.pisPasepNis = paciente.pisPasepNis || '';
+    this.cnh = paciente.cnh || '';
+    this.ctps = paciente.ctps || '';
+    this.tituloEleitor = paciente.tituloEleitor || '';
+    this.passaporte = paciente.passaporte || '';
+    this.cep = paciente.cep || '';
+    this.logradouro = paciente.logradouro || '';
+    this.numero = paciente.numero || '';
+    this.bairro = paciente.bairro || '';
+    this.complemento = paciente.complemento || '';
+    this.ocupacao = paciente.ocupacao || '';
+    this.utilizaAlgumaOPM = paciente.utilizaAlgumaOPM || '';
+    this.visual = paciente.visual || '';
+    this.auditiva = paciente.auditiva || '';
+    this.motora = paciente.motora || '';
+    this.intelectual = paciente.intelectual || '';
+  }
+
+  closeDuplicateModal() {
+    this.showDuplicateModal = false;
+  }
 
   salvarPaciente() {
+    // VALIDAÇÃO DE CAMPOS OBRIGATÓRIOS
     if (!this.nomeCompleto || this.nomeCompleto.trim() === '') {
-      alert('Nome Completo é obrigatório!');
+      alert('❌ ERRO: O campo "Nome Completo" é obrigatório!');
+      return;
+    }
+    
+    if (!this.prontuario || this.prontuario.trim() === '') {
+      alert('❌ ERRO: O campo "Número de Prontuário" é obrigatório!');
+      return;
+    }
+    
+    if (!this.dataNascimento || this.dataNascimento.trim() === '') {
+      alert('❌ ERRO: O campo "Data de Nascimento" é obrigatório!');
       return;
     }
 
@@ -123,17 +203,36 @@ export class CadastroComponent {
       auditiva: this.auditiva,
       motora: this.motora,
       intelectual: this.intelectual,
+      prontuario: this.prontuario,
     };
 
-    this.http.post('http://localhost:8080/api/pacientes', paciente).subscribe({
-      next: (data) => {
-        console.log('✅ Paciente salvo com sucesso:', data);
-        this.openModal();
-      },
-      error: (err) => {
-        console.error('❌ Erro ao salvar paciente:', err);
-      },
-    });
+    if (this.modoEdicao && this.pacienteId) {
+      // Modo edição - atualizar paciente existente
+      this.pacienteService.editarPaciente(this.pacienteId.toString(), paciente).subscribe({
+        next: (data) => {
+          console.log('✅ Paciente atualizado com sucesso:', data);
+          this.openModal();
+        },
+        error: (err) => {
+          console.error('❌ Erro ao atualizar paciente:', err);
+          const mensagemErro = err.error?.message || err.error || 'Erro ao atualizar paciente.';
+          alert(mensagemErro);
+        },
+      });
+    } else {
+      // Modo cadastro - criar novo paciente
+      this.http.post('http://localhost:8080/api/pacientes', paciente).subscribe({
+        next: (data) => {
+          console.log('✅ Paciente salvo com sucesso:', data);
+          this.openModal();
+        },
+        error: (err) => {
+          console.error('❌ Erro ao salvar paciente:', err);
+          const mensagemErro = err.error?.message || err.error || 'Erro ao salvar paciente.';
+          alert(mensagemErro);
+        },
+      });
+    }
   }
 
   openModal() {

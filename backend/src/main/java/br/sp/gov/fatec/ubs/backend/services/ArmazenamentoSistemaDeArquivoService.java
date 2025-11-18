@@ -57,6 +57,8 @@ public class ArmazenamentoSistemaDeArquivoService implements ArmazenamentoServic
             if(!destino.getParent().equals(this.localArmazenamento.toAbsolutePath())) {
                 throw new ArmazenamentoException("Não é permitido armazenar fora do diretório de armazenamento " + arquivo.getOriginalFilename());
             }
+            
+            // Se o arquivo já existe, sobrescrever (permitir re-upload para testes)
             try(InputStream entrada = arquivo.getInputStream()) {
                 Files.copy(entrada, destino, StandardCopyOption.REPLACE_EXISTING);
             }

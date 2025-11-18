@@ -45,6 +45,38 @@ public class PacienteController {
         }
     }
 
+    // Endpoint para buscar paciente por prontuário
+    @GetMapping("/prontuario/{prontuario}")
+    public ResponseEntity<Paciente> buscarPacientePorProntuario(@PathVariable String prontuario) {
+        try {
+            Optional<Paciente> paciente = pacienteService.buscarPacientePorProntuario(prontuario);
+            if (paciente.isPresent()) {
+                return new ResponseEntity<>(paciente.get(), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            System.err.println("Erro ao buscar paciente por prontuário: " + e.getMessage());
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    // Endpoint para buscar paciente por nome completo
+    @GetMapping("/nome/{nomeCompleto}")
+    public ResponseEntity<Paciente> buscarPacientePorNome(@PathVariable String nomeCompleto) {
+        try {
+            Optional<Paciente> paciente = pacienteService.buscarPacientePorNome(nomeCompleto);
+            if (paciente.isPresent()) {
+                return new ResponseEntity<>(paciente.get(), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            System.err.println("Erro ao buscar paciente por nome: " + e.getMessage());
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
     // Endpoint para excluir paciente
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> excluirPaciente(@PathVariable Long id) {

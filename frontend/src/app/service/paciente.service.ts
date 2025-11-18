@@ -24,6 +24,10 @@ export class PacienteService {
     return this.http.get<any>(`${this.apiUrl}/${id}`);  // Requisição GET passando o ID do paciente
   }
 
+  buscarPacientePorProntuario(prontuario: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/prontuario/${prontuario}`);  // Requisição GET passando o prontuário do paciente
+  }
+
   excluirPaciente(id: string): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/${id}`);  // Requisição DELETE passando o ID do paciente
   }  

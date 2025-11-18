@@ -2,6 +2,32 @@
 
   <label class="form-label">Upload de Ficha</label>
 
+  <!-- MODAL DE PRONTUÁRIO/NOME DUPLICADO -->
+  <div
+    class="modal"
+    tabindex="-1"
+    [class.show]="showDuplicateModal"
+    [style.display]="showDuplicateModal ? 'block' : 'none'"
+    style="background-color: rgba(0,0,0,0.5);">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header bg-warning text-dark">
+          <h5 class="modal-title">⚠️ PACIENTE JÁ CADASTRADO</h5>
+          <button type="button" class="btn-close" (click)="closeDuplicateModal()" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p><strong>ATENÇÃO: Este paciente já está cadastrado no sistema!</strong></p>
+          <p>Foi encontrado um registro com o mesmo <strong>nome</strong> ou <strong>prontuário</strong>.</p>
+          <p>Os dados do paciente existente foram carregados para edição.</p>
+          <p class="text-danger"><strong>O botão foi alterado para "ALTERAR" para atualizar o cadastro existente.</strong></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click)="closeDuplicateModal()">Entendi</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="file-drop-area"
        (dragover)="onDragOver($event)"
        (drop)="onDrop($event)"
@@ -134,7 +160,9 @@
     </div>
 
     <div class="card-footer">
-      <button class="btn btn-success me-2" (click)="gravar(pacienteSelecionado)">Salvar</button>
+      <button class="btn btn-success me-2" (click)="gravar(pacienteSelecionado)">
+        {{ modoEdicao ? 'Alterar' : 'Salvar' }}
+      </button>
     </div>
   
 

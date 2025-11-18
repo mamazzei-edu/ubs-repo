@@ -34,8 +34,65 @@ public class PacienteService {
         return pacienteRepository.findById(id);  // Busca o paciente pelo ID
     }
 
-    // Método para salvar um novo paciente
+    // Método para buscar um paciente pelo prontuário
+    public Optional<Paciente> buscarPacientePorProntuario(String prontuario) {
+        try {
+            if (prontuario == null || prontuario.trim().isEmpty()) {
+                return Optional.empty();
+            }
+            return pacienteRepository.findByProntuario(prontuario);
+        } catch (Exception e) {
+            System.err.println("Erro ao buscar paciente por prontuário: " + e.getMessage());
+            e.printStackTrace();
+            return Optional.empty();
+        }
+    }
+
+    // Método para buscar um paciente pelo nome completo
+    public Optional<Paciente> buscarPacientePorNome(String nomeCompleto) {
+        try {
+            if (nomeCompleto == null || nomeCompleto.trim().isEmpty()) {
+                return Optional.empty();
+            }
+            return pacienteRepository.findByNomeCompleto(nomeCompleto);
+        } catch (Exception e) {
+            System.err.println("Erro ao buscar paciente por nome: " + e.getMessage());
+            e.printStackTrace();
+            return Optional.empty();
+        }
+    }
+
+    // Método para salvar um novo paciente com validação de duplicação
     public Paciente salvarPaciente(Paciente paciente) {
+        // VALIDAÇÃO DE CAMPOS OBRIGATÓRIOS
+        if (paciente.getNomeCompleto() == null || paciente.getNomeCompleto().trim().isEmpty()) {
+            throw new RuntimeException("O campo 'Nome Completo' é obrigatório!");
+        }
+        
+        if (paciente.getProntuario() == null || paciente.getProntuario().trim().isEmpty()) {
+            throw new RuntimeException("O campo 'Número de Prontuário' é obrigatório!");
+        }
+        
+        if (paciente.getDataNascimento() == null || paciente.getDataNascimento().trim().isEmpty()) {
+            throw new RuntimeException("O campo 'Data de Nascimento' é obrigatório!");
+        }
+        
+        // Verificar se já existe paciente com mesmo prontuário (se prontuário foi informado)
+        if (paciente.getProntuario() != null && !paciente.getProntuario().trim().isEmpty()) {
+            Optional<Paciente> existentePorProntuario = pacienteRepository.findByProntuario(paciente.getProntuario());
+            if (existentePorProntuario.isPresent() && !existentePorProntuario.get().getId().equals(paciente.getId())) {
+                throw new RuntimeException("Já existe um paciente cadastrado com este prontuário: " + paciente.getProntuario());
+            }
+        }
+        
+        // Verificar se já existe paciente com mesmo nome completo
+        if (paciente.getNomeCompleto() != null && !paciente.getNomeCompleto().trim().isEmpty()) {
+            Optional<Paciente> existentePorNome = pacienteRepository.findByNomeCompleto(paciente.getNomeCompleto());
+            if (existentePorNome.isPresent() && !existentePorNome.get().getId().equals(paciente.getId())) {
+                throw new RuntimeException("Já existe um paciente cadastrado com este nome: " + paciente.getNomeCompleto());
+            }
+        }
+        
         return pacienteRepository.save(paciente);  // Salva o paciente no banco
     }
 

@@ -41,6 +41,13 @@
     </div>
 
     <div class="form-group">
+      <label for="prontuario">Prontuário</label>
+      <input type="text" id="prontuario" class="form-control"
+             [(ngModel)]="prontuario" name="prontuario" 
+             (blur)="verificarProntuario()" placeholder="Digite o prontuário" />
+    </div>
+
+    <div class="form-group">
       <label for="dataNascimento">Data de Nascimento*</label>
       <input type="date" id="dataNascimento" class="form-control"
              [(ngModel)]="dataNascimento" name="dataNascimento" required />
@@ -266,7 +273,9 @@
       <input type="email" id="contatoEmail" class="form-control" [(ngModel)]="contatoEmail" name="contatoEmail" required />
     </div>
 
-    <button type="submit" class="btn btn-success mt-3">Salvar Paciente</button>
+    <button type="submit" class="btn btn-success mt-3">
+      {{ modoEdicao ? 'Alterar' : 'Salvar Paciente' }}
+    </button>
   </form>
 
   <!-- MODAL DE CONFIRMAÇÃO -->
@@ -283,10 +292,34 @@
           <button type="button" class="btn-close" (click)="closeModal()" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <p>Paciente salvo com sucesso!</p>
+          <p>{{ modoEdicao ? 'Paciente atualizado com sucesso!' : 'Paciente salvo com sucesso!' }}</p>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" (click)="closeModal()">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DE PRONTUÁRIO DUPLICADO -->
+  <div
+    class="modal fade"
+    tabindex="-1"
+    [class.show]="showDuplicateModal"
+    [style.display]="showDuplicateModal ? 'block' : 'none'"
+    (click)="closeDuplicateModal()">
+    <div class="modal-dialog" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header bg-warning">
+          <h5 class="modal-title">Prontuário Já Existe</h5>
+          <button type="button" class="btn-close" (click)="closeDuplicateModal()" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p><strong>Este prontuário já está cadastrado no sistema.</strong></p>
+          <p>Os dados do paciente foram carregados para edição. Você pode alterar as informações e clicar em "Alterar" para salvar as mudanças.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click)="closeDuplicateModal()">Entendi</button>
         </div>
       </div>
     </div>
