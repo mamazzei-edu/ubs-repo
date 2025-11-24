@@ -20,7 +20,7 @@ public class PacienteService {
 
     // Método para listar todos os pacientes
     public List<Paciente> listarPacientes() {
-        return pacienteRepository.findAll();  // Busca todos os pacientes no banco
+        return pacienteRepository.findAll(); // Busca todos os pacientes no banco
     }
 
     // Método para listar pacientes com paginação
@@ -31,7 +31,7 @@ public class PacienteService {
 
     // Método para buscar um paciente pelo ID
     public Optional<Paciente> buscarPacientePorId(Long id) {
-        return pacienteRepository.findById(id);  // Busca o paciente pelo ID
+        return pacienteRepository.findById(id); // Busca o paciente pelo ID
     }
 
     // Método para buscar um paciente pelo prontuário
@@ -68,37 +68,40 @@ public class PacienteService {
         if (paciente.getNomeCompleto() == null || paciente.getNomeCompleto().trim().isEmpty()) {
             throw new RuntimeException("O campo 'Nome Completo' é obrigatório!");
         }
-        
+
         if (paciente.getProntuario() == null || paciente.getProntuario().trim().isEmpty()) {
             throw new RuntimeException("O campo 'Número de Prontuário' é obrigatório!");
         }
-        
+
         if (paciente.getDataNascimento() == null || paciente.getDataNascimento().trim().isEmpty()) {
             throw new RuntimeException("O campo 'Data de Nascimento' é obrigatório!");
         }
-        
-        // Verificar se já existe paciente com mesmo prontuário (se prontuário foi informado)
+
+        // Verificar se já existe paciente com mesmo prontuário (se prontuário foi
+        // informado)
         if (paciente.getProntuario() != null && !paciente.getProntuario().trim().isEmpty()) {
             Optional<Paciente> existentePorProntuario = pacienteRepository.findByProntuario(paciente.getProntuario());
             if (existentePorProntuario.isPresent() && !existentePorProntuario.get().getId().equals(paciente.getId())) {
-                throw new RuntimeException("Já existe um paciente cadastrado com este prontuário: " + paciente.getProntuario());
+                throw new RuntimeException(
+                        "Já existe um paciente cadastrado com este prontuário: " + paciente.getProntuario());
             }
         }
-        
+
         // Verificar se já existe paciente com mesmo nome completo
         if (paciente.getNomeCompleto() != null && !paciente.getNomeCompleto().trim().isEmpty()) {
             Optional<Paciente> existentePorNome = pacienteRepository.findByNomeCompleto(paciente.getNomeCompleto());
             if (existentePorNome.isPresent() && !existentePorNome.get().getId().equals(paciente.getId())) {
-                throw new RuntimeException("Já existe um paciente cadastrado com este nome: " + paciente.getNomeCompleto());
+                throw new RuntimeException(
+                        "Já existe um paciente cadastrado com este nome: " + paciente.getNomeCompleto());
             }
         }
-        
-        return pacienteRepository.save(paciente);  // Salva o paciente no banco
+
+        return pacienteRepository.save(paciente); // Salva o paciente no banco
     }
 
     // Método para excluir paciente
     public void excluirPaciente(Long id) {
-        pacienteRepository.deleteById(id);  // Exclui o paciente pelo ID
+        pacienteRepository.deleteById(id); // Exclui o paciente pelo ID
     }
 
     // Método para editar um paciente
@@ -127,6 +130,35 @@ public class PacienteService {
             paciente.setTelefoneComercial(pacienteAtualizado.getTelefoneComercial());
             paciente.setEmail(pacienteAtualizado.getEmail());
             paciente.setCpf(pacienteAtualizado.getCpf());
+            paciente.setCns(pacienteAtualizado.getCns());
+            paciente.setProntuario(pacienteAtualizado.getProntuario());
+            paciente.setEtnia(pacienteAtualizado.getEtnia());
+            paciente.setOcupacao(pacienteAtualizado.getOcupacao());
+            paciente.setVisual(pacienteAtualizado.getVisual());
+            paciente.setAuditiva(pacienteAtualizado.getAuditiva());
+            paciente.setMotora(pacienteAtualizado.getMotora());
+            paciente.setIntelectual(pacienteAtualizado.getIntelectual());
+            paciente.setOpm(pacienteAtualizado.getOpm());
+            paciente.setCep(pacienteAtualizado.getCep());
+            paciente.setLogradouro(pacienteAtualizado.getLogradouro());
+            paciente.setNumero(pacienteAtualizado.getNumero());
+            paciente.setBairro(pacienteAtualizado.getBairro());
+            paciente.setComplemento(pacienteAtualizado.getComplemento());
+            paciente.setUf(pacienteAtualizado.getUf());
+            paciente.setMunicipioResidencia(pacienteAtualizado.getMunicipioResidencia());
+            paciente.setDistritoAdministrativo(pacienteAtualizado.getDistritoAdministrativo());
+            paciente.setTipoLogradouro(pacienteAtualizado.getTipoLogradouro());
+            paciente.setOrigemEndereco(pacienteAtualizado.getOrigemEndereco());
+            paciente.setReferencia(pacienteAtualizado.getReferencia());
+            paciente.setRg(pacienteAtualizado.getRg());
+            paciente.setOrgaoEmissor(pacienteAtualizado.getOrgaoEmissor());
+            paciente.setPisPasepNis(pacienteAtualizado.getPisPasepNis());
+            paciente.setCnh(pacienteAtualizado.getCnh());
+            paciente.setCtps(pacienteAtualizado.getCtps());
+            paciente.setTituloEleitor(pacienteAtualizado.getTituloEleitor());
+            paciente.setPassaporte(pacienteAtualizado.getPassaporte());
+            paciente.setEstabelecimentoCadastro(pacienteAtualizado.getEstabelecimentoCadastro());
+
             
             return pacienteRepository.save(paciente);  // Salva as alterações no banco
         }
