@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router'; // <-- Adicionado RouterLink
+import { Router } from '@angular/router';
 import { PacienteService } from '../service/paciente.service';
 
 @Component({
@@ -10,7 +10,7 @@ import { PacienteService } from '../service/paciente.service';
   styleUrls: ['./lista.component.css'],
   standalone: true,
   // CORREÇÃO: Adicionando RouterLink nos imports para que os botões funcionem
-  imports: [CommonModule, FormsModule, RouterLink], 
+  imports: [CommonModule, FormsModule],
 })
 export class ListaComponent implements OnInit {
   pacientes: any[] = [];
@@ -19,7 +19,7 @@ export class ListaComponent implements OnInit {
   pacienteSelecionado: any = null;
   mostrarModalEditar: boolean = false;
   userRole: string = '';
-  
+
   // NOVO: Propriedade usada no *ngIf do HTML para o menu de Admin
   isAdmin: boolean = false;
 
@@ -28,25 +28,25 @@ export class ListaComponent implements OnInit {
   pageSize: number = 10;
   totalPages: number = 0;
   totalElements: number = 0;
-  maxVisiblePages: number = 5; 
+  maxVisiblePages: number = 5;
 
   constructor(
     private pacienteService: PacienteService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     // 1. Carrega o papel do usuário
     this.userRole = localStorage.getItem('role') || '';
-    
+
     // 2. Define a variável de controle para o *ngIf do menu de Admin
     // Inclui ADMIN e SUPER_ADMIN, já que ambos são administradores
-    this.isAdmin = this.userRole === 'ADMIN' || this.userRole === 'SUPER_ADMIN'; 
+    this.isAdmin = this.userRole === 'ADMIN' || this.userRole === 'SUPER_ADMIN';
 
     // 3. Carrega os pacientes (funcionalidade principal da tela)
     this.carregarPacientes();
   }
-  
+
   // NOVO: Função para verificar se o usuário é MEDICO/USER, se necessário
   // Você pode usar isso para esconder os botões 'Editar' e 'Excluir' da tabela, se quiser.
   hasAccess(roles: string[]): boolean {
@@ -94,16 +94,16 @@ export class ListaComponent implements OnInit {
     const pages: number[] = [];
     let startPage = Math.max(0, this.currentPage - Math.floor(this.maxVisiblePages / 2));
     let endPage = Math.min(this.totalPages - 1, startPage + this.maxVisiblePages - 1);
-    
+
     // Ajustar se não houver páginas suficientes antes
     if (endPage - startPage + 1 < this.maxVisiblePages) {
       startPage = Math.max(0, endPage - this.maxVisiblePages + 1);
     }
-    
+
     for (let i = startPage; i <= endPage; i++) {
       pages.push(i);
     }
-    
+
     return pages;
   }
 
@@ -115,7 +115,7 @@ export class ListaComponent implements OnInit {
     this.pacienteService.buscarPacientePorId(this.pesquisaId).subscribe({
       next: (paciente) => {
         // CORREÇÃO: Garante que 'pacientes' seja um array para o *ngFor
-        this.pacientes = paciente ? [paciente] : []; 
+        this.pacientes = paciente ? [paciente] : [];
         this.mensagem = paciente
           ? ''
           : 'Nenhum paciente encontrado com o ID fornecido.';

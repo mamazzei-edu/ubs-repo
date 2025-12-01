@@ -1,0 +1,29 @@
+<navigation
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:id="@+id/nav_graph"
+app:startDestination="@id/LoginFragment" >
+<fragment
+    android:id="@+id/LoginFragment"
+    android:name="br.gov.sp.fatec.ubsandroidapp.LoginFragment"
+    android:label="@string/login_fragment_label"
+    tools:layout="@layout/fragment_login" >
+
+    <action
+        android:id="@+id/action_LoginFragment_to_SecondFragment"
+        app:destination="@id/SecondFragment" />
+
+</fragment>
+<fragment
+    android:id="@+id/SecondFragment"
+    android:name="br.gov.sp.fatec.ubsandroidapp.SecondFragment"
+    android:label="@string/second_fragment_label"
+    tools:layout="@layout/fragment_second" >
+
+    <action
+        android:id="@+id/action_SecondFragment_to_FirstFragment"
+        app:destination="@id/LoginFragment" />
+
+</fragment>
+</navigation>
