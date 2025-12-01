@@ -43,7 +43,6 @@ public class MainActivity extends AppCompatActivity implements NsdClient.Service
 
     private RxDataStore<Preferences> dataStore;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,8 +56,7 @@ public class MainActivity extends AppCompatActivity implements NsdClient.Service
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-        dataStore =
-                new RxPreferenceDataStoreBuilder(this, "ubsdatastore").build();
+        dataStore = new RxPreferenceDataStoreBuilder(this, "ubsdatastore").build();
 
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements NsdClient.Service
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
+        // noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
@@ -118,9 +116,9 @@ public class MainActivity extends AppCompatActivity implements NsdClient.Service
     }
 
     @Override
-    public void onServiceFound(String serviceName, int port, Map<String,byte[]> items) {
+    public void onServiceFound(String serviceName, int port, Map<String, byte[]> items) {
         runOnUiThread(() -> {
-            String message = "Service found: " + serviceName +  ":" + port;
+            String message = "Service found: " + serviceName + ":" + port;
             byte[] host = items.get("hostIP");
             Toast.makeText(this, message, Toast.LENGTH_LONG).show();
             String mensagemIP = null;
@@ -136,8 +134,8 @@ public class MainActivity extends AppCompatActivity implements NsdClient.Service
             Button b = findViewById(R.id.login);
             b.setEnabled(true);
 
-            Single<Preferences> updateResult =  dataStore.updateDataAsync(prefsIn -> {
-                String nomeChave =  "UBSAuth";
+            Single<Preferences> updateResult = dataStore.updateDataAsync(prefsIn -> {
+                String nomeChave = "UBSAuth";
                 Preferences.Key<String> chaveServer = PreferencesKeys.stringKey(nomeChave);
                 MutablePreferences mutablePreferences = prefsIn.toMutablePreferences();
                 String valor = prefsIn.get(chaveServer);
@@ -150,8 +148,7 @@ public class MainActivity extends AppCompatActivity implements NsdClient.Service
                 return Single.just(mutablePreferences);
             });
             updateResult.subscribe();
-// The update is completed once updateResult is completed.
-
+            // The update is completed once updateResult is completed.
 
             // You can now establish a connection with the server using the host and port
             // e.g., new Thread(() -> connectToServer(host, port)).start();
@@ -179,5 +176,7 @@ public class MainActivity extends AppCompatActivity implements NsdClient.Service
         }
     }
 
-
+    public RxDataStore<Preferences> getDataStore() {
+        return dataStore;
+    }
 }

@@ -1,3 +1,5 @@
+package br.gov.sp.fatec.ubsandroidapp.dtos;
+
 public class LoginRequest {
     private String username;
     private String password;
@@ -23,13 +25,17 @@ public class LoginRequest {
         this.password = password;
     }
 
-    // Optional: Override equals(), hashCode(), and toString() for data class-like behavior
+    // Optional: Override equals(), hashCode(), and toString() for data class-like
+    // behavior
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         LoginRequest that = (LoginRequest) o;
-        if (!username.equals(that.username)) return false;
+        if (!username.equals(that.username))
+            return false;
         return password.equals(that.password);
     }
 
@@ -43,8 +49,8 @@ public class LoginRequest {
     @Override
     public String toString() {
         return "LoginRequest{" +
-               "username='" + username + '\'' +
-               ", password='" + password + '\'' +
-               '}';
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }
