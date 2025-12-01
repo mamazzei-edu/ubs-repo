@@ -1,15 +1,23 @@
 package br.sp.gov.fatec.ubs.backend.controllers;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import br.sp.gov.fatec.ubs.backend.model.Paciente;
 import br.sp.gov.fatec.ubs.backend.services.PacienteService;
-
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/pacientes")
@@ -99,8 +107,6 @@ public class PacienteController {
             Paciente paciente = pacienteOpt.get();
 
             // Atualizando os campos
-            paciente.setCns(pacienteAtualizado.getCns());
-            paciente.setProntuario(pacienteAtualizado.getProntuario());
             paciente.setNomeCompleto(pacienteAtualizado.getNomeCompleto());
             paciente.setNomeSocial(pacienteAtualizado.getNomeSocial());
             paciente.setNomeMae(pacienteAtualizado.getNomeMae());
@@ -120,6 +126,34 @@ public class PacienteController {
             paciente.setTelefoneComercial(pacienteAtualizado.getTelefoneComercial());
             paciente.setEmail(pacienteAtualizado.getEmail());
             paciente.setCpf(pacienteAtualizado.getCpf());
+            paciente.setCns(pacienteAtualizado.getCns());
+            paciente.setProntuario(pacienteAtualizado.getProntuario());
+            paciente.setEtnia(pacienteAtualizado.getEtnia());
+            paciente.setOcupacao(pacienteAtualizado.getOcupacao());
+            paciente.setVisual(pacienteAtualizado.getVisual());
+            paciente.setAuditiva(pacienteAtualizado.getAuditiva());
+            paciente.setMotora(pacienteAtualizado.getMotora());
+            paciente.setIntelectual(pacienteAtualizado.getIntelectual());
+            paciente.setOpm(pacienteAtualizado.getOpm());
+            paciente.setCep(pacienteAtualizado.getCep());
+            paciente.setLogradouro(pacienteAtualizado.getLogradouro());
+            paciente.setNumero(pacienteAtualizado.getNumero());
+            paciente.setBairro(pacienteAtualizado.getBairro());
+            paciente.setComplemento(pacienteAtualizado.getComplemento());
+            paciente.setUf(pacienteAtualizado.getUf());
+            paciente.setMunicipioResidencia(pacienteAtualizado.getMunicipioResidencia());
+            paciente.setDistritoAdministrativo(pacienteAtualizado.getDistritoAdministrativo());
+            paciente.setTipoLogradouro(pacienteAtualizado.getTipoLogradouro());
+            paciente.setOrigemEndereco(pacienteAtualizado.getOrigemEndereco());
+            paciente.setReferencia(pacienteAtualizado.getReferencia());
+            paciente.setRg(pacienteAtualizado.getRg());
+            paciente.setOrgaoEmissor(pacienteAtualizado.getOrgaoEmissor());
+            paciente.setPisPasepNis(pacienteAtualizado.getPisPasepNis());
+            paciente.setCnh(pacienteAtualizado.getCnh());
+            paciente.setCtps(pacienteAtualizado.getCtps());
+            paciente.setTituloEleitor(pacienteAtualizado.getTituloEleitor());
+            paciente.setPassaporte(pacienteAtualizado.getPassaporte());
+            paciente.setEstabelecimentoCadastro(pacienteAtualizado.getEstabelecimentoCadastro());
             // Atualize outros campos conforme necessário...
 
             Paciente pacienteAtualizadoSalvo = pacienteService.salvarPaciente(paciente);
