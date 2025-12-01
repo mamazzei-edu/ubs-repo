@@ -162,83 +162,36 @@
             <!-- ENDEREÇO -->
             <h4>Endereço</h4>
 
-            <div class="form-group">
-              <label for="cep">CEP</label>
-              <input type="text" id="cep" class="form-control" [(ngModel)]="pacienteSelecionado.cep" name="cep"
-                placeholder="00000-000" />
-            </div>
-
-            <div class="form-group">
-              <label for="logradouro">Logradouro</label>
-              <input type="text" id="logradouro" class="form-control" [(ngModel)]="pacienteSelecionado.logradouro"
-                name="logradouro" />
-            </div>
-
-            <div class="form-group">
-              <label for="numero">Número</label>
-              <input type="text" id="numero" class="form-control" [(ngModel)]="pacienteSelecionado.numero"
-                name="numero" />
-            </div>
-
-            <div class="form-group">
-              <label for="bairro">Bairro</label>
-              <input type="text" id="bairro" class="form-control" [(ngModel)]="pacienteSelecionado.bairro"
-                name="bairro" />
-            </div>
-
-            <div class="form-group">
-              <label for="complemento">Complemento</label>
-              <input type="text" id="complemento" class="form-control" [(ngModel)]="pacienteSelecionado.complemento"
-                name="complemento" />
-            </div>
+            <div class="mb-3"><label class="form-label">CEP</label><input class="form-control"
+                [(ngModel)]="pacienteSelecionado.cep" name="cep"></div>
+            <div class="mb-3"><label class="form-label">Logradouro</label><input class="form-control"
+                [(ngModel)]="pacienteSelecionado.logradouro" name="logradouro"></div>
+            <div class="mb-3"><label class="form-label">Número</label><input class="form-control"
+                [(ngModel)]="pacienteSelecionado.numero" name="numero"></div>
+            <div class="mb-3"><label class="form-label">Bairro</label><input class="form-control"
+                [(ngModel)]="pacienteSelecionado.bairro" name="bairro"></div>
+            <div class="mb-3"><label class="form-label">Complemento</label><input class="form-control"
+                [(ngModel)]="pacienteSelecionado.complemento" name="complemento"></div>
 
             <!-- DOCUMENTOS -->
             <h4>Documentos</h4>
 
-            <div class="form-group">
-              <label for="rg">RG</label>
-              <input type="text" id="rg" class="form-control" [(ngModel)]="pacienteSelecionado.rg" name="rg" />
-            </div>
-
-            <div class="form-group">
-              <label for="orgaoEmissor">Órgão Emissor</label>
-              <input type="text" id="orgaoEmissor" class="form-control" [(ngModel)]="pacienteSelecionado.orgaoEmissor"
-                name="orgaoEmissor" />
-            </div>
-
-            <div class="form-group">
-              <label for="uf">UF</label>
-              <input type="text" id="uf" class="form-control" [(ngModel)]="pacienteSelecionado.uf" name="uf"
-                maxlength="2" />
-            </div>
-
-            <div class="form-group">
-              <label for="pisPasepNis">PIS/PASEP/NIS</label>
-              <input type="text" id="pisPasepNis" class="form-control" [(ngModel)]="pacienteSelecionado.pisPasepNis"
-                name="pisPasepNis" />
-            </div>
-
-            <div class="form-group">
-              <label for="cnh">CNH</label>
-              <input type="text" id="cnh" class="form-control" [(ngModel)]="pacienteSelecionado.cnh" name="cnh" />
-            </div>
-
-            <div class="form-group">
-              <label for="ctps">CTPS</label>
-              <input type="text" id="ctps" class="form-control" [(ngModel)]="pacienteSelecionado.ctps" name="ctps" />
-            </div>
-
-            <div class="form-group">
-              <label for="tituloEleitor">Título de Eleitor</label>
-              <input type="text" id="tituloEleitor" class="form-control" [(ngModel)]="pacienteSelecionado.tituloEleitor"
-                name="tituloEleitor" />
-            </div>
-
-            <div class="form-group">
-              <label for="passaporte">Passaporte</label>
-              <input type="text" id="passaporte" class="form-control" [(ngModel)]="pacienteSelecionado.passaporte"
-                name="passaporte" />
-            </div>
+            <div class="mb-3"><label class="form-label">RG</label><input class="form-control"
+                [(ngModel)]="pacienteSelecionado.rg" name="rg"></div>
+            <div class="mb-3"><label class="form-label">Órgão Emissor</label><input class="form-control"
+                [(ngModel)]="pacienteSelecionado.orgaoEmissor" name="orgaoEmissor"></div>
+            <div class="mb-3"><label class="form-label">UF</label><input class="form-control"
+                [(ngModel)]="pacienteSelecionado.uf" name="uf"></div>
+            <div class="mb-3"><label class="form-label">PIS/PASEP/NIS</label><input class="form-control"
+                [(ngModel)]="pacienteSelecionado.pisPasepNis" name="pisPasepNis"></div>
+            <div class="mb-3"><label class="form-label">CNH</label><input class="form-control"
+                [(ngModel)]="pacienteSelecionado.cnh" name="cnh"></div>
+            <div class="mb-3"><label class="form-label">CTPS</label><input class="form-control"
+                [(ngModel)]="pacienteSelecionado.ctps" name="ctps"></div>
+            <div class="mb-3"><label class="form-label">Título de Eleitor</label><input class="form-control"
+                [(ngModel)]="pacienteSelecionado.tituloEleitor" name="tituloEleitor"></div>
+            <div class="mb-3"><label class="form-label">Passaporte</label><input class="form-control"
+                [(ngModel)]="pacienteSelecionado.passaporte" name="passaporte"></div>
 
             <!-- DADOS COMPLEMENTARES -->
             <h4>Dados Complementares</h4>
@@ -278,17 +231,12 @@
                 [(ngModel)]="pacienteSelecionado.situacaoFamiliar" name="situacaoFamiliar" />
             </div>
 
-            <div class="form-group">
-              <label for="ocupacao">Ocupação</label>
-              <input type="text" id="ocupacao" class="form-control" [(ngModel)]="pacienteSelecionado.ocupacao"
-                name="ocupacao" />
-            </div>
+            <div class="mb-3"><label class="form-label">Ocupação</label><input class="form-control"
+                [(ngModel)]="pacienteSelecionado.ocupacao" name="ocupacao"></div>
 
-            <div class="form-group">
-              <label for="utilizaAlgumaOPM">Utiliza alguma OPM?</label>
-              <select id="utilizaAlgumaOPM" class="form-control" [(ngModel)]="pacienteSelecionado.utilizaAlgumaOPM"
-                name="utilizaAlgumaOPM">
-                <option value="">Selecione</option>
+            <div class="mb-3">
+              <label class="form-label">Utiliza Alguma OPM?</label>
+              <select class="form-control" [(ngModel)]="pacienteSelecionado.utilizaAlgumaOPM" name="utilizaAlgumaOPM">
                 <option value="Sim">Sim</option>
                 <option value="Não">Não</option>
               </select>
@@ -347,29 +295,14 @@
             <!-- CONTATO -->
             <h4>Contato</h4>
 
-            <div class="form-group">
-              <label for="contatoCelular">Celular*</label>
-              <input type="text" id="contatoCelular" class="form-control"
-                [(ngModel)]="pacienteSelecionado.contatoCelular" name="contatoCelular" required />
-            </div>
-
-            <div class="form-group">
-              <label for="contatoResidencial">Telefone Residencial</label>
-              <input type="text" id="contatoResidencial" class="form-control"
-                [(ngModel)]="pacienteSelecionado.contatoResidencial" name="contatoResidencial" />
-            </div>
-
-            <div class="form-group">
-              <label for="contatoComercial">Telefone Comercial</label>
-              <input type="text" id="contatoComercial" class="form-control"
-                [(ngModel)]="pacienteSelecionado.contatoComercial" name="contatoComercial" />
-            </div>
-
-            <div class="form-group">
-              <label for="contatoEmail">E-mail*</label>
-              <input type="email" id="contatoEmail" class="form-control" [(ngModel)]="pacienteSelecionado.contatoEmail"
-                name="contatoEmail" required />
-            </div>
+            <div class="mb-3"><label class="form-label">Telefone Celular</label><input class="form-control"
+                [(ngModel)]="pacienteSelecionado.telefoneCelular" name="telefoneCelular"></div>
+            <div class="mb-3"><label class="form-label">Telefone Residencial</label><input class="form-control"
+                [(ngModel)]="pacienteSelecionado.telefoneResidencial" name="telefoneResidencial"></div>
+            <div class="mb-3"><label class="form-label">Telefone Comercial</label><input class="form-control"
+                [(ngModel)]="pacienteSelecionado.telefoneComercial" name="telefoneComercial"></div>
+            <div class="mb-3"><label class="form-label">E-mail</label><input class="form-control"
+                [(ngModel)]="pacienteSelecionado.email" name="email"></div>
 
             <button type="submit" class="btn btn-success mt-3">Salvar Alterações
             </button>
