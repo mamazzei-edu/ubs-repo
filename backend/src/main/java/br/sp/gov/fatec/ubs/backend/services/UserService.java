@@ -73,6 +73,11 @@ public class UserService {
         return userRepository.findById(id).orElse(null);
     }
 
+    // Busca usuário por Username
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username).orElse(null);
+    }
+
     // BOTÃO EDITAR / SALVAR USUÁRIO
     public User save(User input) {
         // 1. Verifica se a senha foi informada

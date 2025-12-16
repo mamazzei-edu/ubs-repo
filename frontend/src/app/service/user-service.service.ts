@@ -22,6 +22,11 @@ export class UserService {
     return this.http.get<User>(`${this.apiUrl}/${id}`);  // Requisição GET passando o ID do usuário
   }
 
+  // Buscar usuário por Username
+  buscarUsuarioPorUsername(username: string): Observable<any> {
+    return this.http.get<User>(`${this.apiUrl}/username/${username}`);
+  }
+
   // Cadastrar novo usuário
   criarUsuario(usuario: any): Observable<any> {
     return this.http.post<User>(this.apiUrl, usuario);  // Requisição POST para cadastrar um novo usuário

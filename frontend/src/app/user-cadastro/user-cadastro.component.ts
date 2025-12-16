@@ -11,13 +11,13 @@ import { RoleService } from '../service/role-service.service';
   standalone: true,
   templateUrl: './user-cadastro.component.html',
   styleUrl: './user-cadastro.component.css',
-    providers: [UserService, RoleService]
+  providers: [UserService, RoleService]
 })
 export class UserCadastroComponent implements OnInit {
   usuarios: any[] = [];
   roles: Role[] = [];
   mensagem: string = '';
-  pesquisaId: string = '';
+  pesquisaUsername: string = '';
   usuarioSelecionado: any = null;
   mostrarModalEditar: boolean = false;
   mostrarModalCadastro: boolean = false;
@@ -41,7 +41,7 @@ export class UserCadastroComponent implements OnInit {
     });
   }
 
-  id:number = 0;
+  id: number = 0;
   fullName: string = '';
   matricula: string = '';
   email: string = '';
@@ -49,8 +49,8 @@ export class UserCadastroComponent implements OnInit {
   password: string = '';
   crm: string = '';
   role: Role | null = null;
-  
-    carregarUsuarios(): void {
+
+  carregarUsuarios(): void {
     this.usuarioservice.listarUsuarios().subscribe({
       next: (dados) => {
         this.usuarios = dados;
@@ -62,15 +62,15 @@ export class UserCadastroComponent implements OnInit {
     });
   }
 
-    pesquisarUsuarioPorId(): void {
-    if (!this.pesquisaId) {
+  pesquisarUsuarioPorUsername(): void {
+    if (!this.pesquisaUsername) {
       this.carregarUsuarios();
       return;
     }
-    this.usuarioservice.buscarUsuarioPorId(this.pesquisaId).subscribe({
+    this.usuarioservice.buscarUsuarioPorUsername(this.pesquisaUsername).subscribe({
       next: (usuario) => {
         this.usuarios = usuario ? [usuario] : [];
-        this.mensagem = usuario ? '' : 'Nenhum funcionário encontrado com o ID fornecido.';
+        this.mensagem = usuario ? '' : 'Nenhum funcionário encontrado com o Username fornecido.';
       },
       error: () => {
         this.mensagem = 'Erro ao buscar funcionário.';
@@ -78,7 +78,7 @@ export class UserCadastroComponent implements OnInit {
     });
   }
 
-    excluirUsuario(id: string): void {
+  excluirUsuario(id: string): void {
     if (confirm('Tem certeza que deseja excluir este Usuario?')) {
       this.usuarioservice.excluirUsuario(id).subscribe({
         next: () => {
@@ -92,13 +92,13 @@ export class UserCadastroComponent implements OnInit {
     }
   }
 
-    abrirModalEditar(usuario: any): void {
+  abrirModalEditar(usuario: any): void {
     this.usuarioSelecionado = { ...usuario };
     this.roleSelecionado = this.roles.find(role => role.id === this.usuarioSelecionado.role.id) || undefined;
     this.mostrarModalEditar = true;
   }
 
-  abrirModalCadastro() : void{
+  abrirModalCadastro(): void {
     this.mostrarModalCadastro = true;
   }
 
@@ -120,7 +120,7 @@ export class UserCadastroComponent implements OnInit {
     });
   }
 
-  salvarUsuario(){
+  salvarUsuario() {
     const usuario = {
       fullName: this.fullName,
       matricula: this.matricula,

@@ -1,4 +1,5 @@
 package br.sp.gov.fatec.ubs.backend.controllers;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -26,10 +27,15 @@ public class UsuarioController {
         return userService.findById(id);
     }
 
+    @GetMapping("/username/{username}")
+    public User buscarPorUsername(@PathVariable String username) {
+        return userService.findByUsername(username);
+    }
+
     @PostMapping
-//    @PreAuthorize("hasRole('SUPER_ADMIN')")
+    // @PreAuthorize("hasRole('SUPER_ADMIN')")
     public User criarUsuario(@RequestBody User usuario) {
-            return userService.save(usuario);
+        return userService.save(usuario);
     }
 
     @PutMapping("/{id}")

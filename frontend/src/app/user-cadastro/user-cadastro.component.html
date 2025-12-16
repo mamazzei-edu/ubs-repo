@@ -1,9 +1,10 @@
 <div class="row mb-3">
   <div class="col-md-7">
-    <input type="text" class="form-control" [(ngModel)]="pesquisaId" placeholder="Pesquisar paciente por código" />
+    <input type="text" class="form-control" [(ngModel)]="pesquisaUsername"
+      placeholder="Pesquisar usuario por username" />
   </div>
   <div class="col-md-2">
-    <button class="btn w-100" style="background-color: #50BFAD; color: white;" (click)="pesquisarUsuarioPorId()">
+    <button class="btn w-100" style="background-color: #50BFAD; color: white;" (click)="pesquisarUsuarioPorUsername()">
       <i class="bi bi-search"></i> Pesquisar
     </button>
   </div>
@@ -63,7 +64,8 @@
             <div class="row g-3">
               <div class="col-md-12">
                 <label for="id">Id</label>
-                <input id="id" disabled=true type="text" [(ngModel)]="usuarioSelecionado.id" name="id" class="form-control" />
+                <input id="id" disabled=true type="text" [(ngModel)]="usuarioSelecionado.id" name="id"
+                  class="form-control" />
               </div>
               <div class="col-md-12">
                 <label for="matricula">Matricula</label>
@@ -92,8 +94,9 @@
               <div class="col-md-12">
                 <label for="role">Função: {{ roleSelecionado?.name }}</label>
                 <div *ngFor="let role of roles">
-                  <input type="radio" name="roleInputEdit" [value]="role.id" [disabled]="roleSelecionado?.name == 'SUPER_ADMIN'" (click)="roleSelecionado = role" (select)="roleSelecionado = role"
-                    [checked]="roleSelecionado?.id === role.id">
+                  <input type="radio" name="roleInputEdit" [value]="role.id"
+                    [disabled]="roleSelecionado?.name == 'SUPER_ADMIN'" (click)="roleSelecionado = role"
+                    (select)="roleSelecionado = role" [checked]="roleSelecionado?.id === role.id">
                   <label>{{ role.name }}</label>
                 </div>
               </div>
@@ -102,7 +105,8 @@
                 <input id="password" type="password" [(ngModel)]="usuarioSelecionado.password" name="password"
                   class="form-control" />
               </div>
-              <button type="submit" class="btn mt-4 w-100" style="background-color: #50BFAD; color: white;">Salvar Alterações</button>
+              <button type="submit" class="btn mt-4 w-100" style="background-color: #50BFAD; color: white;">Salvar
+                Alterações</button>
             </div>
           </form>
         </div>
@@ -151,7 +155,8 @@
                 <label for="password">Senha:</label>
                 <input id="password" type="password" [(ngModel)]="password" name="password" class="form-control" />
               </div>
-              <button type="submit" class="btn mt-4 w-100" style="background-color: #50BFAD; color: white;">Salvar Alterações</button>
+              <button type="submit" class="btn mt-4 w-100" style="background-color: #50BFAD; color: white;">Salvar
+                Alterações</button>
             </div>
           </form>
         </div>
