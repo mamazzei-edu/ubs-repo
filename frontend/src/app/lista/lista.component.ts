@@ -14,7 +14,7 @@ import { PacienteService } from '../service/paciente.service';
 })
 export class ListaComponent implements OnInit {
   pacientes: any[] = [];
-  pesquisaId: string = '';
+  termoPesquisa: string = '';
   mensagem: string = '';
   pacienteSelecionado: any = null;
   mostrarModalEditar: boolean = false;
@@ -107,23 +107,56 @@ export class ListaComponent implements OnInit {
     return pages;
   }
 
-  pesquisarPacientePorId(): void {
-    if (!this.pesquisaId) {
+  pesquisarPaciente(): void {
+    if (!this.termoPesquisa) {
       this.carregarPacientes();
       return;
     }
-    this.pacienteService.buscarPacientePorId(this.pesquisaId).subscribe({
-      next: (paciente) => {
-        // CORREÇÃO: Garante que 'pacientes' seja um array para o *ngFor
-        this.pacientes = paciente ? [paciente] : [];
-        this.mensagem = paciente
-          ? ''
-          : 'Nenhum paciente encontrado com o ID fornecido.';
-      },
-      error: () => {
-        this.mensagem = 'Erro ao buscar paciente.';
-      },
-    });
+
+    const termo = this.termoPesquisa.trim();
+
+    // Remove caracteres não numéricos para verificar quantidade de dígitos
+    const digitos = termo.replace(/\D/g, '');
+    // Remove caracteres não alfabéticos para verificar quantidade de letras
+    const letras = termo.replace(/[^a-zA-Z]/g, '');
+
+    // Verifica se é busca por CPF (pelo menos 2 números)
+    if (digitos.length >= 2) {
+      this.pacienteService.buscarPorCpfParcial(digitos).subscribe({
+        next: (pacientes) => {
+          this.pacientes = pacientes;
+          this.totalElements = pacientes.length;
+          this.totalPages = 1; // Desativa paginação para busca filtrada
+          this.currentPage = 0;
+          this.mensagem = pacientes.length === 0
+            ? 'Nenhum paciente encontrado por CPF.'
+            : '';
+        },
+        error: () => {
+          this.mensagem = 'Erro ao buscar por CPF.';
+        }
+      });
+    }
+    // Verifica se é busca por Nome (pelo menos 2 letras)
+    else if (letras.length >= 2) {
+      this.pacienteService.buscarPorNomeParcial(termo).subscribe({
+        next: (pacientes) => {
+          this.pacientes = pacientes;
+          this.totalElements = pacientes.length;
+          this.totalPages = 1; // Desativa paginação
+          this.currentPage = 0;
+          this.mensagem = pacientes.length === 0
+            ? 'Nenhum paciente encontrado por Nome.'
+            : '';
+        },
+        error: () => {
+          this.mensagem = 'Erro ao buscar por Nome.';
+        }
+      });
+    }
+    else {
+      this.mensagem = 'Digite pelo menos 2 letras para nome ou 2 números para CPF.';
+    }
   }
 
   excluirPaciente(id: string): void {

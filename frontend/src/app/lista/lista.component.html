@@ -2,10 +2,10 @@
   <!-- Campo de pesquisa -->
   <div class="row mb-3">
     <div class="col-md-9">
-      <input type="text" class="form-control" [(ngModel)]="pesquisaId" placeholder="Pesquisar paciente por código" />
+      <input type="text" class="form-control" [(ngModel)]="termoPesquisa" placeholder="Pesquisar por nome ou CPF" />
     </div>
     <div class="col-md-3 text-end">
-      <button class="btn btn-custom-pesquisar w-100" (click)="pesquisarPacientePorId()">
+      <button class="btn btn-custom-pesquisar w-100" (click)="pesquisarPaciente()">
         <i class="bi bi-search"></i> Pesquisar
       </button>
     </div>
