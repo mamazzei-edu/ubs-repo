@@ -4,8 +4,10 @@
     <form [formGroup]="agendamentoForm" (ngSubmit)="onSubmit()">
       <mat-form-field appearance="outline">
         <mat-label>Paciente</mat-label>
-        <input matInput formControlName="pacienteInput" [matAutocomplete]="autoPaciente" placeholder="Digite nome ou CPF" />
-        <mat-autocomplete #autoPaciente="matAutocomplete" (optionSelected)="onPacienteSelecionado($event.option.value)" [displayWith]="displayPaciente">
+        <input matInput formControlName="pacienteInput" [matAutocomplete]="autoPaciente"
+          placeholder="Digite nome ou CPF" />
+        <mat-autocomplete #autoPaciente="matAutocomplete" (optionSelected)="onPacienteSelecionado($event.option.value)"
+          [displayWith]="displayPaciente">
           <mat-option *ngFor="let p of pacientesFiltrados | async" [value]="p">
             {{ p.nomeCompleto }} – {{ p.cpf }}
           </mat-option>
@@ -17,13 +19,14 @@
         <mat-select formControlName="tipoConsulta" required>
           <mat-option *ngFor="let tipo of tiposConsulta" [value]="tipo">{{ tipo }}</mat-option>
         </mat-select>
-        <mat-error *ngIf="agendamentoForm.get('tipoConsulta')?.hasError('required')">Tipo de consulta é obrigatório</mat-error>
+        <mat-error *ngIf="agendamentoForm.get('tipoConsulta')?.hasError('required')">Tipo de consulta é
+          obrigatório</mat-error>
       </mat-form-field>
       <mat-form-field appearance="outline">
         <mat-label>Médico</mat-label>
         <mat-select formControlName="medicoId" required>
           <mat-option *ngFor="let m of medicosFiltrados" [value]="m.id">
-            Dr(a). {{ m.nomeCompleto }} – {{ formatarEspecialidade(m) }}
+            Dr(a). {{ m.fullName }} – {{ formatarEspecialidade(m) }}
           </mat-option>
         </mat-select>
         <mat-error *ngIf="agendamentoForm.get('medicoId')?.hasError('required')">Médico é obrigatório</mat-error>
@@ -45,7 +48,8 @@
         <textarea matInput formControlName="observacoes" rows="3"></textarea>
       </mat-form-field>
       <div class="form-actions">
-        <button mat-raised-button color="primary" type="submit" [disabled]="agendamentoForm.invalid">Criar Agendamento</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="agendamentoForm.invalid">Criar
+          Agendamento</button>
         <button mat-button type="button" (click)="agendamentoForm.reset()">Limpar</button>
       </div>
     </form>
@@ -77,27 +81,44 @@
         <button mat-button (click)="limparFiltro()">Limpar Filtros</button>
       </div>
     </form>
-    
+
     <div class="table-container">
       <table mat-table [dataSource]="dataSource" class="mat-elevation-z2">
-        <ng-container matColumnDef="paciente"><th mat-header-cell *matHeaderCellDef>Paciente</th><td mat-cell *matCellDef="let ag"> {{ ag.paciente?.nomeCompleto || 'N/A' }} </td></ng-container>
-        <ng-container matColumnDef="medico"><th mat-header-cell *matHeaderCellDef>Médico</th><td mat-cell *matCellDef="let ag"> {{ ag.medico?.nomeCompleto || 'N/A' }} </td></ng-container>
-        <ng-container matColumnDef="dataHora"><th mat-header-cell *matHeaderCellDef>Data e Hora</th><td mat-cell *matCellDef="let ag"> {{ formatarDataHora(ag.dataHoraConsulta) }} </td></ng-container>
-        <ng-container matColumnDef="tipoConsulta"><th mat-header-cell *matHeaderCellDef>Tipo</th><td mat-cell *matCellDef="let ag"> {{ ag.tipoConsulta }} </td></ng-container>
-        <ng-container matColumnDef="status"><th mat-header-cell *matHeaderCellDef>Status</th><td mat-cell *matCellDef="let ag"><mat-chip-listbox><mat-chip [color]="getStatusColor(ag.status)" selected>{{ ag.status }}</mat-chip></mat-chip-listbox></td></ng-container>
-        <ng-container matColumnDef="acoes">
-          <th mat-header-cell *matHeaderCellDef>Ações</th>
+        <ng-container matColumnDef="paciente">
+          <th mat-header-cell *matHeaderCellDef>Paciente</th>
+          <td mat-cell *matCellDef="let ag"> {{ ag.paciente?.nomeCompleto || 'N/A' }} </td>
+        </ng-container>
+        <ng-container matColumnDef="medico">
+          <th mat-header-cell *matHeaderCellDef>Médico</th>
+          <td mat-cell *matCellDef="let ag"> {{ ag.medico?.nomeCompleto || 'N/A' }} </td>
+        </ng-container>
+        <ng-container matColumnDef="dataHora">
+          <th mat-header-cell *matHeaderCellDef>Data e Hora</th>
+          <td mat-cell *matCellDef="let ag"> {{ formatarDataHora(ag.dataHoraConsulta) }} </td>
+        </ng-container>
+        <ng-container matColumnDef="tipoConsulta">
+          <th mat-header-cell *matHeaderCellDef>Tipo</th>
+          <td mat-cell *matCellDef="let ag"> {{ ag.tipoConsulta }} </td>
+        </ng-container>
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef>Status</th>
           <td mat-cell *matCellDef="let ag">
-            <button mat-icon-button color="primary" (click)="confirmarAgendamento(ag.id)" *ngIf="ag.status === 'AGENDADO'" matTooltip="Confirmar Agendamento"><mat-icon>check_circle</mat-icon></button>
-            <button mat-icon-button color="warn" (click)="cancelarAgendamento(ag.id)" *ngIf="ag.status === 'AGENDADO' || ag.status === 'CONFIRMADO'" matTooltip="Cancelar Agendamento"><mat-icon>cancel</mat-icon></button>
+            <mat-form-field appearance="outline" class="status-select altera-status-agenda">
+              <mat-select [value]="ag.status" (selectionChange)="alterarStatus(ag, $event.value)">
+                <mat-option *ngFor="let s of statusModificaveis" [value]="s">
+                  {{ s }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
           </td>
         </ng-container>
+
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         <tr class="mat-row" *matNoDataRow>
-            <td class="mat-cell" [colSpan]="displayedColumns.length">
-                Nenhum agendamento encontrado para os filtros informados.
-            </td>
+          <td class="mat-cell" [colSpan]="displayedColumns.length">
+            Nenhum agendamento encontrado para os filtros informados.
+          </td>
         </tr>
       </table>
       <mat-paginator [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons></mat-paginator>

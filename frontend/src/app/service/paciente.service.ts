@@ -10,7 +10,7 @@ import { Paciente } from '../model/paciente.model';
 export class PacienteService {
   private apiUrl = 'http://localhost:8080/api/pacientes';  // URL do backend diretamente no código
 
-  constructor(@Inject(HttpClient) private http: HttpClient) {}
+  constructor(@Inject(HttpClient) private http: HttpClient) { }
 
   listarPacientes(): Observable<any[]> {
     return this.http.get<any[]>(this.apiUrl);  // Requisição GET para listar pacientes
@@ -30,29 +30,36 @@ export class PacienteService {
 
   excluirPaciente(id: string): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/${id}`);  // Requisição DELETE passando o ID do paciente
-  }  
+  }
 
   editarPaciente(id: string, paciente: any): Observable<any> {
     return this.http.put<any>(`${this.apiUrl}/${id}`, paciente);  // Requisição PUT passando o id e os dados do paciente
   }
-  
+
   //  Upload de ficha em PDF
   uploadFicha(id: number, file: File): Observable<{ mensagem: string }> {
     const formData: FormData = new FormData();
     formData.append('file', file);
 
-    const headers = new HttpHeaders(); 
+    const headers = new HttpHeaders();
 
     return this.http.post<{ mensagem: string }>(
       `${this.apiUrl}/${id}/upload-ficha`,
       formData,
       { headers }
     );
-  }  
+  }
 
   //  Criar um novo paciente
   gravar(paciente: Paciente): Observable<Paciente> {
     return this.http.post<Paciente>(this.apiUrl, paciente);
-  }  
-  
+  }
+
+  buscarPorNomeParcial(nome: string): Observable<Paciente[]> {
+    return this.http.get<Paciente[]>(`${this.apiUrl}/buscar/nome-parcial/${nome}`);
+  }
+
+  buscarPorCpfParcial(cpf: string): Observable<Paciente[]> {
+    return this.http.get<Paciente[]>(`${this.apiUrl}/buscar/cpf-parcial/${cpf}`);
+  }
 }

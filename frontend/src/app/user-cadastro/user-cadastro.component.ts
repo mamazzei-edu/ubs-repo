@@ -48,6 +48,8 @@ export class UserCadastroComponent implements OnInit {
   username: string = '';
   password: string = '';
   crm: string = '';
+  especialidade: string = '';
+  ativo: boolean = true;
   role: Role | null = null;
 
   carregarUsuarios(): void {
@@ -128,6 +130,8 @@ export class UserCadastroComponent implements OnInit {
       username: this.username,
       password: this.password,
       crm: this.crm,
+      especialidade: this.especialidade,
+      ativo: this.ativo,
       role: this.roleSelecionado ? this.roleSelecionado.id : null
     };
 

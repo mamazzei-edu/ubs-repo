@@ -50,6 +50,9 @@ public class UsuarioController {
         usuario.setUsername(usuarioAtualizado.getUsername());
         usuario.setPassword(usuarioAtualizado.getPassword());
         usuario.setCrm(usuarioAtualizado.getCrm());
+        usuario.setEspecialidade(usuarioAtualizado.getEspecialidade());
+        usuario.setTelefone(usuarioAtualizado.getTelefone());
+        usuario.setAtivo(usuarioAtualizado.isAtivo());
         usuario.setRole(usuarioAtualizado.getRole());
         return userService.save(usuario);
     }

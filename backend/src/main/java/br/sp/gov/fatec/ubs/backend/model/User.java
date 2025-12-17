@@ -39,6 +39,15 @@ public class User implements UserDetails {
     @Column(nullable = true) // para cadastro dos usuários médicos
     private String crm;
 
+    @Column(nullable = true) // para cadastro dos usuários médicos
+    private String especialidade;
+
+    @Column(nullable = true) // para cadastro dos usuários médicos
+    private String telefone;
+
+    @Column
+    private boolean ativo = true;
+
     @CreationTimestamp
     @Column(updatable = false, name = "created_at")
     private Date createdAt;
@@ -57,8 +66,7 @@ public class User implements UserDetails {
     @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        SimpleGrantedAuthority authority =
-                new SimpleGrantedAuthority("ROLE_" + role.getName().toString());
+        SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + role.getName().toString());
         return List.of(authority);
     }
 
@@ -172,4 +180,29 @@ public class User implements UserDetails {
         this.username = username;
         return this;
     }
+
+    public String getEspecialidade() {
+        return especialidade;
+    }
+
+    public void setEspecialidade(String especialidade) {
+        this.especialidade = especialidade;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
+
+    public boolean isAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(boolean ativo) {
+        this.ativo = ativo;
+    }
+
 }

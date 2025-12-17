@@ -162,4 +162,16 @@ public class PacienteController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    // Endpoint para buscar pacientes por nome parcial
+    @GetMapping("/buscar/nome-parcial/{prefixo}")
+    public ResponseEntity<?> buscarPorNomeParcial(@PathVariable String prefixo) {
+        return new ResponseEntity<>(pacienteService.buscarPorNomeParcial(prefixo), HttpStatus.OK);
+    }
+
+    // Endpoint para buscar pacientes por CPF parcial
+    @GetMapping("/buscar/cpf-parcial/{prefixo}")
+    public ResponseEntity<?> buscarPorCpfParcial(@PathVariable String prefixo) {
+        return new ResponseEntity<>(pacienteService.buscarPorCpfParcial(prefixo), HttpStatus.OK);
+    }
 }

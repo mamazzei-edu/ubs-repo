@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core'; // Adicionado ViewChild e AfterViewInit
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Observable, map, startWith } from 'rxjs';
+import { Observable, map, startWith, debounceTime, switchMap, of, catchError } from 'rxjs';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -22,7 +22,7 @@ import { PacienteService } from '../service/paciente.service';
 import { MedicoService } from '../service/medico.service';
 import { Agendamento, AgendamentoRequest, StatusAgendamento, TIPOS_CONSULTA } from '../model/agendamento.model';
 import { Paciente } from '../model/paciente.model';
-import { Medico } from '../model/medico.model';
+import { User } from '../model/user.model';
 
 export const MY_FORMATS = {
   parse: { dateInput: 'DD/MM/YYYY' },
@@ -55,14 +55,14 @@ export class AgendamentoComponent implements OnInit, AfterViewInit {
   agendamentoForm: FormGroup;
   filtroForm: FormGroup;
   pacientes: Paciente[] = [];
-  medicos: Medico[] = [];
+  medicos: User[] = [];
   pacientesFiltrados!: Observable<Paciente[]>;
-  medicosFiltrados: Medico[] = [];
+  medicosFiltrados: User[] = [];
   tiposConsulta = TIPOS_CONSULTA;
   statusOptions = Object.values(StatusAgendamento);
-  
+
   dataSource = new MatTableDataSource<Agendamento>();
-  displayedColumns = [ 'paciente', 'medico', 'dataHora', 'tipoConsulta', 'status', 'acoes' ];
+  displayedColumns = ['paciente', 'medico', 'dataHora', 'tipoConsulta', 'status'];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -92,9 +92,18 @@ export class AgendamentoComponent implements OnInit, AfterViewInit {
     this.carregarDados();
     this.pacientesFiltrados = this.agendamentoForm.get('pacienteInput')!.valueChanges.pipe(
       startWith(''),
-      map(value => {
-        const name = typeof value === 'string' ? value : value?.nomeCompleto;
-        return name ? this._filtrarPacientes(name) : this.pacientes.slice();
+      debounceTime(300),
+      switchMap(value => {
+        if (typeof value !== 'string') return of([]);
+        const termo = value.trim();
+        if (termo.length <= 2) return of([]);
+
+        const isNumeric = /^\d+$/.test(termo);
+        if (isNumeric) {
+          return this.pacienteService.buscarPorCpfParcial(termo).pipe(catchError(() => of([])));
+        } else {
+          return this.pacienteService.buscarPorNomeParcial(termo).pipe(catchError(() => of([])));
+        }
       })
     );
     this.agendamentoForm.get('tipoConsulta')!.valueChanges.subscribe(tipo => {
@@ -109,7 +118,7 @@ export class AgendamentoComponent implements OnInit, AfterViewInit {
   // --- MÉTODOS DE CARREGAMENTO DE DADOS ---
   private carregarDados(): void {
     this.carregarAgendamentos();
-    this.carregarPacientes();
+    // this.carregarPacientes(); // Removido para usar busca dinâmica
     this.carregarMedicos();
   }
 
@@ -152,13 +161,13 @@ export class AgendamentoComponent implements OnInit, AfterViewInit {
       }
 
       const matchNome = termoBusca === '' ||
-                        (data.paciente.nomeCompleto.toLowerCase().includes(termoBusca) ||
-                         data.medico.nomeCompleto.toLowerCase().includes(termoBusca));
-      
+        (data.paciente.nomeCompleto.toLowerCase().includes(termoBusca) ||
+          data.medico.fullName.toLowerCase().includes(termoBusca));
+
       const matchStatus = !statusFiltro || data.status === statusFiltro;
 
-      const matchData = !dataFiltro || 
-                        new Date(data.dataHoraConsulta).toDateString() === dataFiltro.toDateString();
+      const matchData = !dataFiltro ||
+        new Date(data.dataHoraConsulta).toDateString() === dataFiltro.toDateString();
 
       return matchNome && matchStatus && matchData;
     };
@@ -170,7 +179,7 @@ export class AgendamentoComponent implements OnInit, AfterViewInit {
       this.dataSource.paginator.firstPage();
     }
   }
-  
+
   limparFiltro(): void {
     this.filtroForm.reset({ termoBusca: '', dataFiltro: '', statusFiltro: '' });
     this.aplicarFiltro();
@@ -204,7 +213,7 @@ export class AgendamentoComponent implements OnInit, AfterViewInit {
     }
   }
 
-  formatarEspecialidade(m: Medico): string { const esp = m.especialidade; return Array.isArray(esp) ? esp.join(', ') : esp; }
+  formatarEspecialidade(m: User): string { const esp = m.especialidade; return esp ? (Array.isArray(esp) ? esp.join(', ') : esp) : ''; }
   onSubmit(): void {
     if (this.agendamentoForm.invalid) return;
     const req = this._montarRequest();
@@ -218,7 +227,7 @@ export class AgendamentoComponent implements OnInit, AfterViewInit {
                 this.mostrarMensagem('Agendamento criado com sucesso!');
                 this.agendamentoForm.reset();
                 Object.keys(this.agendamentoForm.controls).forEach(key => {
-                  this.agendamentoForm.get(key)?.setErrors(null) ;
+                  this.agendamentoForm.get(key)?.setErrors(null);
                 });
                 this.carregarAgendamentos();
               },
@@ -232,24 +241,20 @@ export class AgendamentoComponent implements OnInit, AfterViewInit {
       });
   }
 
-  cancelarAgendamento(id: number): void {
-    if (!confirm('Tem certeza que deseja cancelar este agendamento?')) return;
-    this.agendamentoService.cancelarAgendamento(id).subscribe({
-      next: () => {
-        this.mostrarMensagem('Agendamento cancelado');
-        this.carregarAgendamentos();
-      },
-      error: () => this.mostrarMensagem('Erro ao cancelar agendamento')
-    });
-  }
+  statusModificaveis = [StatusAgendamento.AGENDADO, StatusAgendamento.CONFIRMADO, StatusAgendamento.CANCELADO];
 
-  confirmarAgendamento(id: number): void {
-    this.agendamentoService.confirmarAgendamento(id).subscribe({
+  alterarStatus(ag: Agendamento, novoStatus: StatusAgendamento): void {
+    if (ag.status === novoStatus) return;
+
+    this.agendamentoService.atualizarStatus(ag.id, novoStatus).subscribe({
       next: () => {
-        this.mostrarMensagem('Agendamento confirmado');
-        this.carregarAgendamentos();
+        this.mostrarMensagem('Status atualizado com sucesso');
+        ag.status = novoStatus; // Atualiza localmente
       },
-      error: () => this.mostrarMensagem('Erro ao confirmar agendamento')
+      error: () => {
+        this.mostrarMensagem('Erro ao atualizar status');
+        this.carregarAgendamentos(); // Recarrega para voltar ao estado correto
+      }
     });
   }
 

@@ -75,7 +75,8 @@ mat-card {
       border-spacing: 0;
       border-collapse: separate;
 
-      th, td {
+      th,
+      td {
         padding: 12px 16px;
         text-align: left;
       }
@@ -102,12 +103,16 @@ mat-card {
   :host {
     padding: 8px;
   }
-  mat-card, .list-card {
+
+  mat-card,
+  .list-card {
     margin: 0;
   }
+
   mat-card-content form {
     grid-template-columns: 1fr !important;
   }
+
   .form-actions {
     justify-content: center !important;
   }
@@ -126,7 +131,7 @@ mat-card {
   .filter-field {
     width: 100%;
   }
-  
+
   .filter-actions {
     display: flex;
     justify-content: flex-start;
@@ -134,10 +139,15 @@ mat-card {
 }
 
 .mat-row .mat-cell.no-data-cell {
-    text-align: center;
-    padding: 20px;
-    font-style: italic;
-    color: grey;
+  text-align: center;
+  padding: 20px;
+  font-style: italic;
+  color: grey;
+}
+
+.altera-status-agenda {
+  font-size: .9em;
+  margin: 0px;
 }
 
 @media (max-width: 960px) {

@@ -1,0 +1,25 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] --------------------< br.sp.gov.fatec.ubs:backend >---------------------
+[INFO] Building backend 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.1:clean (default-clean) @ backend ---
+[INFO] Deleting F:\fatec\2025\PI-2\projeto_ubs\ubs-repo\backend\target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ backend ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] Copying 4 resources from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.14.0:compile (default-compile) @ backend ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 46 source files with javac [debug parameters release 17] to target\classes
+[INFO] /F:/fatec/2025/PI-2/projeto_ubs/ubs-repo/backend/src/main/java/br/sp/gov/fatec/ubs/backend/configs/ApplicationConfiguration.java: F:\fatec\2025\PI-2\projeto_ubs\ubs-repo\backend\src\main\java\br\sp\gov\fatec\ubs\backend\configs\ApplicationConfiguration.java uses or overrides a deprecated API.
+[INFO] /F:/fatec/2025/PI-2/projeto_ubs/ubs-repo/backend/src/main/java/br/sp/gov/fatec/ubs/backend/configs/ApplicationConfiguration.java: Recompile with -Xlint:deprecation for details.
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  3.142 s
+[INFO] Finished at: 2025-12-16T21:14:32-03:00
+[INFO] ------------------------------------------------------------------------

@@ -11,5 +11,7 @@ export class User {
     public username: string = '';
     public password: string = '';
     public crm?: string;
+    public especialidade?: string;
+    public ativo: boolean = true;
     public role?: Role;
 }

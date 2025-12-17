@@ -1,5 +1,5 @@
 import { Paciente } from './paciente.model';
-import { Medico } from './medico.model';
+import { User } from './user.model';
 
 export enum StatusAgendamento {
   AGENDADO = 'AGENDADO',
@@ -12,7 +12,7 @@ export enum StatusAgendamento {
 export interface Agendamento {
   id: number;
   paciente: Paciente;
-  medico: Medico;
+  medico: User;
   dataHoraConsulta: string;
   status: StatusAgendamento;
   tipoConsulta: string;

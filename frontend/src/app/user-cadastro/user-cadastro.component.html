@@ -91,6 +91,20 @@
                 <label for="crm">CRM:</label>
                 <input id="crm" type="text" [(ngModel)]="usuarioSelecionado.crm" name="crm" class="form-control" />
               </div>
+              <div class="col-md-12" *ngIf="roleSelecionado?.name === 'MEDICO'">
+                <label for="especialidade">Especialidade:</label>
+                <input id="especialidade" type="text" [(ngModel)]="usuarioSelecionado.especialidade"
+                  name="especialidade" class="form-control" />
+              </div>
+              <div class="col-md-12">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="ativo" [(ngModel)]="usuarioSelecionado.ativo"
+                    name="ativo">
+                  <label class="form-check-label" for="ativo">
+                    Ativo
+                  </label>
+                </div>
+              </div>
               <div class="col-md-12">
                 <label for="role">Função: {{ roleSelecionado?.name }}</label>
                 <div *ngFor="let role of roles">
@@ -143,6 +157,19 @@
               <div class="col-md-12">
                 <label for="crm">CRM:</label>
                 <input id="crm" type="text" [(ngModel)]="crm" name="crm" class="form-control" />
+              </div>
+              <div class="col-md-12" *ngIf="roleSelecionado?.name === 'MEDICO'">
+                <label for="especialidade">Especialidade:</label>
+                <input id="especialidade" type="text" [(ngModel)]="especialidade" name="especialidade"
+                  class="form-control" />
+              </div>
+              <div class="col-md-12">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="ativoCadastro" [(ngModel)]="ativo" name="ativo">
+                  <label class="form-check-label" for="ativoCadastro">
+                    Ativo
+                  </label>
+                </div>
               </div>
               <div class="col-md-12">
                 <label for="role">Função: {{ roleSelecionado?.name }}</label>

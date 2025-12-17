@@ -62,6 +62,22 @@ public class PacienteService {
         }
     }
 
+    // Método para buscar pacientes por nome parcial
+    public List<Paciente> buscarPorNomeParcial(String nome) {
+        if (nome == null || nome.trim().isEmpty()) {
+            return List.of();
+        }
+        return pacienteRepository.findByNomeCompletoStartingWithIgnoreCase(nome);
+    }
+
+    // Método para buscar pacientes por CPF parcial
+    public List<Paciente> buscarPorCpfParcial(String cpf) {
+        if (cpf == null || cpf.trim().isEmpty()) {
+            return List.of();
+        }
+        return pacienteRepository.findByCpfStartingWith(cpf);
+    }
+
     // Método para salvar um novo paciente com validação de duplicação
     public Paciente salvarPaciente(Paciente paciente) {
         // VALIDAÇÃO DE CAMPOS OBRIGATÓRIOS
@@ -109,7 +125,7 @@ public class PacienteService {
         Optional<Paciente> pacienteExistente = pacienteRepository.findById(id);
         if (pacienteExistente.isPresent()) {
             Paciente paciente = pacienteExistente.get();
-            
+
             // Atualizando os dados do paciente
             paciente.setNomeCompleto(pacienteAtualizado.getNomeCompleto());
             paciente.setNomeSocial(pacienteAtualizado.getNomeSocial());
@@ -159,9 +175,8 @@ public class PacienteService {
             paciente.setPassaporte(pacienteAtualizado.getPassaporte());
             paciente.setEstabelecimentoCadastro(pacienteAtualizado.getEstabelecimentoCadastro());
 
-            
-            return pacienteRepository.save(paciente);  // Salva as alterações no banco
+            return pacienteRepository.save(paciente); // Salva as alterações no banco
         }
-        return null;  // Retorna null caso o paciente não seja encontrado
+        return null; // Retorna null caso o paciente não seja encontrado
     }
 }
