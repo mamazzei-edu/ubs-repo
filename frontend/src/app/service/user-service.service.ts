@@ -3,14 +3,15 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Role } from '../model/role.model';
 import { User } from '../model/user.model';
+import { environment } from '../environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  private apiUrl = 'http://localhost:8080/api/usuarios';  // URL do backend diretamente no código
+  private apiUrl = environment.apiUrl + '/api/usuarios';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   // Listar todos os usuários
   listarUsuarios(): Observable<any[]> {

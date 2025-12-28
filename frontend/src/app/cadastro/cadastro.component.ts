@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { RouterModule, Router } from '@angular/router';
+import { environment } from '../environment';
+
 
 @Component({
   selector: 'app-cadastro',
@@ -73,7 +75,7 @@ export class CadastroComponent {
   pacienteId: number | null = null;
   showDuplicateModal: boolean = false;
 
-  constructor(private http: HttpClient, private router: Router, private pacienteService: PacienteService) {}
+  constructor(private http: HttpClient, private router: Router, private pacienteService: PacienteService) { }
 
   verificarProntuario() {
     if (this.prontuario && this.prontuario.trim() !== '') {
@@ -144,12 +146,12 @@ export class CadastroComponent {
       alert('❌ ERRO: O campo "Nome Completo" é obrigatório!');
       return;
     }
-    
+
     if (!this.prontuario || this.prontuario.trim() === '') {
       alert('❌ ERRO: O campo "Número de Prontuário" é obrigatório!');
       return;
     }
-    
+
     if (!this.dataNascimento || this.dataNascimento.trim() === '') {
       alert('❌ ERRO: O campo "Data de Nascimento" é obrigatório!');
       return;
@@ -221,7 +223,7 @@ export class CadastroComponent {
       });
     } else {
       // Modo cadastro - criar novo paciente
-      this.http.post('http://localhost:8080/api/pacientes', paciente).subscribe({
+      this.http.post(environment.apiUrl + '/api/pacientes', paciente).subscribe({
         next: (data) => {
           console.log('✅ Paciente salvo com sucesso:', data);
           this.openModal();

@@ -5,6 +5,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { PacienteService } from '../service/paciente.service';
 import { CommonModule } from '@angular/common';
 import { Paciente } from '../model/paciente.model';
+import { environment } from './../environment';
 
 @Component({
   selector: 'app-upload',
@@ -65,12 +66,12 @@ export class UploadComponent implements OnInit {
       console.log('📤 Iniciando upload do arquivo...');
       const formData = new FormData();
       formData.append('ficha', this.file, this.file.name);
-      this.http.post('http://localhost:8080/arquivos', formData)
+      this.http.post(environment.apiUrl + '/arquivos', formData)
         .subscribe({
           next: (dados) => {
             console.log('📄 Dados extraídos do PDF:', dados);
             this.pacienteSelecionado = dados;
-            
+
             // LIMPAR ESPAÇOS EXTRAS de todos os campos de texto
             if (this.pacienteSelecionado.nomeCompleto) {
               this.pacienteSelecionado.nomeCompleto = this.pacienteSelecionado.nomeCompleto.trim();
@@ -78,20 +79,20 @@ export class UploadComponent implements OnInit {
             if (this.pacienteSelecionado.prontuario) {
               this.pacienteSelecionado.prontuario = this.pacienteSelecionado.prontuario.trim();
             }
-            
+
             const data = this.pacienteSelecionado.dataNascimento;
             const [dia, mes, ano] = data.split('/');
             const dataNascimento = `${ano}-${mes}-${dia}`;
             this.pacienteSelecionado.dataNascimento = dataNascimento;
             this.mensagem = '';
-            
+
             console.log('🔍 INICIANDO VERIFICAÇÃO DE DUPLICAÇÃO...');
             console.log('Nome (após trim):', this.pacienteSelecionado.nomeCompleto);
             console.log('Prontuário (após trim):', this.pacienteSelecionado.prontuario);
-            
+
             // NÃO MOSTRAR O FORMULÁRIO AINDA - Primeiro verificar duplicação
             this.mostrarModalEditar = false;
-            
+
             // Verificar se já existe paciente com mesmo nome ou prontuário
             this.verificarDuplicacao();
           },
@@ -110,7 +111,7 @@ export class UploadComponent implements OnInit {
 
   verificarDuplicacao() {
     console.log('🔍 verificarDuplicacao() chamado');
-    
+
     // Verificar por prontuário primeiro
     if (this.pacienteSelecionado.prontuario && this.pacienteSelecionado.prontuario.trim() !== '') {
       console.log('🔍 Verificando prontuário:', this.pacienteSelecionado.prontuario);
@@ -145,8 +146,8 @@ export class UploadComponent implements OnInit {
     if (this.pacienteSelecionado.nomeCompleto && this.pacienteSelecionado.nomeCompleto.trim() !== '') {
       const nomeParaBuscar = this.pacienteSelecionado.nomeCompleto.trim();
       console.log('🔍 Buscando paciente por nome:', nomeParaBuscar);
-      
-      this.http.get(`http://localhost:8080/api/pacientes/nome/${encodeURIComponent(nomeParaBuscar)}`).subscribe({
+
+      this.http.get(`${environment.apiUrl}/api/pacientes/nome/${encodeURIComponent(nomeParaBuscar)}`).subscribe({
         next: (pacienteExistente: any) => {
           // Paciente encontrado por nome
           console.log('🚨🚨🚨 DUPLICAÇÃO DETECTADA POR NOME! 🚨🚨🚨');
@@ -219,23 +220,23 @@ export class UploadComponent implements OnInit {
 
   public gravar(pacienteSelecionado: Paciente) {
     console.log('🔵 Tentando gravar paciente. Modo Edição:', this.modoEdicao, 'ID:', this.pacienteId);
-    
+
     // VALIDAÇÃO DE CAMPOS OBRIGATÓRIOS
     if (!this.pacienteSelecionado.nomeCompleto || this.pacienteSelecionado.nomeCompleto.trim() === '') {
       alert('❌ ERRO: O campo "Nome Completo" é obrigatório!');
       return;
     }
-    
+
     if (!this.pacienteSelecionado.prontuario || this.pacienteSelecionado.prontuario.trim() === '') {
       alert('❌ ERRO: O campo "Número de Prontuário" é obrigatório!');
       return;
     }
-    
+
     if (!this.pacienteSelecionado.dataNascimento || this.pacienteSelecionado.dataNascimento.trim() === '') {
       alert('❌ ERRO: O campo "Data de Nascimento" é obrigatório!');
       return;
     }
-    
+
     if (this.modoEdicao && this.pacienteId) {
       // Modo edição - atualizar paciente existente
       console.log('✏️ Atualizando paciente existente ID:', this.pacienteId);

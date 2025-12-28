@@ -32,15 +32,13 @@ public class SecurityConfiguration {
 
     // Também é necessário para utilizar o Environment
     // e também é possível usar @Value para pegar variáveis de ambiente
-    @Autowired      
+    @Autowired
     private Environment environment;
-
 
     @Autowired
     public SecurityConfiguration(JwtAuthenticationFilter jwtRequestFilter) {
         this.jwtRequestFilter = jwtRequestFilter;
     }
-
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -51,16 +49,14 @@ public class SecurityConfiguration {
                     .csrf(csrf -> csrf.disable())
                     .authorizeHttpRequests(auth -> auth
                             .requestMatchers("/auth", "/error", "/auth/**").permitAll()
-                            .anyRequest().authenticated()
-                    )
-                    // make sure we use stateless session; session won't be used to store user's state.
+                            .anyRequest().authenticated())
+                    // make sure we use stateless session; session won't be used to store user's
+                    // state.
                     .sessionManagement(session -> session
-                            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                    )
+                            .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                     .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
                     .exceptionHandling(exception -> exception
-                            .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
-                    );
+                            .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)));
         } else {
             http.authorizeHttpRequests((requests) -> requests.anyRequest().permitAll())
                     .csrf(csrf -> csrf.disable());
@@ -71,9 +67,10 @@ public class SecurityConfiguration {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-//        configuration.setAllowedOrigins(List.of("*"));
-//        List<String> allowedOrigins = Arrays.asList(System.getenv("LISTA_HOSTS").split(","));
-//        System.out.println("Allowed origins: " + System.getenv("LISTA_HOSTS"));
+        // configuration.setAllowedOrigins(List.of("*"));
+        // List<String> allowedOrigins =
+        // Arrays.asList(System.getenv("LISTA_HOSTS").split(","));
+        // System.out.println("Allowed origins: " + System.getenv("LISTA_HOSTS"));
         List<String> allowedOrigins = Arrays.asList(environment.getProperty("LISTA_HOSTS").split(","));
         System.out.println("Allowed origins: " + environment.getProperty("LISTA_HOSTS").split(","));
 
