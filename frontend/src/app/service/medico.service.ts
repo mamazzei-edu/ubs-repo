@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { User } from '../model/user.model';
 import { environment } from './../environment';
+import { Medico } from '../model/medico.model';
 
 @Injectable({
   providedIn: 'root'
@@ -12,40 +12,40 @@ export class MedicoService {
 
   constructor(private http: HttpClient) { }
 
-  listarTodos(): Observable<User[]> {
-    return this.http.get<User[]>(this.apiUrl);
+  listarTodos(): Observable<Medico[]> {
+    return this.http.get<Medico[]>(this.apiUrl);
   }
 
-  listarAtivos(): Observable<User[]> {
-    return this.http.get<User[]>(`${this.apiUrl}/ativos`);
+  listarAtivos(): Observable<Medico[]> {
+    return this.http.get<Medico[]>(`${this.apiUrl}/ativos`);
   }
 
-  buscarPorId(id: number): Observable<User> {
-    return this.http.get<User>(`${this.apiUrl}/${id}`);
+  buscarPorId(id: number): Observable<Medico> {
+    return this.http.get<Medico>(`${this.apiUrl}/${id}`);
   }
 
-  buscarPorCrm(crm: string): Observable<User> {
-    return this.http.get<User>(`${this.apiUrl}/crm/${crm}`);
+  buscarPorCrm(crm: string): Observable<Medico> {
+    return this.http.get<Medico>(`${this.apiUrl}/crm/${crm}`);
   }
 
-  buscarPorEspecialidade(especialidade: string): Observable<User[]> {
-    return this.http.get<User[]>(`${this.apiUrl}/especialidade/${especialidade}`);
+  buscarPorEspecialidade(especialidade: string): Observable<Medico[]> {
+    return this.http.get<Medico[]>(`${this.apiUrl}/especialidade/${especialidade}`);
   }
 
-  buscarPorNome(nome: string): Observable<User[]> {
-    return this.http.get<User[]>(`${this.apiUrl}/nome/${nome}`);
+  buscarPorNome(nome: string): Observable<Medico[]> {
+    return this.http.get<Medico[]>(`${this.apiUrl}/nome/${nome}`);
   }
 
-  criarMedico(medico: Partial<User>): Observable<User> {
-    return this.http.post<User>(this.apiUrl, medico);
+  criarMedico(medico: Partial<Medico>): Observable<Medico> {
+    return this.http.post<Medico>(this.apiUrl, medico);
   }
 
-  atualizarMedico(id: number, medico: Partial<User>): Observable<User> {
-    return this.http.put<User>(`${this.apiUrl}/${id}`, medico);
+  atualizarMedico(id: number, medico: Partial<Medico>): Observable<Medico> {
+    return this.http.put<Medico>(`${this.apiUrl}/${id}`, medico);
   }
 
-  alterarStatus(id: number, ativo: boolean): Observable<User> {
-    return this.http.put<User>(`${this.apiUrl}/${id}/status`, { ativo });
+  alterarStatus(id: number, ativo: boolean): Observable<Medico> {
+    return this.http.put<Medico>(`${this.apiUrl}/${id}/status`, { ativo });
   }
 
   desativarMedico(id: number): Observable<void> {

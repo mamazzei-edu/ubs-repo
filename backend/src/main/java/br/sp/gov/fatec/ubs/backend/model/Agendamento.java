@@ -20,8 +20,8 @@ public class Agendamento {
     private Paciente paciente;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User medico;
+    @JoinColumn(name = "medico_id", nullable = false)
+    private Medico medico;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     @Column(nullable = false)
@@ -58,7 +58,7 @@ public class Agendamento {
     public Agendamento() {
     }
 
-    public Agendamento(Paciente paciente, User medico, LocalDateTime dataHoraConsulta, String tipoConsulta) {
+    public Agendamento(Paciente paciente, Medico medico, LocalDateTime dataHoraConsulta, String tipoConsulta) {
         this.paciente = paciente;
         this.medico = medico;
         this.dataHoraConsulta = dataHoraConsulta;
@@ -83,11 +83,11 @@ public class Agendamento {
         this.paciente = paciente;
     }
 
-    public User getMedico() {
+    public Medico getMedico() {
         return medico;
     }
 
-    public void setMedico(User medico) {
+    public void setMedico(Medico medico) {
         this.medico = medico;
     }
 
