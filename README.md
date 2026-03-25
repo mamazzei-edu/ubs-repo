@@ -13,7 +13,7 @@
 
 ## Como rodar o programa
 
->Pré-requisitos de execução (Precisam estar instalados na máquina)
+Pré-requisitos de execução (Precisam estar instalados na máquina)
  ↳Docker Desktop (24.x+)
  ↳Docker Compose (2.x+)
  ↳Java JDK (21+)
@@ -22,7 +22,7 @@
  ↳MySQL (8.x)
  ↳Git
 
->Execução em Docker (Recomendado)
+Execução em Docker (Recomendado)
 
 ① Clone o repositório e acesse a branch principal com o seguinte código:
 	git clone https://github.com/CaioTBarbieri/ubs-repo.git
@@ -57,13 +57,13 @@
 	- Backend (API REST): http://localhost:8080
 	- MySQL (conexão externa): localhost:3307
 
->Para encerrar os containers:
+Para encerrar os containers:
 	docker compose down
 
->Para encerrar e remover também o volume do banco de dados:
+Para encerrar e remover também o volume do banco de dados:
 	docker compose down -v
 
->Execução Manual (Desenvolvimento)
+Execução Manual (Desenvolvimento)
 
 ① Backend:
 	cd backend
