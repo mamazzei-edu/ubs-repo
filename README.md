@@ -14,17 +14,25 @@
 ## Como rodar o programa
 
 Pré-requisitos de execução (Precisam estar instalados na máquina)
- ↳Docker Desktop (24.x+)
- ↳Docker Compose (2.x+)
- ↳Java JDK (21+)
- ↳Apache Maven (3.9+)
- ↳Node.js (18+)
- ↳MySQL (8.x)
- ↳Git
 
-Execução em Docker (Recomendado)
+ - Docker Desktop (24.x+)
+
+ - Docker Compose (2.x+)
+ 
+ - Java JDK (21+)
+ 
+ - Apache Maven (3.9+)
+ 
+ - Node.js (18+)
+ 
+ - MySQL (8.x)
+ 
+ - Git
+
+## Execução em Docker (Recomendado)
 
 ① Clone o repositório e acesse a branch principal com o seguinte código:
+
 	git clone https://github.com/CaioTBarbieri/ubs-repo.git
 	cd ubs-repo
 	git checkout atualizado_unificado
@@ -45,6 +53,7 @@ Execução em Docker (Recomendado)
 	SPRING_JPA_HIBERNATE_DDL_AUTO=update
 
 ③ Suba todos os serviços:
+
 	docker compose up --build
 
 ④ Aguarde a inicialização completa:
@@ -53,28 +62,32 @@ Execução em Docker (Recomendado)
 	- Aguarde a mensagem de startup do Spring Boot no terminal
 
 ⑤ Acesse a aplicação:
-	- Frontend (Angular): http://localhost:4200
-	- Backend (API REST): http://localhost:8080
-	- MySQL (conexão externa): localhost:3307
+- Frontend (Angular): http://localhost:4200
+- Backend (API REST): http://localhost:8080
+- MySQL (conexão externa): localhost:3307
 
 Para encerrar os containers:
+
 	docker compose down
 
 Para encerrar e remover também o volume do banco de dados:
+
 	docker compose down -v
 
-Execução Manual (Desenvolvimento)
+## Execução Manual (Desenvolvimento)
 
 ① Backend:
+
 	cd backend
 	# Configure o arquivo src/main/resources/application.properties com as credenciais do MySQL
 	./mvnw spring-boot:run
 
 ② Frontend:
+
 	cd frontend
 	npm install
 	npm start    # ou: ng serve
 
 ③ Acesse:
-	- Angular: http://localhost:4200 (com proxy configurado para o backend)
-	- Certifique-se de que o schema "ubs" foi criado previamente no MySQL
+- Angular: http://localhost:4200 (com proxy configurado para o backend)
+- Certifique-se de que o schema "ubs" foi criado previamente no MySQL
