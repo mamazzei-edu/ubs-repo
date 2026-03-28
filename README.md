@@ -33,9 +33,9 @@ Pré-requisitos de execução (Precisam estar instalados na máquina)
 
 ① Clone o repositório e acesse a branch principal com o seguinte código:
 
-	git clone https://github.com/CaioTBarbieri/ubs-repo.git
+	git clone https://github.com/mamazzei-edu/ubs-repo.git
 	cd ubs-repo
-	git checkout atualizado_unificado
+	git checkout devel_producao // ou alguma outra branch dependendo do que você deseja.
 
 ② Crie o arquivo de variáveis de ambiente:
 	Na raiz do projeto, crie um arquivo chamado .env com as seguintes variáveis:
