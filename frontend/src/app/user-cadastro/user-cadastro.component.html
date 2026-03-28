@@ -160,9 +160,21 @@
               </div>
               <div class="col-md-12" *ngIf="roleSelecionado?.name === 'MEDICO'">
                 <label for="especialidade">Especialidade:</label>
-                <input id="especialidade" type="text" [(ngModel)]="especialidade" name="especialidade"
-                  class="form-control" />
-              </div>
+                  <select id="especialidade" class="form-control" name="especialidade" [(ngModel)]="especialidade">
+                  <option value="" disabled selected>Selecione uma especialidade...</option>
+                  <option value="Cardiologia">Cardiologia</option>
+                  <option value="Clínica Geral">Clínica Geral</option>
+                  <option value="Dermatologia">Dermatologia</option>
+                  <option value="Endocrinologia">Endocrinologia</option>
+                  <option value="Gastroenterologia">Gastroenterologia</option>
+                  <option value="Ginecologia">Ginecologia</option>
+                  <option value="Neurologia">Neurologia</option>
+                  <option value="Oftalmologia">Oftalmologia</option>
+                  <option value="Ortopedia">Ortopedia</option>
+                  <option value="Pediatria">Pediatria</option>
+                  <option value="Psiquiatria">Psiquiatria</option>
+                </select>
+            </div>
               <div class="col-md-12">
                 <div class="form-check">
                   <input class="form-check-input" type="checkbox" id="ativoCadastro" [(ngModel)]="ativo" name="ativo">

@@ -14,6 +14,7 @@ import java.util.List;
 
 @Table(name = "users")
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED) // Estratégia de herança para permitir subclasses de User.
 public class User implements UserDetails {
 
     @Id
@@ -36,13 +37,7 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String username;
 
-    @Column(nullable = true) // para cadastro dos usuários médicos
-    private String crm;
-
-    @Column(nullable = true) // para cadastro dos usuários médicos
-    private String especialidade;
-
-    @Column(nullable = true) // para cadastro dos usuários médicos
+    @Column(nullable = true) 
     private String telefone;
 
     @Column
@@ -56,7 +51,6 @@ public class User implements UserDetails {
     @Column(name = "updated_at")
     private Date updatedAt;
 
-    // Relação corrigida — sem CascadeType.REMOVE
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false)
     private Role role;
@@ -149,15 +143,6 @@ public class User implements UserDetails {
         this.updatedAt = updatedAt;
     }
 
-    public String getCrm() {
-        return crm;
-    }
-
-    public User setCrm(String crm) {
-        this.crm = crm;
-        return this;
-    }
-
     public Role getRole() {
         return role;
     }
@@ -181,14 +166,6 @@ public class User implements UserDetails {
         return this;
     }
 
-    public String getEspecialidade() {
-        return especialidade;
-    }
-
-    public void setEspecialidade(String especialidade) {
-        this.especialidade = especialidade;
-    }
-
     public String getTelefone() {
         return telefone;
     }
@@ -204,5 +181,4 @@ public class User implements UserDetails {
     public void setAtivo(boolean ativo) {
         this.ativo = ativo;
     }
-
 }

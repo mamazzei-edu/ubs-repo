@@ -60,11 +60,7 @@ public class UserService {
                 .setMatricula(input.getMatricula())
                 .setUsername(input.getUsername())
                 .setRole(optionalRole.get());
-
-        if (input.getCrm() != null) {
-            user.setCrm(input.getCrm());
-        }
-
+                
         return userRepository.save(user);
     }
 

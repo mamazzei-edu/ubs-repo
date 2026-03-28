@@ -90,7 +90,7 @@
         </ng-container>
         <ng-container matColumnDef="medico">
           <th mat-header-cell *matHeaderCellDef>Médico</th>
-          <td mat-cell *matCellDef="let ag"> {{ ag.medico?.nomeCompleto || 'N/A' }} </td>
+          <td mat-cell *matCellDef="let ag"> {{ ag.medico?.fullName || 'N/A' }} </td>
         </ng-container>
         <ng-container matColumnDef="dataHora">
           <th mat-header-cell *matHeaderCellDef>Data e Hora</th>

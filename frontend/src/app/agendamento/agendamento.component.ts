@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core'; // Adicionado ViewChild e AfterViewInit
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Observable, map, startWith, debounceTime, switchMap, of, catchError } from 'rxjs';
@@ -9,11 +9,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table'; // Adicionado MatTableDataSource
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator'; // Adicionado MatPaginator
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MAT_DATE_LOCALE, MatOptionModule } from '@angular/material/core';
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
@@ -22,7 +22,7 @@ import { PacienteService } from '../service/paciente.service';
 import { MedicoService } from '../service/medico.service';
 import { Agendamento, AgendamentoRequest, StatusAgendamento, TIPOS_CONSULTA } from '../model/agendamento.model';
 import { Paciente } from '../model/paciente.model';
-import { User } from '../model/user.model';
+import { Medico } from '../model/medico.model';
 
 export const MY_FORMATS = {
   parse: { dateInput: 'DD/MM/YYYY' },
@@ -41,7 +41,7 @@ export const MY_FORMATS = {
     CommonModule, ReactiveFormsModule, MatCardModule, MatFormFieldModule,
     MatInputModule, MatSelectModule, MatOptionModule, MatAutocompleteModule,
     MatButtonModule, MatTableModule, MatIconModule, MatChipsModule,
-    MatDatepickerModule, MatSnackBarModule, MatPaginatorModule // Adicionado MatPaginatorModule
+    MatDatepickerModule, MatSnackBarModule, MatPaginatorModule
   ],
   templateUrl: './agendamento.component.html',
   styleUrls: ['./agendamento.component.scss'],
@@ -55,9 +55,9 @@ export class AgendamentoComponent implements OnInit, AfterViewInit {
   agendamentoForm: FormGroup;
   filtroForm: FormGroup;
   pacientes: Paciente[] = [];
-  medicos: User[] = [];
+  medicos: Medico[] = [];
   pacientesFiltrados!: Observable<Paciente[]>;
-  medicosFiltrados: User[] = [];
+  medicosFiltrados: Medico[] = []; 
   tiposConsulta = TIPOS_CONSULTA;
   statusOptions = Object.values(StatusAgendamento);
 
@@ -74,13 +74,15 @@ export class AgendamentoComponent implements OnInit, AfterViewInit {
     private snackBar: MatSnackBar
   ) {
     this.agendamentoForm = this.fb.group({
-      pacienteInput: [''], pacienteId: ['', Validators.required],
-      tipoConsulta: ['', Validators.required], medicoId: ['', Validators.required],
-      dataConsulta: ['', Validators.required], horaConsulta: ['', Validators.required],
+      pacienteInput: [''], 
+      pacienteId: ['', Validators.required],
+      tipoConsulta: ['', Validators.required], 
+      medicoId: ['', Validators.required],
+      dataConsulta: ['', Validators.required], 
+      horaConsulta: ['', Validators.required],
       observacoes: ['']
     });
 
-    // Inicializa o formulário de filtro
     this.filtroForm = this.fb.group({
       termoBusca: [''],
       dataFiltro: [''],
@@ -106,6 +108,7 @@ export class AgendamentoComponent implements OnInit, AfterViewInit {
         }
       })
     );
+
     this.agendamentoForm.get('tipoConsulta')!.valueChanges.subscribe(tipo => {
       this._filtrarMedicosPorTipo(tipo);
     });
@@ -115,10 +118,8 @@ export class AgendamentoComponent implements OnInit, AfterViewInit {
     this.dataSource.paginator = this.paginator;
   }
 
-  // --- MÉTODOS DE CARREGAMENTO DE DADOS ---
   private carregarDados(): void {
     this.carregarAgendamentos();
-    // this.carregarPacientes(); // Removido para usar busca dinâmica
     this.carregarMedicos();
   }
 
@@ -132,16 +133,9 @@ export class AgendamentoComponent implements OnInit, AfterViewInit {
     });
   }
 
-  private carregarPacientes(): void {
-    this.pacienteService.listarPacientes().subscribe({
-      next: pcs => this.pacientes = pcs,
-      error: () => this.mostrarMensagem('Erro ao carregar pacientes')
-    });
-  }
-
   private carregarMedicos(): void {
     this.medicoService.listarTodos().subscribe({
-      next: mds => {
+      next: (mds: any) => {
         this.medicos = mds;
         this.medicosFiltrados = [...mds];
       },
@@ -149,17 +143,16 @@ export class AgendamentoComponent implements OnInit, AfterViewInit {
     });
   }
 
-  // --- MÉTODOS DE FILTRAGEM ---
   configurarFiltro(): void {
     this.dataSource.filterPredicate = (data: Agendamento, filter: string): boolean => {
       const searchString = JSON.parse(filter);
       const termoBusca = searchString.termoBusca?.toLowerCase() || '';
       const statusFiltro = searchString.statusFiltro;
       const dataFiltro = searchString.dataFiltro ? new Date(searchString.dataFiltro) : null;
+      
       if (dataFiltro) {
         dataFiltro.setMinutes(dataFiltro.getMinutes() + dataFiltro.getTimezoneOffset());
       }
-
       const matchNome = termoBusca === '' ||
         (data.paciente.nomeCompleto.toLowerCase().includes(termoBusca) ||
           data.medico.fullName.toLowerCase().includes(termoBusca));
@@ -185,38 +178,42 @@ export class AgendamentoComponent implements OnInit, AfterViewInit {
     this.aplicarFiltro();
   }
 
-  displayPaciente(paciente: Paciente): string { return paciente && paciente.nomeCompleto ? paciente.nomeCompleto : ''; }
-  private _filtrarPacientes(valor: string): Paciente[] {
-    const v = valor.toLowerCase();
-    return this.pacientes.filter(p =>
-      p.nomeCompleto.toLowerCase().includes(v) ||
-      p.cpf.replace(/\D/g, '').includes(v.replace(/\D/g, ''))
-    );
+  displayPaciente(paciente: Paciente): string { 
+    return paciente && paciente.nomeCompleto ? paciente.nomeCompleto : ''; 
   }
 
-  onPacienteSelecionado(p: Paciente): void { this.agendamentoForm.patchValue({ pacienteId: p.id, pacienteInput: p }); }
+  onPacienteSelecionado(p: Paciente): void { 
+    this.agendamentoForm.patchValue({ pacienteId: p.id, pacienteInput: p }); 
+  }
+
   private _filtrarMedicosPorTipo(tipo: string): void {
     if (!tipo || tipo === 'Consulta Clínica Geral' || tipo === 'Exame de Rotina' || tipo === 'Consulta de Retorno') {
       this.medicosFiltrados = [...this.medicos];
     } else {
       const especialidadeChave = tipo.replace('Consulta ', '').toLowerCase();
       this.medicosFiltrados = this.medicos.filter(medico => {
-        if (typeof medico.especialidade === 'string') {
-          return medico.especialidade.toLowerCase().includes(especialidadeChave);
-        }
-        return false;
+        // Agora verifica se a especialidade chave existe dentro da LISTA de especialidades
+        return medico.especialidades && medico.especialidades.some(esp => 
+          esp.toLowerCase().includes(especialidadeChave)
+        );
       });
     }
+    
     const medicoIdAtual = this.agendamentoForm.get('medicoId')!.value;
     if (!this.medicosFiltrados.some(m => m.id === medicoIdAtual)) {
       this.agendamentoForm.patchValue({ medicoId: null });
     }
   }
 
-  formatarEspecialidade(m: User): string { const esp = m.especialidade; return esp ? (Array.isArray(esp) ? esp.join(', ') : esp) : ''; }
+  // Simplificado para lidar com o array de especialidades vindo do backend
+  formatarEspecialidade(m: Medico): string { 
+    return m.especialidades ? m.especialidades.join(', ') : ''; 
+  }
+
   onSubmit(): void {
     if (this.agendamentoForm.invalid) return;
     const req = this._montarRequest();
+    
     this.agendamentoService
       .verificarDisponibilidade(req.medicoId, req.dataHoraConsulta)
       .subscribe({
@@ -249,11 +246,11 @@ export class AgendamentoComponent implements OnInit, AfterViewInit {
     this.agendamentoService.atualizarStatus(ag.id, novoStatus).subscribe({
       next: () => {
         this.mostrarMensagem('Status atualizado com sucesso');
-        ag.status = novoStatus; // Atualiza localmente
+        ag.status = novoStatus;
       },
       error: () => {
         this.mostrarMensagem('Erro ao atualizar status');
-        this.carregarAgendamentos(); // Recarrega para voltar ao estado correto
+        this.carregarAgendamentos();
       }
     });
   }
@@ -269,7 +266,10 @@ export class AgendamentoComponent implements OnInit, AfterViewInit {
     }
   }
 
-  formatarDataHora(s: string): string { return new Date(s).toLocaleString('pt-BR'); }
+  formatarDataHora(s: string): string { 
+    return new Date(s).toLocaleString('pt-BR'); 
+  }
+
   private _montarRequest(): AgendamentoRequest {
     const f = this.agendamentoForm.value;
     const dataSelecionada = new Date(f.dataConsulta);
@@ -277,6 +277,7 @@ export class AgendamentoComponent implements OnInit, AfterViewInit {
     dataSelecionada.setMinutes(dataSelecionada.getMinutes() - dataSelecionada.getTimezoneOffset());
     const dataISO = dataSelecionada.toISOString().slice(0, 10);
     const dataHoraParaBackend = `${dataISO}T${hora}`;
+    
     return {
       pacienteId: f.pacienteId,
       medicoId: f.medicoId,
@@ -285,6 +286,7 @@ export class AgendamentoComponent implements OnInit, AfterViewInit {
       observacoes: f.observacoes
     };
   }
+
   private mostrarMensagem(msg: string): void {
     this.snackBar.open(msg, 'Fechar', {
       duration: 4000,

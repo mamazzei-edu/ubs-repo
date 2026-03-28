@@ -1,6 +1,6 @@
 package br.sp.gov.fatec.ubs.backend.repositories;
 
-import br.sp.gov.fatec.ubs.backend.model.User;
+import br.sp.gov.fatec.ubs.backend.model.Medico;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -10,31 +10,22 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface MedicoRepository extends JpaRepository<User, Long> {
+public interface MedicoRepository extends JpaRepository<Medico, Integer> {
 
-    // Buscar médico por CRM
-    Optional<User> findByCrm(String crm);
+    Optional<Medico> findByCrm(String crm);
 
-    // Buscar médico por email
-    Optional<User> findByEmail(String email);
+    Optional<Medico> findByEmail(String email);
 
-    // Buscar médicos por especialidade
-    List<User> findByEspecialidade(String especialidade);
+    List<Medico> findByAtivoTrue();
 
-    // Buscar médicos ativos
-    List<User> findByAtivoTrue();
+    // As especialidades são uma lista, o JPA precisa dar um JOIN na tabela auxiliar.
+    @Query("SELECT m FROM Medico m JOIN m.especialidades e WHERE e = :especialidade AND m.ativo = true")
+    List<Medico> findByEspecialidadeAndAtivoTrue(@Param("especialidade") String especialidade);
 
-    // Buscar médicos por especialidade e ativo
-    List<User> findByEspecialidadeAndAtivoTrue(String especialidade);
+    @Query("SELECT m FROM Medico m WHERE LOWER(m.fullName) LIKE LOWER(CONCAT('%', :nome, '%')) AND m.ativo = true")
+    List<Medico> findByFullNameContainingIgnoreCaseAndAtivoTrue(@Param("nome") String nome);
 
-    // Buscar médicos por nome (contendo)
-    // Buscar médicos por nome (contendo)
-    @Query("SELECT m FROM User m WHERE LOWER(m.fullName) LIKE LOWER(CONCAT('%', :nome, '%')) AND m.ativo = true")
-    List<User> findByFullNameContainingIgnoreCaseAndAtivoTrue(@Param("nome") String nome);
+    boolean existsByCrmAndIdNot(String crm, Integer id);
 
-    // Verificar se CRM já existe (para validação durante cadastro/update)
-    boolean existsByCrmAndIdNot(String crm, Long id);
-
-    // Verificar se email já existe (para validação durante cadastro/update)
-    boolean existsByEmailAndIdNot(String email, Long id);
+    boolean existsByEmailAndIdNot(String email, Integer id);
 }
