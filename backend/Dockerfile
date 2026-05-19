@@ -1,4 +1,4 @@
-""FROM eclipse-temurin:21-jdk-alpine
+FROM eclipse-temurin:21-jdk-alpine
 RUN apk update && apk upgrade --no-cache
 VOLUME /tmp
 WORKDIR /app
