@@ -12,6 +12,7 @@ public class Role {
 
     public Role() {
     }
+
     public Role(Integer id) {
         this.id = id;
     }
@@ -76,5 +77,8 @@ public class Role {
         this.updatedAt = updatedAt;
     }
 
-    
+    @Override
+    public String toString() {
+        return "Role{id=" + id + ", name=" + name + ", description='" + description + "'}";
+    }
 }

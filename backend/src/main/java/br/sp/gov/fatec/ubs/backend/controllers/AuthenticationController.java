@@ -19,7 +19,7 @@ import jakarta.servlet.http.HttpServletResponse;
 @RestController
 public class AuthenticationController {
     private final JwtService jwtService;
-    
+
     private final AuthenticationService authenticationService;
 
     public AuthenticationController(JwtService jwtService, AuthenticationService authenticationService) {
@@ -35,9 +35,10 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> authenticate(@RequestBody LoginUserDto loginUserDto, HttpServletResponse response) {
-//        String valor = loginUserDto.getEmail();
-//        System.out.print("Tentando autenticar com: " + valor);
+    public ResponseEntity<LoginResponse> authenticate(@RequestBody LoginUserDto loginUserDto,
+            HttpServletResponse response) {
+        // String valor = loginUserDto.getEmail();
+        // System.out.print("Tentando autenticar com: " + valor);
         try {
             User authenticatedUser = authenticationService.authenticate(loginUserDto);
 
@@ -56,6 +57,7 @@ public class AuthenticationController {
             for (String roleString : authenticatedUser.getAuthorities().stream().map(auth -> auth.getAuthority())
                     .toList()) {
                 roles[contador] = roleString;
+                System.out.println("Role do usuário: " + roleString);
                 contador++;
             }
             loginResponse.setRoles(roles);
@@ -82,7 +84,6 @@ public class AuthenticationController {
         }
 
     }
-
 
     @PostMapping("/logout")
     public ResponseEntity<LoginResponse> logout(HttpServletResponse response) {

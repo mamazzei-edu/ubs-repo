@@ -44,12 +44,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @NonNull FilterChain filterChain) throws ServletException, IOException {
         final Cookie[] cookies = request.getCookies();
         if (cookies != null) {
-            StringBuilder cookieInfo = new StringBuilder();
-            Arrays.stream(cookies).forEach(cookie -> {
-                cookieInfo.append(String.format("%s=%s; ", cookie.getName(), cookie.getValue()));
-            });
             try {
-                final String jwt = cookieInfo.toString().replace("jwt=", "").trim();
+                final String jwt = Arrays.stream(cookies)
+                        .filter(c -> "jwt".equals(c.getName()))
+                        .findFirst()
+                        .map(Cookie::getValue)
+                        .orElse(null);
+
+                if (jwt == null) {
+                    filterChain.doFilter(request, response);
+                    return;
+                }
+
                 final String userEmail = jwtService.extractUsername(jwt);
 
                 Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -71,42 +77,43 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 filterChain.doFilter(request, response);
             } catch (Exception exception) {
                 filterChain.doFilter(request, response);
-//                handlerExceptionResolver.resolveException(request, response, null, exception);
+                // handlerExceptionResolver.resolveException(request, response, null,
+                // exception);
             }
 
         } else {
-        final String authHeader = request.getHeader("Authorization");
+            final String authHeader = request.getHeader("Authorization");
 
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-
-        try {
-            final String jwt = authHeader.substring(7);
-            final String userEmail = jwtService.extractUsername(jwt);
-
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-            if (userEmail != null && authentication == null) {
-                UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
-
-                if (jwtService.isTokenValid(jwt, userDetails)) {
-                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                            userDetails,
-                            null,
-                            userDetails.getAuthorities());
-
-                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                    SecurityContextHolder.getContext().setAuthentication(authToken);
-                }
+            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+                filterChain.doFilter(request, response);
+                return;
             }
-            System.out.println("JWT auth: " + jwt);
 
-            filterChain.doFilter(request, response);
-        } catch (Exception exception) {
-            handlerExceptionResolver.resolveException(request, response, null, exception);
-        }
+            try {
+                final String jwt = authHeader.substring(7);
+                final String userEmail = jwtService.extractUsername(jwt);
+
+                Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+                if (userEmail != null && authentication == null) {
+                    UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
+
+                    if (jwtService.isTokenValid(jwt, userDetails)) {
+                        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                                userDetails,
+                                null,
+                                userDetails.getAuthorities());
+
+                        authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                        SecurityContextHolder.getContext().setAuthentication(authToken);
+                    }
+                }
+                System.out.println("JWT auth: " + jwt);
+
+                filterChain.doFilter(request, response);
+            } catch (Exception exception) {
+                handlerExceptionResolver.resolveException(request, response, null, exception);
+            }
 
         }
 

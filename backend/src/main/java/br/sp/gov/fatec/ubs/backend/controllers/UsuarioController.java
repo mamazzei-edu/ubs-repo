@@ -42,7 +42,7 @@ public class UsuarioController {
             // 1. Descobre a Role
             Object roleObj = payload.get("role");
             boolean isMedico = false;
-            
+
             if (roleObj != null) {
                 String roleStr = roleObj.toString();
                 if ("MEDICO".equals(roleStr) || "1".equals(roleStr)) {
@@ -54,7 +54,7 @@ public class UsuarioController {
 
             // 2. Prepara a Entidade
             User usuario = isMedico ? new Medico() : new User();
-            
+
             // 3. Preenche os dados básicos manualmente
             usuario.setFullName((String) payload.get("fullName"));
             usuario.setEmail((String) payload.get("email"));
@@ -66,10 +66,11 @@ public class UsuarioController {
             // 4. Preenche a Role
             br.sp.gov.fatec.ubs.backend.model.Role role = new br.sp.gov.fatec.ubs.backend.model.Role();
             if (isMedico) {
-                role.setId(1); 
+                role.setId(1);
             } else {
-                int roleId = roleObj != null && !roleObj.toString().contains("MEDICO") 
-                              ? Integer.parseInt(roleObj.toString()) : 4; 
+                int roleId = roleObj != null && !roleObj.toString().contains("MEDICO")
+                        ? Integer.parseInt(roleObj.toString())
+                        : 4;
                 role.setId(roleId);
             }
             usuario.setRole(role);
@@ -78,7 +79,7 @@ public class UsuarioController {
             if (isMedico) {
                 Medico medico = (Medico) usuario;
                 medico.setCrm((String) payload.get("crm"));
-                
+
                 if (payload.containsKey("especialidades") && payload.get("especialidades") instanceof List) {
                     @SuppressWarnings("unchecked")
                     List<String> especialidades = (List<String>) payload.get("especialidades");
@@ -95,7 +96,7 @@ public class UsuarioController {
             return ResponseEntity.badRequest().body("Erro ao salvar: " + e.getMessage());
         }
     }
-    
+
     @DeleteMapping("/{id}")
     public void deletarUsuario(@PathVariable Long id) {
         userService.deleteUserById(id);
