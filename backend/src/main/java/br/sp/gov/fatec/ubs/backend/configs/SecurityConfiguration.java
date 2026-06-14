@@ -73,6 +73,9 @@ public class SecurityConfiguration {
         // System.out.println("Allowed origins: " + System.getenv("LISTA_HOSTS"));
         List<String> allowedOrigins = Arrays.asList(environment.getProperty("LISTA_HOSTS").split(","));
         System.out.println("Allowed origins: " + environment.getProperty("LISTA_HOSTS").split(","));
+        for (String origin : allowedOrigins) {
+            System.out.println("Allowed origin: " + origin);
+        }
 
         configuration.setAllowedOriginPatterns(allowedOrigins);
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
