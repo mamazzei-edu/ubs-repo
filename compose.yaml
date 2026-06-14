@@ -1,0 +1,69 @@
+# Orquestracao dos servicos do projeto UBS.
+# Sobe: banco de dados (MySQL), backend (Spring Boot) e frontend (Angular/Nginx).
+# Variaveis lidas do arquivo .env na raiz do projeto.
+services:
+  backend:
+    build: ./backend
+    restart: always
+    depends_on:
+      mysql_server:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      # O backend (nesta branch) le DB_URL / DB_USER / DB_PASSWORD.
+      # A URL e montada a partir das partes definidas no .env.
+      DB_URL: "jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}?createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC"
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      LISTA_HOSTS: ${LISTA_HOSTS:-http://localhost:4200}
+      SERVER_PORT: ${SERVER_PORT:-8080}
+      SPRING_JPA_HIBERNATE_DDL_AUTO: ${SPRING_JPA_HIBERNATE_DDL_AUTO:-update}
+      SPRING_SECURITY_ENABLED: ${SPRING_SECURITY_ENABLED:-true}
+      SECURITY_JWT_EXPIRATION_TIME: ${SECURITY_JWT_EXPIRATION_TIME:-3600000}
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+
+  mysql_server:
+    image: mysql:latest
+    restart: always
+    environment:
+      # Nao definimos MYSQL_USER=root: a imagem MySQL recusa criar o usuario
+      # "root" por aqui. O backend conecta como root usando a senha abaixo.
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-p${DB_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    networks:
+      - app-network
+
+  frontend:
+    build: ./frontend
+    restart: always
+    ports:
+      - "4200:8080"
+    networks:
+      - app-network
+
+# Servico de descoberta de rede (NSD/Bonjour). Depende de network_mode: host,
+# que nao funciona no Docker Desktop (Windows/macOS). Habilite apenas no Linux.
+#  nsd_server:
+#    build: ./nsd_server
+#    restart: always
+#    network_mode: "host"
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mysql-data:
