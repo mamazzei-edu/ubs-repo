@@ -2,6 +2,7 @@ package br.sp.gov.fatec.ubs.backend.bootstrap;
 
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +16,7 @@ import br.sp.gov.fatec.ubs.backend.repositories.UserRepository;
 import java.util.Optional;
 
 @Component
+@Order(2)
 public class AdminSeeder implements ApplicationListener<ContextRefreshedEvent> {
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
