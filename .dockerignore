@@ -1,0 +1,53 @@
+# =============================================================================
+# .dockerignore da RAIZ do repositorio.
+# Aplica-se somente aos builds cujo contexto e a raiz (ex.: servico nginx-ubs).
+# Os servicos backend e frontend usam seus proprios contextos/.dockerignore.
+#
+# ATENCAO: frontend/dist NAO pode ser ignorado aqui — e o conteudo copiado
+# pela imagem nginx-ubs.
+# =============================================================================
+
+# Controle de versao / CI
+.git
+.gitignore
+.github
+.vscode
+
+# Segredos e configuracao local
+.env
+.env_model
+*.env
+!*.env.production
+
+# Node
+**/node_modules
+**/.angular
+**/npm-debug.log
+**/yarn-error.log
+
+# Java / Maven
+backend/target
+backend/.mvn
+**/*.class
+
+# Modulos nao usados por esta imagem
+UBSAndroidAPP
+android
+nsd_server
+backend/src
+
+# Fontes do Angular (apenas o dist e necessario)
+frontend/src
+frontend/public
+frontend/*.json
+frontend/*.ts
+frontend/Dockerfile
+frontend/nginx.conf
+frontend/.dockerignore
+
+# Diversos
+**/.DS_Store
+**/Thumbs.db
+**/*.log
+**/*.tmp
+**/*.bak

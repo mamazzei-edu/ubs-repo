@@ -71,6 +71,32 @@ services:
     networks:
       - app-network
 
+  # ---------------------------------------------------------------------------
+  # nginx-ubs: serve o app Angular JA COMPILADO na porta 8081.
+  #
+  # Pre-requisito (executar antes do "docker compose build"):
+  #     cd frontend && npm ci && npm run build
+  # O build gera frontend/dist/frontend/browser, que e copiado para dentro
+  # da imagem pelo arquivo nginx-ubs/Dockerfile.
+  #
+  # O contexto de build e a raiz do repositorio (".") porque o Dockerfile
+  # precisa enxergar tanto nginx-ubs/ quanto frontend/dist/.
+  # ---------------------------------------------------------------------------
+  nginx-ubs:
+    build:
+      context: .
+      dockerfile: nginx-ubs/Dockerfile
+      args:
+        NGINX_VERSION: alpine3.22
+    container_name: nginx-ubs
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "8081:8081"
+    networks:
+      - app-network
+
 # Este serviço não funciona no ambiente Windows.
 #  nsd_server:
 #    build: ./nsd_server
