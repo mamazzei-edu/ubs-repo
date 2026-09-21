@@ -22,7 +22,7 @@
               "zone.js"
             ],
             "allowedCommonJsDependencies": [
-                  "moment"
+              "moment"
             ],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
@@ -38,6 +38,7 @@
           },
           "configurations": {
             "production": {
+              "baseHred": "/app/",
               "budgets": [
                 {
                   "type": "initial",

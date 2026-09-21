@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { RouterModule, Router } from '@angular/router';
+import { apiUrl } from '../core/api';
 
 @Component({
   selector: 'app-cadastro',
@@ -125,7 +126,7 @@ export class CadastroComponent {
       intelectual: this.intelectual,
     };
 
-    this.http.post('http://localhost:8080/api/pacientes', paciente).subscribe({
+    this.http.post(apiUrl('api/pacientes'), paciente).subscribe({
       next: (data) => {
         console.log('✅ Paciente salvo com sucesso:', data);
         this.openModal();

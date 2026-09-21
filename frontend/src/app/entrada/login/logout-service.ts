@@ -3,6 +3,7 @@ import { LoginCliente } from './login-cliente';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { LoginResponse } from './login-models';
+import { apiUrl } from '../../core/api';
 
 
 @Injectable({
@@ -10,7 +11,7 @@ import { LoginResponse } from './login-models';
 })
 
 export class LogoutService {
-  private apiUrl = 'http://localhost:8080/auth/logout';
+  private apiUrl = apiUrl('auth/logout'); //'http://localhost:8080/auth/logout';
   constructor(@Inject(HttpClient) private http: HttpClient) { }
 
   logout(): Observable<LoginResponse> {

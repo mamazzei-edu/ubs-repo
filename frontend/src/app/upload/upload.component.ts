@@ -5,6 +5,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { PacienteService } from '../service/paciente.service';
 import { CommonModule } from '@angular/common';
 import { Paciente } from '../model/paciente.model';
+import { apiUrl } from '../core/api';
 
 @Component({
   selector: 'app-upload',
@@ -61,7 +62,7 @@ export class UploadComponent implements OnInit {
     if (this.file) {
       const formData = new FormData();
       formData.append('ficha', this.file, this.file.name);
-      this.http.post('http://localhost:8080/arquivos', formData)
+      this.http.post(apiUrl('arquivos'), formData)
         .subscribe({
           next: (dados) => {
             this.mostrarModalEditar = true;

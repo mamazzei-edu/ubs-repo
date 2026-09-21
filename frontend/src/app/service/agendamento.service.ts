@@ -6,12 +6,13 @@ import {
   AgendamentoRequest,
   StatusAgendamento
 } from '../model/agendamento.model';
+import { apiUrl } from '../core/api';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AgendamentoService {
-  private apiUrl = 'http://localhost:8080/api/agendamentos';
+  private apiUrl = apiUrl('api/agendamentos'); //'http://localhost:8080/api/agendamentos';
 
   constructor(private http: HttpClient) {}
 

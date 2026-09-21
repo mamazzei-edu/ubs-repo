@@ -3,12 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Role } from '../model/role.model';
 import { User } from '../model/user.model';
+import { apiUrl } from '../core/api';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  private apiUrl = 'http://localhost:8080/api/usuarios';  // URL do backend diretamente no código
+  private apiUrl = apiUrl('api/usuarios'); // // URL do backend diretamente no código
 
   constructor(private http: HttpClient) {}
 
