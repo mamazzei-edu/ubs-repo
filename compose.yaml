@@ -19,17 +19,17 @@ services:
       SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
       SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
       SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
-      SPRING_DATASOURCE_DRIVER_CLASS_NAME: ${SPRING_DATASOURCE_DRIVER_CLASS_NAME}      
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: ${SPRING_DATASOURCE_DRIVER_CLASS_NAME}
       SPRING_JPA_DATABASE_PLATFORM: ${SPRING_JPA_DATABASE_PLATFORM}
       SPRING_JPA_GENERATE_DDL: ${SPRING_JPA_GENERATE_DDL}
-      SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA: ${SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA}      
+      SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA: ${SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA}
       SPRING_JPA_SHOW_SQL: ${SPRING_JPA_SHOW_SQL}
 
       SERVER_PORT: ${SERVER_PORT}
       SPRING_SECURITY_ENABLED: ${SPRING_SECURITY_ENABLED}
       SECURITY_JWT_EXPIRATION_TIME: ${SECURITY_JWT_EXPIRATION_TIME}
       SPRING_JWT_SECRET_KEY: ${SECURITY_JWT_SECRET_KEY}
-  
+
       DB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
       DB_NAME: ${DB_NAME}
       DB_USER: ${DB_USER}
@@ -38,6 +38,8 @@ services:
       DB_SCHEMA: ${DB_SCHEMA}
       DB_PASSWORD: ${DB_PASSWORD}
       LISTA_HOSTS: ${LISTA_HOSTS}
+      # Prefixo publico da API. Vira server.servlet.context-path.
+      API_BASE_PATH: ${API_BASE_PATH}
 
     ports:
       - "8080:8080"
@@ -48,28 +50,21 @@ services:
     image: mysql:latest
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${DB_NAME}
-      MYSQL_USER: ${DB_USER}
       MYSQL_HOST: ${DB_HOST}
       MYSQL_PORT: ${DB_PORT}
       MYSQL_SCHEMA: ${DB_SCHEMA}
       MYSQL_PASSWORD: ${DB_PASSWORD}
     ports:
-      - "3307:3306"
+      - "3306:3306"
     volumes:
       - mysql-data:/var/lib/mysql
     networks:
       - app-network
 
-
-  frontend:
-    build: ./frontend
-    restart: always
-    ports:
-      - "4200:8080"
-    networks:
-      - app-network
+# O antigo servico "frontend" (porta 4200) foi removido: o nginx-ubs serve
+# o app Angular e faz o proxy da API sob o mesmo dominio.
 
   # ---------------------------------------------------------------------------
   # nginx-ubs: serve o app Angular JA COMPILADO na porta 8081.
@@ -89,6 +84,14 @@ services:
       args:
         NGINX_VERSION: alpine3.22
     container_name: nginx-ubs
+    # Caminhos publicos lidos na PARTIDA do container, a partir do .env.
+    # Trocar qualquer um deles e "docker compose up -d", sem rebuild.
+    environment:
+      FRONT_BASE_PATH: ${FRONT_BASE_PATH}
+      API_BASE_PATH: ${API_BASE_PATH}
+      # Restringe o envsubst do entrypoint a estas duas variaveis, para
+      # que ele nao toque nas variaveis do proprio nginx no template.
+      NGINX_ENVSUBST_FILTER: "^(FRONT_BASE_PATH|API_BASE_PATH)$$"
     restart: always
     depends_on:
       - backend

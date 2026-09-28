@@ -1,0 +1,9 @@
+{
+  "//": "Em ng serve o app roda sob /outro-diretorio/ e chama /diretorio-api/...",
+  "//backend": "O backend tem server.servlet.context-path=/diretorio-api, entao o caminho e repassado sem reescrita - igual ao que o nginx faz em producao.",
+  "/diretorio-api": {
+    "target": "http://localhost:8080",
+    "secure": false,
+    "changeOrigin": true
+  }
+}

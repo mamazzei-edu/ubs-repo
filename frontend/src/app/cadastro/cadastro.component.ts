@@ -16,37 +16,41 @@ import { apiUrl } from '../core/api';
 })
 export class CadastroComponent {
   // 🔹 Campos principais
+  // 🔹 Informações Pessoais
   nomeCompleto: string = '';
   nomeSocial: string = '';
   nomeMae: string = '';
   nomePai: string = '';
   dataNascimento: string = '';
   sexo: string = '';
+  cpf: string = '';
+  cns: string = '';
+  prontuario: string = '';
   nacionalidade: string = '';
   municipioNascimento: string = '';
   racaCor: string = '';
+  etnia: string = '';
+
+  // 🔹 Dados Educacionais e Sociais
   frequentaEscola: string = '';
   escolaridade: string = '';
   situacaoFamiliar: string = '';
-  vinculoEstabelecimento: string = '';
+  ocupacao: string = '';
+
+  // 🔹 Deficiências e OPM
   deficiente: string = '';
+  visual: string = '';
+  auditiva: string = '';
+  motora: string = '';
+  intelectual: string = '';
+  opm: string = '';
 
   // 🔹 Contatos
-  contatoCelular: string = '';
-  contatoResidencial: string = '';
-  contatoComercial: string = '';
-  contatoEmail: string = '';
-
-  // 🔹 Documentos
-  cpf: string = '';
-  rg: string = '';
-  orgaoEmissor: string = '';
-  uf: string = '';
-  pisPasepNis: string = '';
-  cnh: string = '';
-  ctps: string = '';
-  tituloEleitor: string = '';
-  passaporte: string = '';
+  telefoneCelular: string = '';
+  telefoneResidencial: string = '';
+  telefoneComercial: string = '';
+  email: string = '';
+  contato: string = '';
 
   // 🔹 Endereço
   cep: string = '';
@@ -54,14 +58,25 @@ export class CadastroComponent {
   numero: string = '';
   bairro: string = '';
   complemento: string = '';
+  uf: string = '';
+  municipioResidencia: string = '';
+  distritoAdministrativo: string = '';
+  tipoLogradouro: string = '';
+  origemEndereco: string = '';
+  referencia: string = '';
 
-  // 🔹 Outros dados
-  ocupacao: string = '';
-  utilizaAlgumaOPM: string = '';
-  visual: string = '';
-  auditiva: string = '';
-  motora: string = '';
-  intelectual: string = '';
+  // 🔹 Documentos
+  rg: string = '';
+  orgaoEmissor: string = '';
+  pisPasepNis: string = '';
+  cnh: string = '';
+  ctps: string = '';
+  tituloEleitor: string = '';
+  passaporte: string = '';
+
+  // 🔹 Vínculos e Cadastro
+  estabelecimentoVinculo: string = '';
+  estabelecimentoCadastro: string = '';
 
   // 🔹 Controle de modal
   showModal: boolean = false;
@@ -77,38 +92,41 @@ export class CadastroComponent {
     }
 
     const paciente = {
-      // 🔸 Dados principais
+      // 🔸 Informações Pessoais
       nomeCompleto: this.nomeCompleto,
       nomeSocial: this.nomeSocial,
       nomeMae: this.nomeMae,
       nomePai: this.nomePai,
       dataNascimento: this.dataNascimento,
       sexo: this.sexo,
+      cpf: this.cpf,
+      cns: this.cns,
+      prontuario: this.prontuario,
       nacionalidade: this.nacionalidade,
       municipioNascimento: this.municipioNascimento,
       racaCor: this.racaCor,
+      etnia: this.etnia,
+
+      // 🔸 Dados Educacionais e Sociais
       frequentaEscola: this.frequentaEscola,
       escolaridade: this.escolaridade,
       situacaoFamiliar: this.situacaoFamiliar,
-      vinculoEstabelecimento: this.vinculoEstabelecimento,
+      ocupacao: this.ocupacao,
+
+      // 🔸 Deficiências e OPM
       deficiente: this.deficiente,
+      visual: this.visual,
+      auditiva: this.auditiva,
+      motora: this.motora,
+      intelectual: this.intelectual,
+      opm: this.opm,
 
       // 🔸 Contatos
-      contatoCelular: this.contatoCelular,
-      contatoResidencial: this.contatoResidencial,
-      contatoComercial: this.contatoComercial,
-      contatoEmail: this.contatoEmail,
-
-      // 🔸 Documentos
-      cpf: this.cpf,
-      rg: this.rg,
-      orgaoEmissor: this.orgaoEmissor,
-      uf: this.uf,
-      pisPasepNis: this.pisPasepNis,
-      cnh: this.cnh,
-      ctps: this.ctps,
-      tituloEleitor: this.tituloEleitor,
-      passaporte: this.passaporte,
+      telefoneCelular: this.telefoneCelular,
+      telefoneResidencial: this.telefoneResidencial,
+      telefoneComercial: this.telefoneComercial,
+      email: this.email,
+      contato: this.contato,
 
       // 🔸 Endereço
       cep: this.cep,
@@ -116,14 +134,25 @@ export class CadastroComponent {
       numero: this.numero,
       bairro: this.bairro,
       complemento: this.complemento,
+      uf: this.uf,
+      municipioResidencia: this.municipioResidencia,
+      distritoAdministrativo: this.distritoAdministrativo,
+      tipoLogradouro: this.tipoLogradouro,
+      origemEndereco: this.origemEndereco,
+      referencia: this.referencia,
 
-      // 🔸 Outros dados
-      ocupacao: this.ocupacao,
-      utilizaAlgumaOPM: this.utilizaAlgumaOPM,
-      visual: this.visual,
-      auditiva: this.auditiva,
-      motora: this.motora,
-      intelectual: this.intelectual,
+      // 🔸 Documentos
+      rg: this.rg,
+      orgaoEmissor: this.orgaoEmissor,
+      pisPasepNis: this.pisPasepNis,
+      cnh: this.cnh,
+      ctps: this.ctps,
+      tituloEleitor: this.tituloEleitor,
+      passaporte: this.passaporte,
+
+      // 🔸 Vínculos e Cadastro
+      estabelecimentoVinculo: this.estabelecimentoVinculo,
+      estabelecimentoCadastro: this.estabelecimentoCadastro,
     };
 
     this.http.post(apiUrl('api/pacientes'), paciente).subscribe({

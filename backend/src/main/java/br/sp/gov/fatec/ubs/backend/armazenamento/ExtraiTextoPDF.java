@@ -19,7 +19,12 @@ public class ExtraiTextoPDF {
         String texto = "Não retornou texto";
         // Extrai texto de um pdf utilizando pdfbox 
         try(PDDocument documento = Loader.loadPDF(new RandomAccessReadBufferedFile(caminhoArquivo))) {
-                texto = new PDFTextStripper().getText(documento);                   
+                PDFTextStripper extrator = new PDFTextStripper();
+                // Sem isto o texto sai na ordem do content stream, e nao na ordem
+                // visual: em tabelas as celulas saem embaralhadas e nenhum regex
+                // aplicado depois consegue corrigir.
+                extrator.setSortByPosition(true);
+                texto = extrator.getText(documento);
         } catch (Exception e) {
             e.printStackTrace();
         }

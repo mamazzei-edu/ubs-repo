@@ -63,6 +63,8 @@ public class Paciente {
     private String telefoneResidencial;
     private String telefoneComercial;
     private String email;
+    // Campo "Contato" da ficha, extraido da celula ao lado do e-mail.
+    private String contato;
 
     // ==========================
     // ENDEREÇO
@@ -182,6 +184,9 @@ public class Paciente {
 
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
+
+    public String getContato() { return contato; }
+    public void setContato(String contato) { this.contato = contato; }
 
     public String getCep() { return cep; }
     public void setCep(String cep) { this.cep = cep; }
