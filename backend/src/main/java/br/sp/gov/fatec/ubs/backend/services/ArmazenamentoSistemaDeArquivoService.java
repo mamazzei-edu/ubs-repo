@@ -74,10 +74,10 @@ public class ArmazenamentoSistemaDeArquivoService implements ArmazenamentoServic
             HashMap<String, String> mascaras = new HashMap<String, String>();
             mascaras.put("serieProntuario", "^([A-Z]\\-[0-9]{4})$");
             // Coincide com valores começando com "CNS" captura o valor com (.*) em grupo1
-            mascaras.put("cns", "^CNS\\s*:\\s*(.*)$");
+            mascaras.put("cns", "^CNS\\h*:\\h*(.*)$");
             // Coincide com valores terminando com "-CSE GERALDO DE PAULA SOUZA" captura o
             // valor com (\\d+*) em grupo1
-            mascaras.put("prontuario", "^(\\d+)\\s*-CSE GERALDO DE PAULA SOUZA$");
+            mascaras.put("prontuario", "^(\\d+)\\h*-CSE GERALDO DE PAULA SOUZA$");
             // Coincide com valores começando com "Usuário:" captura o valor com (.*) em
             // grupo1
             // seguida por espaço \\s* e Nome Social: e se existir algum valor após (.*?)
@@ -85,32 +85,32 @@ public class ArmazenamentoSistemaDeArquivoService implements ArmazenamentoServic
             // em grupo2
             // Aqui é necessário colocar a ? após o * para que a expressão não consuma a
             // próxima linha
-            mascaras.put("nomeCompleto", "^Usuário:\\s*(.*)\\s*Nome Social:\\s*?(.*?)$");
+            mascaras.put("nomeCompleto", "^Usuário:\\h*(.*?)\\h*Nome Social:\\h*(.*?)$");
             // Coincide com valores começando com "Mãe:" captura o valor com (.*) em grupo1
             // seguida por espaço \\s* Pai: e se existir algum valor após (.*?) colocar
             // em grupo2
-            mascaras.put("nomeMae", "^Mãe:\\s*(.*)\\s*Pai:\\s*?(.*?)$");
+            mascaras.put("nomeMae", "^Mãe:\\h*(.*?)\\h*Pai:\\h*(.*?)$");
             // Adicione mascaras para cada um dos valores adicionais que você deseja extrair
-            mascaras.put("nascimento", "^Nascimento:\\s*(.*)\\s*Sexo:\\s*?(.*?)$");
+            mascaras.put("nascimento", "^Nascimento:\\h*(.*?)\\h*Sexo:\\h*(.*?)$");
             // mascaras.put("nacionalidade", "^Nacionalidade:\\s*([^\\r\\n]+)$");
             // mascaras.put("municipioNascimento", "^Munic[ií]pio de
             // Nascimento:\\s*([^\\r\\n]+)$");
-            mascaras.put("nacionalidade", "^Nacionalidade:\\s*(.*)\\s*Munic[ií]pio de Nascimento:\\s*?(.*?)$");
+            mascaras.put("nacionalidade", "^Nacionalidade:\\h*(.*?)\\h*Munic[ií]pio de Nascimento:\\h*(.*?)$");
 
-            mascaras.put("racaCorEtnia", "^Raça/Cor:\\s*(.*?)\\s*Etnia:\\s*(.*)$");
-            mascaras.put("frequentaEscolaEscolaridade", "^Frequenta Escola\\?:\\s*(Sim|Não)\\s*Escolaridade:\\s*(.*)$");
+            mascaras.put("racaCorEtnia", "^Raça/Cor:\\h*(.*?)\\h*Etnia:\\h*(.*)$");
+            mascaras.put("frequentaEscolaEscolaridade", "^Frequenta Escola\\?:\\h*(Sim|Não)\\h*Escolaridade:\\h*(.*)$");
             // mascaras.put("situacaoFamiliar", "^Situação Familiar:\\s*(.*)$");
             // mascaras.put("ocupacao", "^Ocupação:\\s*(.*)$");
-            mascaras.put("situacaoFamiliar", "^Situação Familiar:\\s*(.*)\\s*Ocupação:\\s*?(.*?)$");
+            mascaras.put("situacaoFamiliar", "^Situação Familiar:\\h*(.*?)\\h*Ocupação:\\h*(.*?)$");
 
             mascaras.put("estabelecimentoVinculoCadastro",
-                    "^Estabelecimento de Vínculo:\\s*(.*?)\\s*Estabelecimento de Cadastro:\\s*(.*?)$");
+                    "^Estabelecimento de Vínculo:\\h*(.*?)\\h*Estabelecimento de Cadastro:\\h*(.*?)$");
 
-            mascaras.put("deficiente", "^Pessoa com Deficiência:\\s*(Sim|Não)$");
-            mascaras.put("telefones", "^Telefone Celular:\\s*(.*?)\\s*Telefone Residencial:\\s*(.*?)$");
+            mascaras.put("deficiente", "^Pessoa com Deficiência:\\h*(Sim|Não)$");
+            mascaras.put("telefones", "^Telefone Celular:\\h*(.*?)\\h*Telefone Residencial:\\h*(.*?)$");
 
             // Origem do Endereço + CEP
-            mascaras.put("origemEnderecoCep", "^Origem do Endere[cç]o:\\s*(.*?)\\s+CEP:\\s*(\\d{5}-?\\d{3})$");
+            mascaras.put("origemEnderecoCep", "^Origem do Endere[cç]o:\\h*(.*?)\\h+CEP:\\h*(\\d{5}-?\\d{3})$");
             // mascaras.put("municipioDistrito", "^Munic[ií]pio de
             // Resid[êe]ncia:\\s*(.*?)\\s*Distrito Administrativo:\\s*(.*?)$");
 
@@ -119,12 +119,12 @@ public class ArmazenamentoSistemaDeArquivoService implements ArmazenamentoServic
             // segundo campo opcional. grupo 1 = municipio, grupo 2 = distrito (pode ser null).
             mascaras.put("municipioDistrito",
                     "(?iu)^\\h*Munic[ií]pio de Resid[êe]ncia\\h*:\\h*(.*?)\\h*(?:Distrito Administrativo\\h*:\\h*(.*?)\\h*)?$");
-            mascaras.put("tipoLogradouroLogradouro", "^Tipo Logradouro:\\s*(.*?)\\s*Logradouro:\\s*(.*?)$");
-            mascaras.put("numeroBairro", "^Número:\\s*(.*?)\\s*Bairro:\\s*(.*?)$");
-            mascaras.put("complemento", "^Complemento:\\s*(.*)$");
-            mascaras.put("referencia", "^Refer[êe]ncia:\\s*(.*)$");
+            mascaras.put("tipoLogradouroLogradouro", "^Tipo Logradouro:\\h*(.*?)\\h*Logradouro:\\h*(.*?)$");
+            mascaras.put("numeroBairro", "^Número:\\h*(.*?)\\h*Bairro:\\h*(.*?)$");
+            mascaras.put("complemento", "^Complemento:\\h*(.*)$");
+            mascaras.put("referencia", "^Refer[êe]ncia:\\h*(.*)$");
 
-            mascaras.put("telefoneComercial", "^Telefone Comercial:\\s*(.*)$");
+            mascaras.put("telefoneComercial", "^Telefone Comercial:\\h*(.*)$");
             // (?i) ignora caixa; (?u) trata acentos; \h cobre os espacos que o PDF
             // produz (tab, NBSP \u00A0 e afins), que [ \t] deixava entrar no valor.
             // O rotulo usa E-?mail SEM grupo capturante: com "(E-mail|Email)" o grupo 1
@@ -134,18 +134,18 @@ public class ArmazenamentoSistemaDeArquivoService implements ArmazenamentoServic
             // grupo 1 = e-mail, grupo 2 = contato (pode ser null).
             mascaras.put("email", "(?iu)^\\h*E-?mail\\h*:\\h*(.*?)\\h*(?:Contato\\h*:\\h*(.*?)\\h*)?$");
 
-            mascaras.put("uf", "^UF:\\s*(\\w{2})$");
+            mascaras.put("uf", "^UF:\\h*(\\w{2})$");
             mascaras.put("rg", "(?is)Identidade.*?N\\S*mero\\s*:\\s*(\\d+)(?=\\s*(?:Data|$))");
-            mascaras.put("orgaoEmissorUf", "^Órgão Emissor:\\s*(.*?)\\s+UF:\\s*(\\w{2})$");
+            mascaras.put("orgaoEmissorUf", "^Órgão Emissor:\\h*(.*?)\\h+UF:\\h*(\\w{2})$");
             // mascaras.put("cpf",
             // "(^CPF:\\s*(\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2})$)||(^CPF:\\s*(\\d{11})$)");
             mascaras.put("cpf", "(?is)CPF.*?N\\S*mero\\s*:\\s*(\\d+)$");
 
-            mascaras.put("pisPasepNis", "^PIS/PASEP/NIS:\\s*(.*)$");
-            mascaras.put("cnh", "^CNH:\\s*(.*)$");
-            mascaras.put("ctps", "^CTPS:\\s*(.*)$");
-            mascaras.put("tituloEleitor", "^Título de Eleitor:\\s*(.*)$");
-            mascaras.put("passaporte", "^Passaporte:\\s*(.*)$");
+            mascaras.put("pisPasepNis", "^PIS/PASEP/NIS:\\h*(.*)$");
+            mascaras.put("cnh", "^CNH:\\h*(.*)$");
+            mascaras.put("ctps", "^CTPS:\\h*(.*)$");
+            mascaras.put("tituloEleitor", "^Título de Eleitor:\\h*(.*)$");
+            mascaras.put("passaporte", "^Passaporte:\\h*(.*)$");
 
             Paciente paciente = new Paciente();
             String serieProntuario = "";
