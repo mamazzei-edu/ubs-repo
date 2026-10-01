@@ -19,6 +19,11 @@ export class UploadComponent implements OnInit {
   public form!: FormGroup;
   file: File | null = null;
   pacienteSelecionado: any = null;
+  // Resultado da leitura da ficha: quando o CPF ja consta na base, o backend
+  // devolve o registro gravado com os campos da ficha por cima e a lista do
+  // que esta mudando.
+  pacienteExistente: boolean = false;
+  alteracoes: { campo: string; rotulo: string; valorAtual: string | null; valorNovo: string }[] = [];
   mostrarModalEditar: boolean = false;
   mensagem: string = '';
   nomeInvalido: boolean = false;
@@ -59,24 +64,45 @@ export class UploadComponent implements OnInit {
   }
 
   submitForm() {
-    if (this.file) {
-      const formData = new FormData();
-      formData.append('ficha', this.file, this.file.name);
-      this.http.post(apiUrl('arquivos'), formData)
-        .subscribe({
-          next: (dados) => {
-            this.mostrarModalEditar = true;
-            this.pacienteSelecionado = dados;
-            const data = this.pacienteSelecionado.dataNascimento;
-            const [dia, mes, ano] = data.split('/');
-            const dataNascimento = `${ano}-${mes}-${dia}`;
-            this.pacienteSelecionado.dataNascimento = dataNascimento;
-          },
-          error: () => {
-            this.mensagem = "Erro no upload do arquivo.";
-          },
-        });
+    if (!this.file) {
+      return;
     }
+    const formData = new FormData();
+    formData.append('ficha', this.file, this.file.name);
+
+    this.http.post<any>(apiUrl('arquivos'), formData).subscribe({
+      next: (resultado) => {
+        this.pacienteSelecionado = resultado.paciente;
+        this.pacienteExistente = resultado.pacienteExistente;
+        this.alteracoes = resultado.alteracoes || [];
+        this.pacienteSelecionado.dataNascimento = this.paraDataDoFormulario(
+          this.pacienteSelecionado.dataNascimento
+        );
+        this.mostrarModalEditar = true;
+        this.mensagem = this.pacienteExistente
+          ? `Paciente ja cadastrado (CPF ${this.pacienteSelecionado.cpf}). ` +
+            `${this.alteracoes.length} campo(s) serao alterados ao salvar.`
+          : 'Paciente novo. Confira os dados antes de salvar.';
+      },
+      error: () => {
+        this.mensagem = 'Erro no upload do arquivo.';
+      },
+    });
+  }
+
+  // A ficha traz dd/MM/yyyy e o <input type="date"> exige yyyy-MM-dd.
+  // O registro vindo do banco ja esta em ISO, e o campo pode vir vazio:
+  // o split sem protecao quebrava o fluxo inteiro nesses dois casos.
+  private paraDataDoFormulario(valor: string | null | undefined): string {
+    if (!valor) {
+      return '';
+    }
+    const partes = valor.split('/');
+    if (partes.length === 3) {
+      const [dia, mes, ano] = partes;
+      return `${ano}-${mes.padStart(2, '0')}-${dia.padStart(2, '0')}`;
+    }
+    return valor;
   }
 
   public validarNome() {
@@ -115,19 +141,25 @@ export class UploadComponent implements OnInit {
   }
 
   public gravar(pacienteSelecionado: Paciente) {
+    const atualizando = this.pacienteExistente;
     this.pacienteService.gravar(this.pacienteSelecionado).subscribe({
-      next: (data) => {
-        this.mensagem = "Paciente registrado com sucesso!";
+      next: () => {
+        this.mensagem = atualizando
+          ? 'Cadastro do paciente atualizado com sucesso!'
+          : 'Paciente registrado com sucesso!';
         this.limpar();
       },
-      error: (msg) => {
-        this.mensagem = "Ocorreu um erro, tente mais tarde.";
-      }
+      error: () => {
+        this.mensagem = 'Ocorreu um erro, tente mais tarde.';
+      },
     });
   }
 
   public limpar() {
     this.pacienteSelecionado = new Paciente();
+    this.pacienteExistente = false;
+    this.alteracoes = [];
+    this.mostrarModalEditar = false;
     this.nomeInvalido = false;
     this.cpfInvalido = false;
     this.telefoneInvalido = false;

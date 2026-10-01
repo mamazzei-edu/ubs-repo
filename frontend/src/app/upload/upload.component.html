@@ -23,6 +23,31 @@
   <div *ngIf="mostrarModalEditar" class="editar-ficha">
     <h3>Editar Dados da Ficha</h3>
 
+    <!-- Paciente ja cadastrado: mostra o que sera alterado antes de salvar -->
+    <div *ngIf="pacienteExistente" class="alert alert-warning">
+      <strong>Paciente já cadastrado.</strong>
+      O CPF {{ pacienteSelecionado?.cpf }} já consta na base; salvar vai
+      <strong>atualizar o registro existente</strong>, sem criar um novo.
+
+      <div *ngIf="alteracoes.length === 0" class="mt-2">
+        A ficha não traz nenhuma informação diferente da que já está gravada.
+      </div>
+
+      <table *ngIf="alteracoes.length > 0" class="table table-sm mt-2 mb-0">
+        <caption class="pt-1">{{ alteracoes.length }} campo(s) serão alterados</caption>
+        <thead>
+          <tr><th>Campo</th><th>Valor atual</th><th>Valor da ficha</th></tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let alteracao of alteracoes">
+            <td>{{ alteracao.rotulo }}</td>
+            <td><em *ngIf="!alteracao.valorAtual">(vazio)</em>{{ alteracao.valorAtual }}</td>
+            <td><strong>{{ alteracao.valorNovo }}</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
     <div class="card-body">
 
       <!-- INFORMAÇÕES PESSOAIS -->

@@ -20,11 +20,17 @@ public class PacienteController {
     @Autowired
     private PacienteService pacienteService;
 
-    // Endpoint para salvar um novo paciente
+    /**
+     * Grava um paciente. O CPF é único na base: se já existir registro com o
+     * mesmo CPF (ou se vier id), este endpoint ATUALIZA esse registro em vez de
+     * inserir outro. Devolve 201 quando criou e 200 quando atualizou.
+     */
     @PostMapping
     public ResponseEntity<Paciente> salvarPaciente(@RequestBody Paciente paciente) {
-        Paciente pacienteSalvo = pacienteService.salvarPaciente(paciente);
-        return new ResponseEntity<>(pacienteSalvo, HttpStatus.CREATED);
+        boolean atualizou = pacienteService.jaExistia(paciente);
+        Paciente pacienteSalvo = pacienteService.salvarOuAtualizarPorCpf(paciente);
+        return new ResponseEntity<>(pacienteSalvo,
+                atualizou ? HttpStatus.OK : HttpStatus.CREATED);
     }
 
     // Endpoint para listar todos os pacientes
@@ -57,43 +63,18 @@ public class PacienteController {
         }
     }
 
-    // Endpoint para atualizar um paciente
+    /**
+     * Atualiza o paciente de id informado. A cópia dos campos é feita no
+     * serviço, por reflexão: a lista escrita à mão que existia aqui cobria 20
+     * dos 48 campos, e os demais eram descartados em silêncio.
+     */
     @PutMapping("/{id}")
     public ResponseEntity<Paciente> atualizarPaciente(
             @PathVariable Long id, @RequestBody Paciente pacienteAtualizado) {
-        Optional<Paciente> pacienteOpt = pacienteService.buscarPacientePorId(id);
-
-        if (pacienteOpt.isPresent()) {
-            Paciente paciente = pacienteOpt.get();
-
-            // Atualizando os campos
-            paciente.setCns(pacienteAtualizado.getCns());
-            paciente.setProntuario(pacienteAtualizado.getProntuario());
-            paciente.setNomeCompleto(pacienteAtualizado.getNomeCompleto());
-            paciente.setNomeSocial(pacienteAtualizado.getNomeSocial());
-            paciente.setNomeMae(pacienteAtualizado.getNomeMae());
-            paciente.setNomePai(pacienteAtualizado.getNomePai());
-            paciente.setDataNascimento(pacienteAtualizado.getDataNascimento());
-            paciente.setSexo(pacienteAtualizado.getSexo());
-            paciente.setNacionalidade(pacienteAtualizado.getNacionalidade());
-            paciente.setMunicipioNascimento(pacienteAtualizado.getMunicipioNascimento());
-            paciente.setRacaCor(pacienteAtualizado.getRacaCor());
-            paciente.setFrequentaEscola(pacienteAtualizado.getFrequentaEscola());
-            paciente.setEscolaridade(pacienteAtualizado.getEscolaridade());
-            paciente.setSituacaoFamiliar(pacienteAtualizado.getSituacaoFamiliar());
-            paciente.setEstabelecimentoVinculo(pacienteAtualizado.getEstabelecimentoVinculo());
-            paciente.setDeficiente(pacienteAtualizado.getDeficiente());
-            paciente.setTelefoneCelular(pacienteAtualizado.getTelefoneCelular());
-            paciente.setTelefoneResidencial(pacienteAtualizado.getTelefoneResidencial());
-            paciente.setTelefoneComercial(pacienteAtualizado.getTelefoneComercial());
-            paciente.setEmail(pacienteAtualizado.getEmail());
-            paciente.setCpf(pacienteAtualizado.getCpf());
-            // Atualize outros campos conforme necessário...
-
-            Paciente pacienteAtualizadoSalvo = pacienteService.salvarPaciente(paciente);
-            return new ResponseEntity<>(pacienteAtualizadoSalvo, HttpStatus.OK);
-        } else {
+        Paciente salvo = pacienteService.editarPaciente(id, pacienteAtualizado);
+        if (salvo == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        return new ResponseEntity<>(salvo, HttpStatus.OK);
     }
 }
