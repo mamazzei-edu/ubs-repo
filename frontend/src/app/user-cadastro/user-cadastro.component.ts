@@ -11,7 +11,7 @@ import { RoleService } from '../service/role-service.service';
   standalone: true,
   templateUrl: './user-cadastro.component.html',
   styleUrl: './user-cadastro.component.css',
-    providers: [UserService, RoleService]
+  providers: [UserService, RoleService]
 })
 export class UserCadastroComponent implements OnInit {
   usuarios: any[] = [];
@@ -41,16 +41,33 @@ export class UserCadastroComponent implements OnInit {
     });
   }
 
-  id:number = 0;
+  // Campos do modal de cadastro
+  id: number = 0;
   fullName: string = '';
   matricula: string = '';
   email: string = '';
   username: string = '';
   password: string = '';
+
+  // Específicos da função MEDICO
   crm: string = '';
+  especialidade: string = '';
+  telefone: string = '';
+
   role: Role | null = null;
-  
-    carregarUsuarios(): void {
+
+  /**
+   * A função selecionada é MEDICO?
+   *
+   * Controla a exibição de CRM, Especialidade e Telefone nos dois modais, e é
+   * o que o backend usa para criar/atualizar o registro na tabela "medico" —
+   * a entidade que o Agendamento referencia.
+   */
+  get medicoSelecionado(): boolean {
+    return this.roleSelecionado?.name === 'MEDICO';
+  }
+
+  carregarUsuarios(): void {
     this.usuarioservice.listarUsuarios().subscribe({
       next: (dados) => {
         this.usuarios = dados;
@@ -62,7 +79,7 @@ export class UserCadastroComponent implements OnInit {
     });
   }
 
-    pesquisarUsuarioPorId(): void {
+  pesquisarUsuarioPorId(): void {
     if (!this.pesquisaId) {
       this.carregarUsuarios();
       return;
@@ -78,7 +95,7 @@ export class UserCadastroComponent implements OnInit {
     });
   }
 
-    excluirUsuario(id: string): void {
+  excluirUsuario(id: string): void {
     if (confirm('Tem certeza que deseja excluir este Usuario?')) {
       this.usuarioservice.excluirUsuario(id).subscribe({
         next: () => {
@@ -92,13 +109,25 @@ export class UserCadastroComponent implements OnInit {
     }
   }
 
-    abrirModalEditar(usuario: any): void {
+  abrirModalEditar(usuario: any): void {
     this.usuarioSelecionado = { ...usuario };
-    this.roleSelecionado = this.roles.find(role => role.id === this.usuarioSelecionado.role.id) || undefined;
+    this.roleSelecionado = this.roles.find(role => role.id === this.usuarioSelecionado.role?.id) || undefined;
+    // A senha fica em branco: deixar assim mantém a atual (ver UserService).
+    this.usuarioSelecionado.password = '';
     this.mostrarModalEditar = true;
   }
 
-  abrirModalCadastro() : void{
+  abrirModalCadastro(): void {
+    // Limpa o formulário: sem isto, o modal reabria com o que sobrou do anterior.
+    this.fullName = '';
+    this.matricula = '';
+    this.email = '';
+    this.username = '';
+    this.password = '';
+    this.crm = '';
+    this.especialidade = '';
+    this.telefone = '';
+    this.roleSelecionado = undefined;
     this.mostrarModalCadastro = true;
   }
 
@@ -109,38 +138,55 @@ export class UserCadastroComponent implements OnInit {
   }
 
   atualizarUsuario(): void {
-    this.usuarioservice.editarUsuario(this.usuarioSelecionado.id, this.usuarioSelecionado).subscribe({
+    const usuario = {
+      ...this.usuarioSelecionado,
+      // O rádio altera roleSelecionado; sem copiar para o objeto enviado, a
+      // troca de função nunca chegava ao backend.
+      role: this.roleSelecionado ?? null,
+      crm: this.medicoSelecionado ? this.usuarioSelecionado.crm : null,
+      especialidade: this.medicoSelecionado ? this.usuarioSelecionado.especialidade : null,
+      telefone: this.medicoSelecionado ? this.usuarioSelecionado.telefone : null,
+    };
+
+    this.usuarioservice.editarUsuario(this.usuarioSelecionado.id, usuario).subscribe({
       next: () => {
         this.fecharModal();
         this.carregarUsuarios();
       },
-      error: () => {
-        this.mensagem = 'Erro ao atualizar usuario.';
+      error: (erro) => {
+        this.mensagem = this.mensagemDeErro(erro, 'Erro ao atualizar usuario.');
       }
     });
   }
 
-  salvarUsuario(){
+  salvarUsuario(): void {
     const usuario = {
       fullName: this.fullName,
       matricula: this.matricula,
       email: this.email,
       username: this.username,
       password: this.password,
-      crm: this.crm,
-      role: this.roleSelecionado ? this.roleSelecionado.id : null
+      // Objeto inteiro, e não só o id: o backend desserializa em Role.
+      role: this.roleSelecionado ?? null,
+      crm: this.medicoSelecionado ? this.crm : null,
+      especialidade: this.medicoSelecionado ? this.especialidade : null,
+      telefone: this.medicoSelecionado ? this.telefone : null,
     };
 
     this.usuarioservice.criarUsuario(usuario).subscribe({
       next: () => {
-        alert('Usuário cadastrado!');
-        window.location.reload();
+        this.fecharModal();
+        this.carregarUsuarios();
+        this.mensagem = 'Usuário cadastrado com sucesso.';
       },
-      error: () => {
-        alert('deu erro ao tentar cadastrar usuário');
+      error: (erro) => {
+        this.mensagem = this.mensagemDeErro(erro, 'Erro ao cadastrar usuário.');
       }
     });
-
   }
 
+  /** O backend devolve ProblemDetail; o campo detail traz a causa real. */
+  private mensagemDeErro(erro: any, padrao: string): string {
+    return erro?.error?.detail || padrao;
+  }
 }

@@ -62,14 +62,30 @@ public class User implements UserDetails {
         return List.of(authority);
     }
 
+    // Sem @JsonIgnore a senha (ainda que criptografada) ia no JSON de
+    // /api/usuarios, /users/me e /auth/signup.
+    @JsonIgnore
     @Override
     public String getPassword() {
         return password;
     }
 
+    /**
+     * Contrato do UserDetails: a autenticacao e feita pelo e-mail.
+     * NAO e a coluna "username" — para ela, ver getNomeUsuario().
+     * Com @JsonIgnore para o JSON nao expor duas propriedades "username"
+     * com valores diferentes, que era o que fazia a tela mostrar o e-mail
+     * no campo "Nome do usuario".
+     */
+    @JsonIgnore
     @Override
     public String getUsername() {
         return email;
+    }
+
+    /** O valor da coluna "username" — o getUsername() acima devolve o e-mail. */
+    public String getNomeUsuario() {
+        return username;
     }
 
     @Override

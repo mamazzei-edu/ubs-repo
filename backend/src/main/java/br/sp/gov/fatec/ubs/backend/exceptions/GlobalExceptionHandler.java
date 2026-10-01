@@ -46,6 +46,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return problema(HttpStatus.UNAUTHORIZED, "Sessão expirada ou token inválido");
     }
 
+    // CRM ja pertencente a outro medico: 409.
+    @ExceptionHandler(CrmDuplicadoException.class)
+    public ProblemDetail handleCrmDuplicado(CrmDuplicadoException ex) {
+        return problema(HttpStatus.CONFLICT, ex.getMessage());
+    }
+
     // CPF ja pertencente a outro paciente: 409.
     @ExceptionHandler(CpfDuplicadoException.class)
     public ProblemDetail handleCpfDuplicado(CpfDuplicadoException ex) {

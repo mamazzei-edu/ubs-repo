@@ -10,6 +10,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -27,6 +29,7 @@ import br.sp.gov.fatec.ubs.backend.model.Paciente;
 public class ArmazenamentoSistemaDeArquivoService implements ArmazenamentoService {
 
     private final Path localArmazenamento;
+    private static final Logger logger = LoggerFactory.getLogger(ArmazenamentoSistemaDeArquivoService.class);
 
     @Autowired
     public ArmazenamentoSistemaDeArquivoService(ArmazenamentoPropriedades armazenamentoPropriedades) {
@@ -116,14 +119,13 @@ public class ArmazenamentoSistemaDeArquivoService implements ArmazenamentoServic
 
             // Município de Residência + Distrito Administrativo
             // Mesmo formato do email: \h no lugar de [ \t], captura preguicosa e
-            // segundo campo opcional. grupo 1 = municipio, grupo 2 = distrito (pode ser null).
+            // segundo campo opcional. grupo 1 = municipio, grupo 2 = distrito (pode ser
+            // null).
             mascaras.put("municipioDistrito",
                     "(?iu)^\\h*Munic[ií]pio de Resid[êe]ncia\\h*:\\h*(.*?)\\h*(?:Distrito Administrativo\\h*:\\h*(.*?)\\h*)?$");
             mascaras.put("tipoLogradouroLogradouro", "^Tipo Logradouro:\\h*(.*?)\\h*Logradouro:\\h*(.*?)$");
             mascaras.put("numeroBairro", "^Número:\\h*(.*?)\\h*Bairro:\\h*(.*?)$");
-            mascaras.put("complemento", "^Complemento:\\h*(.*)$");
-            mascaras.put("referencia", "^Refer[êe]ncia:\\h*(.*)$");
-
+            mascaras.put("complemento", "^Complemento\\h*:\\h*(.*?)\\n*(?:Refer[êe]ncia\\h*:\\h*(.*?)\\h*(.*?)\\h*)?$");
             mascaras.put("telefoneComercial", "^Telefone Comercial:\\h*(.*)$");
             // (?i) ignora caixa; (?u) trata acentos; \h cobre os espacos que o PDF
             // produz (tab, NBSP \u00A0 e afins), que [ \t] deixava entrar no valor.
@@ -136,7 +138,7 @@ public class ArmazenamentoSistemaDeArquivoService implements ArmazenamentoServic
 
             mascaras.put("uf", "^UF:\\h*(\\w{2})$");
             mascaras.put("rg", "(?is)Identidade.*?N\\S*mero\\s*:\\s*(\\d+)(?=\\s*(?:Data|$))");
-            mascaras.put("orgaoEmissorUf", "^Órgão Emissor:\\h*(.*?)\\h+UF:\\h*(\\w{2})$");
+            mascaras.put("orgaoEmissorUf", "^Órgão Emissor:\\h*(.*?)\\h*(?:UF\\h*:\\h*(.*?)\\h*)?$");
             // mascaras.put("cpf",
             // "(^CPF:\\s*(\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2})$)||(^CPF:\\s*(\\d{11})$)");
             mascaras.put("cpf", "(?is)CPF.*?N\\S*mero\\s*:\\s*(\\d+)$");
@@ -155,15 +157,15 @@ public class ArmazenamentoSistemaDeArquivoService implements ArmazenamentoServic
             if (matcher.find()) {
                 // Isso é para debugging, para ver o que foi encontrado
                 // Deve ser tirado ao final
-                System.out.println("Linha encontrada agora: " + matcher.group(0));
-                System.out.println("Propriedade: " + "serieProntuario");
+                logger.debug("Linha encontrada agora: " + matcher.group(0));
+                logger.debug("Propriedade: " + "serieProntuario");
                 // Se encontrou 2 propriedades, imprime os dois valores
                 if (matcher.groupCount() == 2) {
-                    System.out.println("Valor1: " + matcher.group(1));
-                    System.out.println("Valor2: " + matcher.group(2));
+                    logger.debug("Valor1: " + matcher.group(1));
+                    logger.debug("Valor2: " + matcher.group(2));
                 } else {
                     // Se encontrou apenas 1 propriedade, imprime o valor
-                    System.out.println("Valor1: " + matcher.group(1));
+                    logger.debug("Valor1: " + matcher.group(1));
                 }
                 serieProntuario = matcher.group(1);
             }
@@ -175,15 +177,15 @@ public class ArmazenamentoSistemaDeArquivoService implements ArmazenamentoServic
                 if (matcher.find()) {
                     // Isso é para debugging, para ver o que foi encontrado
                     // Deve ser tirado ao final
-                    System.out.println("Linha encontrada: " + matcher.group(0));
-                    System.out.println("Propriedade: " + propriedade);
+                    logger.debug("Linha encontrada: " + matcher.group(0));
+                    logger.debug("Propriedade: " + propriedade);
                     // Se encontrou 2 propriedades, imprime os dois valores
                     if (matcher.groupCount() == 2) {
-                        System.out.println("Valor1: " + matcher.group(1));
-                        System.out.println("Valor2: " + matcher.group(2));
+                        logger.debug("Valor1: " + matcher.group(1));
+                        logger.debug("Valor2: " + matcher.group(2));
                     } else {
                         // Se encontrou apenas 1 propriedade, imprime o valor
-                        System.out.println("Valor1: " + matcher.group(1));
+                        logger.debug("Valor1: " + matcher.group(1));
                     }
                     switch (propriedade) {
                         // Para cada mascara, seta a propriedade correspondente no objeto Paciente
@@ -206,7 +208,7 @@ public class ArmazenamentoSistemaDeArquivoService implements ArmazenamentoServic
                         case "nascimento":
                             String dataTexto = matcher.group(1).trim();
                             paciente.setDataNascimento(dataTexto);
-                            System.out.println(paciente.getDataNascimento());
+                            logger.debug("Data de nascimento: " + paciente.getDataNascimento());
                             paciente.setSexo(matcher.group(2).trim());
                             break;
 
@@ -276,10 +278,7 @@ public class ArmazenamentoSistemaDeArquivoService implements ArmazenamentoServic
 
                         case "complemento":
                             paciente.setComplemento(matcher.group(1));
-                            break;
-
-                        case "referencia":
-                            paciente.setReferencia(matcher.group(1));
+                            paciente.setReferencia(matcher.group(2));
                             break;
 
                         case "origemEnderecoCep":

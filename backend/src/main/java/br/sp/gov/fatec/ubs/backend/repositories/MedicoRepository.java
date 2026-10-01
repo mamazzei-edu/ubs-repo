@@ -15,6 +15,9 @@ public interface MedicoRepository extends JpaRepository<Medico, Long> {
     // Buscar médico por CRM
     Optional<Medico> findByCrm(String crm);
     
+    // Buscar o médico vinculado a um usuário de login
+    Optional<Medico> findByUserId(Integer userId);
+
     // Buscar médico por email
     Optional<Medico> findByEmail(String email);
     

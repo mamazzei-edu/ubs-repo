@@ -17,13 +17,18 @@ import org.springframework.web.bind.annotation.RestController;
 import br.sp.gov.fatec.ubs.backend.model.Role;
 import br.sp.gov.fatec.ubs.backend.services.RoleService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @RestController
 @RequestMapping("/api/roles")
 @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
 public class RoleController {
-    
+
     @Autowired
     private RoleService roleService;
+
+    private static final Logger logger = LoggerFactory.getLogger(RoleController.class);
 
     public RoleController(RoleService roleService) {
         this.roleService = roleService;
@@ -34,26 +39,26 @@ public class RoleController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated()) {
             String currentPrincipalName = authentication.getName();
-            System.out.println("Usuário autenticado: " + currentPrincipalName);
+            logger.debug("Usuário autenticado: " + currentPrincipalName);
             Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
             for (GrantedAuthority authority : authorities) {
-                System.out.println("Papel: " + authority.getAuthority());
+                logger.debug("Papel: " + authority.getAuthority());
             }
             boolean hasSuperAdminRole = authorities.stream()
-                                            .anyMatch(a -> a.getAuthority().equals("ROLE_SUPER_ADMIN"));
+                    .anyMatch(a -> a.getAuthority().equals("ROLE_SUPER_ADMIN"));
 
             boolean hasAdminRole = authorities.stream()
                     .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
-                                
+
             if (hasSuperAdminRole) {
                 List<Role> roles = roleService.listarRoles();
                 return new ResponseEntity<>(roles, HttpStatus.OK);
             } else if (hasAdminRole) {
                 List<Role> roles = roleService.listarRoles();
                 Role roleAdmin = roles.stream()
-                                            .filter(role -> role.getName().toString().equals("ROLE_SUPER_ADMIN"))
-                                            .findFirst()
-                                            .orElse(null);
+                        .filter(role -> role.getName().toString().equals("ROLE_SUPER_ADMIN"))
+                        .findFirst()
+                        .orElse(null);
                 roles.remove(roleAdmin);
                 return new ResponseEntity<>(roles, HttpStatus.OK);
             } else {
@@ -61,9 +66,9 @@ public class RoleController {
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);
             }
         } else {
-            System.out.println("Nenhum usuário autenticado.");
+            logger.debug("Nenhum usuário autenticado.");
         }
         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-    }    
+    }
 
 }

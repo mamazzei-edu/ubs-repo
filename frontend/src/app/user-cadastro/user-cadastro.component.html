@@ -86,16 +86,26 @@
                   class="form-control" />
               </div>
               <div class="col-md-12">
-                <label for="crm">CRM:</label>
-                <input id="crm" type="text" [(ngModel)]="usuarioSelecionado.crm" name="crm" class="form-control" />
-              </div>
-              <div class="col-md-12">
                 <label for="role">Função: {{ roleSelecionado?.name }}</label>
                 <div *ngFor="let role of roles">
                   <input type="radio" name="roleInputEdit" [value]="role.id" [disabled]="roleSelecionado?.name == 'SUPER_ADMIN'" (click)="roleSelecionado = role" (select)="roleSelecionado = role"
                     [checked]="roleSelecionado?.id === role.id">
                   <label>{{ role.name }}</label>
                 </div>
+              </div>
+
+              <!-- Campos específicos da função MEDICO -->
+              <div class="col-md-12" *ngIf="medicoSelecionado">
+                <label for="editcrm">CRM:</label>
+                <input id="editcrm" type="text" [(ngModel)]="usuarioSelecionado.crm" name="crm" class="form-control" required />
+              </div>
+              <div class="col-md-12" *ngIf="medicoSelecionado">
+                <label for="editespecialidade">Especialidade:</label>
+                <input id="editespecialidade" type="text" [(ngModel)]="usuarioSelecionado.especialidade" name="especialidade" class="form-control" required />
+              </div>
+              <div class="col-md-12" *ngIf="medicoSelecionado">
+                <label for="edittelefone">Telefone:</label>
+                <input id="edittelefone" type="text" [(ngModel)]="usuarioSelecionado.telefone" name="telefone" class="form-control" />
               </div>
               <div class="col-md-12">
                 <label for="password">Senha:</label>
@@ -137,15 +147,25 @@
                 <input id="username" type="text" [(ngModel)]="username" name="username" class="form-control" />
               </div>
               <div class="col-md-12">
-                <label for="crm">CRM:</label>
-                <input id="crm" type="text" [(ngModel)]="crm" name="crm" class="form-control" />
-              </div>
-              <div class="col-md-12">
                 <label for="role">Função: {{ roleSelecionado?.name }}</label>
                 <div *ngFor="let role of roles">
                   <input type="radio" name="roleInput" [value]="role.id" (click)="roleSelecionado = role">
                   <label>{{ role.name }}</label>
                 </div>
+              </div>
+
+              <!-- Campos específicos da função MEDICO -->
+              <div class="col-md-12" *ngIf="medicoSelecionado">
+                <label for="cadcrm">CRM:</label>
+                <input id="cadcrm" type="text" [(ngModel)]="crm" name="crm" class="form-control" required />
+              </div>
+              <div class="col-md-12" *ngIf="medicoSelecionado">
+                <label for="cadespecialidade">Especialidade:</label>
+                <input id="cadespecialidade" type="text" [(ngModel)]="especialidade" name="especialidade" class="form-control" required />
+              </div>
+              <div class="col-md-12" *ngIf="medicoSelecionado">
+                <label for="cadtelefone">Telefone:</label>
+                <input id="cadtelefone" type="text" [(ngModel)]="telefone" name="telefone" class="form-control" />
               </div>
               <div class="col-md-12">
                 <label for="password">Senha:</label>
