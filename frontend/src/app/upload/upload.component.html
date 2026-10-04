@@ -23,117 +23,174 @@
   <div *ngIf="mostrarModalEditar" class="editar-ficha">
     <h3>Editar Dados da Ficha</h3>
 
+    <!-- Paciente ja cadastrado: mostra o que sera alterado antes de salvar -->
+    <div *ngIf="pacienteExistente" class="alert alert-warning">
+      <strong>Paciente já cadastrado.</strong>
+      O CPF {{ pacienteSelecionado?.cpf }} já consta na base; salvar vai
+      <strong>atualizar o registro existente</strong>, sem criar um novo.
+
+      <div *ngIf="alteracoes.length === 0" class="mt-2">
+        A ficha não traz nenhuma informação diferente da que já está gravada.
+      </div>
+
+      <table *ngIf="alteracoes.length > 0" class="table table-sm mt-2 mb-0">
+        <caption class="pt-1">{{ alteracoes.length }} campo(s) serão alterados</caption>
+        <thead>
+          <tr><th>Campo</th><th>Valor atual</th><th>Valor da ficha</th></tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let alteracao of alteracoes">
+            <td>{{ alteracao.rotulo }}</td>
+            <td><em *ngIf="!alteracao.valorAtual">(vazio)</em>{{ alteracao.valorAtual }}</td>
+            <td><strong>{{ alteracao.valorNovo }}</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
     <div class="card-body">
 
-      <!-- Já existentes -->
+      <!-- INFORMAÇÕES PESSOAIS -->
+      <h5 class="mt-4">Informações Pessoais</h5>
       <div class="mb-3"><label class="form-label">Nome Completo</label><input class="form-control" [(ngModel)]="pacienteSelecionado.nomeCompleto" name="nomeCompleto"></div>
       <div class="mb-3"><label class="form-label">Nome Social</label><input class="form-control" [(ngModel)]="pacienteSelecionado.nomeSocial" name="nomeSocial"></div>
       <div class="mb-3"><label class="form-label">Nome da Mãe</label><input class="form-control" [(ngModel)]="pacienteSelecionado.nomeMae" name="nomeMae"></div>
       <div class="mb-3"><label class="form-label">Nome do Pai</label><input class="form-control" [(ngModel)]="pacienteSelecionado.nomePai" name="nomePai"></div>
       <div class="mb-3"><label class="form-label">Data de Nascimento</label><input type="date" class="form-control" [(ngModel)]="pacienteSelecionado.dataNascimento" name="dataNascimento"></div>
-      <div class="mb-3"><label class="form-label">CNS</label><input class="form-control" [(ngModel)]="pacienteSelecionado.cns" name="cns"></div>
-      <div class="mb-3"><label class="form-label">Prontuário</label><input class="form-control" [(ngModel)]="pacienteSelecionado.prontuario" name="prontuario"></div>
-      <div class="mb-3"><label class="form-label">Sexo</label>
+      <div class="mb-3">
+        <label class="form-label">Sexo</label>
         <select class="form-control" [(ngModel)]="pacienteSelecionado.sexo" name="sexo">
+          <option value="">Selecione</option>
           <option value="Masculino">Masculino</option>
           <option value="Feminino">Feminino</option>
           <option value="Outro">Outro</option>
         </select>
       </div>
+      <div class="mb-3"><label class="form-label">CPF</label><input class="form-control" [(ngModel)]="pacienteSelecionado.cpf" (ngModelChange)="formatarCPF()" name="cpf" inputmode="numeric" maxlength="14" placeholder="000.000.000-00"><small *ngIf="cpfInvalido" class="text-danger">CPF inválido. Confira os dígitos.</small></div>
+      <div class="mb-3"><label class="form-label">CNS</label><input class="form-control" [(ngModel)]="pacienteSelecionado.cns" name="cns"></div>
+      <div class="mb-3"><label class="form-label">Prontuário</label><input class="form-control" [(ngModel)]="pacienteSelecionado.prontuario" name="prontuario"></div>
       <div class="mb-3"><label class="form-label">Nacionalidade</label><input class="form-control" [(ngModel)]="pacienteSelecionado.nacionalidade" name="nacionalidade"></div>
       <div class="mb-3"><label class="form-label">Município de Nascimento</label><input class="form-control" [(ngModel)]="pacienteSelecionado.municipioNascimento" name="municipioNascimento"></div>
-      <div class="mb-3"><label class="form-label">Raça/Cor</label><input class="form-control" [(ngModel)]="pacienteSelecionado.racaCor" name="racaCor"></div>
-      <div class="mb-3"><label class="form-label">Frequenta Escola</label>
+      <div class="mb-3">
+        <label class="form-label">Raça/Cor</label>
+        <select class="form-control" [(ngModel)]="pacienteSelecionado.racaCor" name="racaCor">
+          <option value="">Selecione</option>
+          <option value="Branca">Branca</option>
+          <option value="Preta">Preta</option>
+          <option value="Parda">Parda</option>
+          <option value="Amarela">Amarela</option>
+          <option value="Indígena">Indígena</option>
+        </select>
+      </div>
+      <div class="mb-3"><label class="form-label">Etnia</label><input class="form-control" [(ngModel)]="pacienteSelecionado.etnia" name="etnia"></div>
+
+      <!-- DADOS EDUCACIONAIS E SOCIAIS -->
+      <h5 class="mt-4">Dados Educacionais e Sociais</h5>
+      <div class="mb-3">
+        <label class="form-label">Frequenta Escola</label>
         <select class="form-control" [(ngModel)]="pacienteSelecionado.frequentaEscola" name="frequentaEscola">
+          <option value="">Selecione</option>
           <option value="Sim">Sim</option>
           <option value="Não">Não</option>
         </select>
       </div>
-     
-      <div class="mb-3">
-        <label class="form-label">Possui Alguma Deficiência?</label>
-        <select class="form-control" [(ngModel)]="pacienteSelecionado.deficiente" name="deficiente">
-          <option value="Sim">Sim</option>
-          <option value="Não">Não</option>
-        </select>
-      </div>
-
-      <div class="mb-3">
-        <label class="form-label">Utiliza Alguma OPM?</label>
-        <select class="form-control" [(ngModel)]="pacienteSelecionado.utilizaAlgumaOPM" name="utilizaAlgumaOPM">
-          <option value="Sim">Sim</option>
-          <option value="Não">Não</option>
-        </select>
-      </div>
-      
-      
-      <!-- Contatos -->
-      <div class="mb-3"><label class="form-label">Telefone Celular</label><input class="form-control" [(ngModel)]="pacienteSelecionado.telefoneCelular" name="telefoneCelular"></div>
-      <div class="mb-3"><label class="form-label">Telefone Residencial</label><input class="form-control" [(ngModel)]="pacienteSelecionado.telefoneResidencial" name="telefoneResidencial"></div>
-      <div class="mb-3"><label class="form-label">Telefone Comercial</label><input class="form-control" [(ngModel)]="pacienteSelecionado.telefoneComercial" name="telefoneComercial"></div>
-      <div class="mb-3"><label class="form-label">E-mail</label><input class="form-control" [(ngModel)]="pacienteSelecionado.email" name="email"></div>
-      <div class="mb-3"><label class="form-label">CPF</label><input class="form-control" [(ngModel)]="pacienteSelecionado.cpf" name="cpf"></div>
-
-      <!-- Campos novos do PDF -->
       <div class="mb-3"><label class="form-label">Escolaridade</label><input class="form-control" [(ngModel)]="pacienteSelecionado.escolaridade" name="escolaridade"></div>
       <div class="mb-3"><label class="form-label">Situação Familiar</label><input class="form-control" [(ngModel)]="pacienteSelecionado.situacaoFamiliar" name="situacaoFamiliar"></div>
       <div class="mb-3"><label class="form-label">Ocupação</label><input class="form-control" [(ngModel)]="pacienteSelecionado.ocupacao" name="ocupacao"></div>
 
-      <!-- Endereço -->
+      <!-- DEFICIÊNCIAS E OPM -->
+      <h5 class="mt-4">Deficiências e OPM</h5>
       <div class="mb-3">
-        <label class="form-label">Estabelecimento de Vínculo</label>
-        <input class="form-control" [(ngModel)]="pacienteSelecionado.estabelecimentoVinculo" name="estabelecimentoVinculo">
+        <label class="form-label">Pessoa com Deficiência</label>
+        <select class="form-control" [(ngModel)]="pacienteSelecionado.deficiente" name="deficiente">
+          <option value="">Selecione</option>
+          <option value="Sim">Sim</option>
+          <option value="Não">Não</option>
+        </select>
       </div>
-      
       <div class="mb-3">
-        <label class="form-label">Estabelecimento de Cadastro</label>
-        <input class="form-control" [(ngModel)]="pacienteSelecionado.estabelecimentoCadastro" name="estabelecimentoCadastro">
+        <label class="form-label">Visual</label>
+        <select class="form-control" [(ngModel)]="pacienteSelecionado.visual" name="visual">
+          <option value="">Selecione</option>
+          <option value="Sim">Sim</option>
+          <option value="Não">Não</option>
+        </select>
       </div>
-      
+      <div class="mb-3">
+        <label class="form-label">Auditiva</label>
+        <select class="form-control" [(ngModel)]="pacienteSelecionado.auditiva" name="auditiva">
+          <option value="">Selecione</option>
+          <option value="Sim">Sim</option>
+          <option value="Não">Não</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Motora</label>
+        <select class="form-control" [(ngModel)]="pacienteSelecionado.motora" name="motora">
+          <option value="">Selecione</option>
+          <option value="Sim">Sim</option>
+          <option value="Não">Não</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Intelectual</label>
+        <select class="form-control" [(ngModel)]="pacienteSelecionado.intelectual" name="intelectual">
+          <option value="">Selecione</option>
+          <option value="Sim">Sim</option>
+          <option value="Não">Não</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Utiliza alguma OPM?</label>
+        <select class="form-control" [(ngModel)]="pacienteSelecionado.opm" name="opm">
+          <option value="">Selecione</option>
+          <option value="Sim">Sim</option>
+          <option value="Não">Não</option>
+        </select>
+      </div>
+
+      <!-- CONTATOS -->
+      <h5 class="mt-4">Contatos</h5>
+      <div class="mb-3"><label class="form-label">Telefone Celular</label><input class="form-control" [(ngModel)]="pacienteSelecionado.telefoneCelular" name="telefoneCelular"></div>
+      <div class="mb-3"><label class="form-label">Telefone Residencial</label><input class="form-control" [(ngModel)]="pacienteSelecionado.telefoneResidencial" name="telefoneResidencial"></div>
+      <div class="mb-3"><label class="form-label">Telefone Comercial</label><input class="form-control" [(ngModel)]="pacienteSelecionado.telefoneComercial" name="telefoneComercial"></div>
+      <div class="mb-3"><label class="form-label">E-mail</label><input class="form-control" [(ngModel)]="pacienteSelecionado.email" name="email"></div>
+      <div class="mb-3"><label class="form-label">Contato</label><input class="form-control" [(ngModel)]="pacienteSelecionado.contato" name="contato"></div>
+
+      <!-- ENDEREÇO -->
+      <h5 class="mt-4">Endereço</h5>
       <div class="mb-3"><label class="form-label">CEP</label><input class="form-control" [(ngModel)]="pacienteSelecionado.cep" name="cep"></div>
       <div class="mb-3"><label class="form-label">Logradouro</label><input class="form-control" [(ngModel)]="pacienteSelecionado.logradouro" name="logradouro"></div>
       <div class="mb-3"><label class="form-label">Número</label><input class="form-control" [(ngModel)]="pacienteSelecionado.numero" name="numero"></div>
       <div class="mb-3"><label class="form-label">Bairro</label><input class="form-control" [(ngModel)]="pacienteSelecionado.bairro" name="bairro"></div>
       <div class="mb-3"><label class="form-label">Complemento</label><input class="form-control" [(ngModel)]="pacienteSelecionado.complemento" name="complemento"></div>
-      
-      <div class="mb-3">
-        <label class="form-label">Origem do Endereço</label>
-        <input class="form-control" [(ngModel)]="pacienteSelecionado.origemEndereco" name="origemEndereco">
-      </div>
-      <div class="mb-3">
-        <label class="form-label">Município de Residência</label>
-        <input class="form-control" [(ngModel)]="pacienteSelecionado.municipioResidencia" name="municipioResidencia">
-      </div>
-      
-      
-      <div class="mb-3">
-        <label class="form-label">Distrito Administrativo</label>
-        <input class="form-control" [(ngModel)]="pacienteSelecionado.distritoAdministrativo" name="distritoAdministrativo">
-      </div>
-      
-      <div class="mb-3">
-        <label class="form-label">Tipo de Logradouro</label>
-        <input class="form-control" [(ngModel)]="pacienteSelecionado.tipoLogradouro" name="tipoLogradouro">
-      </div>
-      
-      <div class="mb-3">
-        <label class="form-label">Referência</label>
-        <input class="form-control" [(ngModel)]="pacienteSelecionado.referencia" name="referencia">
-      </div>
-      
-      <!-- Documentos -->
+      <div class="mb-3"><label class="form-label">UF</label><input class="form-control" [(ngModel)]="pacienteSelecionado.uf" name="uf"></div>
+      <div class="mb-3"><label class="form-label">Município de Residência</label><input class="form-control" [(ngModel)]="pacienteSelecionado.municipioResidencia" name="municipioResidencia"></div>
+      <div class="mb-3"><label class="form-label">Distrito Administrativo</label><input class="form-control" [(ngModel)]="pacienteSelecionado.distritoAdministrativo" name="distritoAdministrativo"></div>
+      <div class="mb-3"><label class="form-label">Tipo de Logradouro</label><input class="form-control" [(ngModel)]="pacienteSelecionado.tipoLogradouro" name="tipoLogradouro"></div>
+      <div class="mb-3"><label class="form-label">Origem do Endereço</label><input class="form-control" [(ngModel)]="pacienteSelecionado.origemEndereco" name="origemEndereco"></div>
+      <div class="mb-3"><label class="form-label">Referência</label><input class="form-control" [(ngModel)]="pacienteSelecionado.referencia" name="referencia"></div>
+
+      <!-- DOCUMENTOS -->
+      <h5 class="mt-4">Documentos</h5>
       <div class="mb-3"><label class="form-label">RG</label><input class="form-control" [(ngModel)]="pacienteSelecionado.rg" name="rg"></div>
       <div class="mb-3"><label class="form-label">Órgão Emissor</label><input class="form-control" [(ngModel)]="pacienteSelecionado.orgaoEmissor" name="orgaoEmissor"></div>
-      <div class="mb-3"><label class="form-label">UF</label><input class="form-control" [(ngModel)]="pacienteSelecionado.uf" name="uf"></div>
       <div class="mb-3"><label class="form-label">PIS/PASEP/NIS</label><input class="form-control" [(ngModel)]="pacienteSelecionado.pisPasepNis" name="pisPasepNis"></div>
       <div class="mb-3"><label class="form-label">CNH</label><input class="form-control" [(ngModel)]="pacienteSelecionado.cnh" name="cnh"></div>
       <div class="mb-3"><label class="form-label">CTPS</label><input class="form-control" [(ngModel)]="pacienteSelecionado.ctps" name="ctps"></div>
       <div class="mb-3"><label class="form-label">Título de Eleitor</label><input class="form-control" [(ngModel)]="pacienteSelecionado.tituloEleitor" name="tituloEleitor"></div>
       <div class="mb-3"><label class="form-label">Passaporte</label><input class="form-control" [(ngModel)]="pacienteSelecionado.passaporte" name="passaporte"></div>
 
+      <!-- VÍNCULOS E CADASTRO -->
+      <h5 class="mt-4">Vínculos e Cadastro</h5>
+      <div class="mb-3"><label class="form-label">Estabelecimento de Vínculo</label><input class="form-control" [(ngModel)]="pacienteSelecionado.estabelecimentoVinculo" name="estabelecimentoVinculo"></div>
+      <div class="mb-3"><label class="form-label">Estabelecimento de Cadastro</label><input class="form-control" [(ngModel)]="pacienteSelecionado.estabelecimentoCadastro" name="estabelecimentoCadastro"></div>
+
+
     </div>
 
     <div class="card-footer">
+      <p *ngIf="erroGravacao" class="text-danger w-100">{{ erroGravacao }}</p>
       <button class="btn btn-success me-2" (click)="gravar(pacienteSelecionado)">Salvar</button>
     </div>
   

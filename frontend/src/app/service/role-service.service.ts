@@ -3,12 +3,13 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { User } from "../model/user.model";
 import { Role } from "../model/role.model";
+import { apiUrl } from "../core/api";
 
 @Injectable({
     providedIn: 'root',
 })
 export class RoleService {
-    private apiUrl = 'http://localhost:8080/api/roles';  // URL do backend diretamente no código
+    private apiUrl = apiUrl('api/roles');  // URL do backend diretamente no código
 
     constructor(private http: HttpClient) { }
 

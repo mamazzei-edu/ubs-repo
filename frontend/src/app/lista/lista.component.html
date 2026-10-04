@@ -5,10 +5,10 @@
         <button routerLink="/user-cadastro" class="btn btn-menu">Cadastro Usuário</button>
     </ng-container>
 
-    <button routerLink="/lista" class="btn btn-menu">Pacientes</button>
+    <!-- button routerLink="/lista" class="btn btn-menu">Pacientes</button>
     <button routerLink="/cadastro" class="btn btn-menu">Cadastro Paciente</button>
     <button routerLink="/upload" class="btn btn-menu">Carregar Ficha</button>
-    <button (click)="logout()" class="btn btn-menu sair">Sair</button>
+    <button (click)="logout()" class="btn btn-menu sair">Sair</button -->
     
 </div>
 
@@ -48,7 +48,7 @@
           <tr *ngFor="let paciente of pacientes">
             <td>{{ paciente.id }}</td>
             <td>{{ paciente.nomeCompleto }}</td>
-            <td>{{ paciente.cpf }}</td>
+            <td>{{ formatarCpf(paciente.cpf) }}</td>
             <td>
               <button
                 class="btn btn-primary btn-sm me-2"
@@ -119,6 +119,13 @@
               </div>
 
               <div class="col-md-6">
+                <label for="cpf">CPF:</label>
+                <input id="cpf" type="text" [ngModel]="pacienteSelecionado.cpf" (ngModelChange)="aoDigitarCpf($event)"
+                       name="cpf" class="form-control" inputmode="numeric" maxlength="14" placeholder="000.000.000-00" />
+                <small *ngIf="cpfInvalido" class="text-danger">CPF inválido. Confira os dígitos.</small>
+              </div>
+
+              <div class="col-md-6">
                 <label for="sexo">Sexo:</label>
                 <select id="sexo" [(ngModel)]="pacienteSelecionado.sexo" name="sexo" class="form-control">
                   <option value="Masculino">Masculino</option>
@@ -158,35 +165,36 @@
               </div>
 
               <div class="col-md-6">
-                <label for="vinculoEstabelecimento">Vínculo com Estabelecimento:</label>
-                <input id="vinculoEstabelecimento" type="text" [(ngModel)]="pacienteSelecionado.vinculoEstabelecimento" name="vinculoEstabelecimento" class="form-control" />
+                <label for="estabelecimentoVinculo">Estabelecimento de Vínculo:</label>
+                <input id="estabelecimentoVinculo" type="text" [(ngModel)]="pacienteSelecionado.estabelecimentoVinculo" name="estabelecimentoVinculo" class="form-control" />
               </div>
 
               <div class="col-md-6">
-                <label for="deficiencia">Deficiência:</label>
-                <input id="deficiencia" type="text" [(ngModel)]="pacienteSelecionado.deficiencia" name="deficiencia" class="form-control" />
+                <label for="deficiente">Deficiente:</label>
+                <input id="deficiente" type="text" [(ngModel)]="pacienteSelecionado.deficiente" name="deficiente" class="form-control" />
               </div>
 
               <div class="col-md-6">
-                <label for="contatoCelular">Contato Celular:</label>
-                <input id="contatoCelular" type="text" [(ngModel)]="pacienteSelecionado.contatoCelular" name="contatoCelular" class="form-control" />
+                <label for="telefoneCelular">Telefone Celular:</label>
+                <input id="telefoneCelular" type="text" [(ngModel)]="pacienteSelecionado.telefoneCelular" name="telefoneCelular" class="form-control" />
               </div>
 
               <div class="col-md-6">
-                <label for="contatoResidencial">Contato Residencial:</label>
-                <input id="contatoResidencial" type="text" [(ngModel)]="pacienteSelecionado.contatoResidencial" name="contatoResidencial" class="form-control" />
+                <label for="telefoneResidencial">Telefone Residencial:</label>
+                <input id="telefoneResidencial" type="text" [(ngModel)]="pacienteSelecionado.telefoneResidencial" name="telefoneResidencial" class="form-control" />
               </div>
 
               <div class="col-md-6">
-                <label for="contatoComercial">Contato Comercial:</label>
-                <input id="contatoComercial" type="text" [(ngModel)]="pacienteSelecionado.contatoComercial" name="contatoComercial" class="form-control" />
+                <label for="telefoneComercial">Telefone Comercial:</label>
+                <input id="telefoneComercial" type="text" [(ngModel)]="pacienteSelecionado.telefoneComercial" name="telefoneComercial" class="form-control" />
               </div>
 
               <div class="col-md-6">
-                <label for="contatoEmail">Email:</label>
-                <input id="contatoEmail" type="email" [(ngModel)]="pacienteSelecionado.contatoEmail" name="contatoEmail" class="form-control" />
+                <label for="email">E-mail:</label>
+                <input id="email" type="email" [(ngModel)]="pacienteSelecionado.email" name="email" class="form-control" />
               </div>
             </div>
+        <div *ngIf="erroEdicao" class="alert alert-danger mt-3 mb-0">{{ erroEdicao }}</div>
         <button type="submit" class="btn mt-4 w-100" style="background-color: #50BFAD; color: white;">Salvar Alterações</button>
 
           </form>

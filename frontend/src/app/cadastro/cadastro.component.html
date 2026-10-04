@@ -2,6 +2,7 @@
   <h1>Cadastro de Paciente</h1>
 
   <form (ngSubmit)="salvarPaciente()">
+
     <!-- INFORMAÇÕES PESSOAIS -->
     <h4>Informações Pessoais</h4>
 
@@ -18,32 +19,22 @@
 
     <div class="form-group">
       <label for="nomeSocial">Nome Social</label>
-      <input type="text" id="nomeSocial" class="form-control"
-             [(ngModel)]="nomeSocial" name="nomeSocial" />
+      <input type="text" id="nomeSocial" class="form-control" [(ngModel)]="nomeSocial" name="nomeSocial" />
     </div>
 
     <div class="form-group">
       <label for="nomeMae">Nome da Mãe</label>
-      <input type="text" id="nomeMae" class="form-control"
-             [(ngModel)]="nomeMae" name="nomeMae" />
+      <input type="text" id="nomeMae" class="form-control" [(ngModel)]="nomeMae" name="nomeMae" />
     </div>
 
     <div class="form-group">
       <label for="nomePai">Nome do Pai</label>
-      <input type="text" id="nomePai" class="form-control"
-             [(ngModel)]="nomePai" name="nomePai" />
-    </div>
-
-    <div class="form-group">
-      <label for="cpf">CPF*</label>
-      <input type="text" id="cpf" class="form-control"
-             [(ngModel)]="cpf" name="cpf" required placeholder="000.000.000-00" />
+      <input type="text" id="nomePai" class="form-control" [(ngModel)]="nomePai" name="nomePai" />
     </div>
 
     <div class="form-group">
       <label for="dataNascimento">Data de Nascimento*</label>
-      <input type="date" id="dataNascimento" class="form-control"
-             [(ngModel)]="dataNascimento" name="dataNascimento" required />
+      <input type="date" id="dataNascimento" class="form-control" [(ngModel)]="dataNascimento" name="dataNascimento" required />
     </div>
 
     <div class="form-group">
@@ -56,99 +47,40 @@
       </select>
     </div>
 
-    <!-- LOCALIDADE -->
-    <h4>Localidade</h4>
+    <div class="form-group">
+      <label for="cpf">CPF*</label>
+      <input type="text" id="cpf" class="form-control" [ngModel]="cpf" (ngModelChange)="aoDigitarCpf($event)"
+             (blur)="verificarCpf()" name="cpf" required inputmode="numeric" maxlength="14"
+             placeholder="000.000.000-00" />
+      <small *ngIf="cpfInvalido" class="text-danger">CPF inválido. Confira os dígitos.</small>
+      <div *ngIf="pacienteComMesmoCpf" class="alert alert-warning mt-2 mb-0">
+        Este CPF já está cadastrado para <strong>{{ pacienteComMesmoCpf.nomeCompleto }}</strong>.
+        Não é possível cadastrar o mesmo paciente duas vezes.
+        <button type="button" class="btn btn-link p-0 align-baseline" (click)="abrirCadastroExistente()">
+          Abrir o cadastro existente
+        </button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="cns">CNS</label>
+      <input type="text" id="cns" class="form-control" [(ngModel)]="cns" name="cns" />
+    </div>
+
+    <div class="form-group">
+      <label for="prontuario">Prontuário</label>
+      <input type="text" id="prontuario" class="form-control" [(ngModel)]="prontuario" name="prontuario" />
+    </div>
 
     <div class="form-group">
       <label for="nacionalidade">Nacionalidade*</label>
-      <input type="text" id="nacionalidade" class="form-control"
-             [(ngModel)]="nacionalidade" name="nacionalidade" required />
+      <input type="text" id="nacionalidade" class="form-control" [(ngModel)]="nacionalidade" name="nacionalidade" required />
     </div>
 
     <div class="form-group">
       <label for="municipioNascimento">Município de Nascimento*</label>
-      <input type="text" id="municipioNascimento" class="form-control"
-             [(ngModel)]="municipioNascimento" name="municipioNascimento" required />
+      <input type="text" id="municipioNascimento" class="form-control" [(ngModel)]="municipioNascimento" name="municipioNascimento" required />
     </div>
-
-    <!-- ENDEREÇO -->
-    <h4>Endereço</h4>
-
-    <div class="form-group">
-      <label for="cep">CEP</label>
-      <input type="text" id="cep" class="form-control"
-             [(ngModel)]="cep" name="cep" placeholder="00000-000" />
-    </div>
-
-    <div class="form-group">
-      <label for="logradouro">Logradouro</label>
-      <input type="text" id="logradouro" class="form-control"
-             [(ngModel)]="logradouro" name="logradouro" />
-    </div>
-
-    <div class="form-group">
-      <label for="numero">Número</label>
-      <input type="text" id="numero" class="form-control"
-             [(ngModel)]="numero" name="numero" />
-    </div>
-
-    <div class="form-group">
-      <label for="bairro">Bairro</label>
-      <input type="text" id="bairro" class="form-control"
-             [(ngModel)]="bairro" name="bairro" />
-    </div>
-
-    <div class="form-group">
-      <label for="complemento">Complemento</label>
-      <input type="text" id="complemento" class="form-control"
-             [(ngModel)]="complemento" name="complemento" />
-    </div>
-
-    <!-- DOCUMENTOS -->
-    <h4>Documentos</h4>
-
-    <div class="form-group">
-      <label for="rg">RG</label>
-      <input type="text" id="rg" class="form-control" [(ngModel)]="rg" name="rg" />
-    </div>
-
-    <div class="form-group">
-      <label for="orgaoEmissor">Órgão Emissor</label>
-      <input type="text" id="orgaoEmissor" class="form-control" [(ngModel)]="orgaoEmissor" name="orgaoEmissor" />
-    </div>
-
-    <div class="form-group">
-      <label for="uf">UF</label>
-      <input type="text" id="uf" class="form-control" [(ngModel)]="uf" name="uf" maxlength="2" />
-    </div>
-
-    <div class="form-group">
-      <label for="pisPasepNis">PIS/PASEP/NIS</label>
-      <input type="text" id="pisPasepNis" class="form-control" [(ngModel)]="pisPasepNis" name="pisPasepNis" />
-    </div>
-
-    <div class="form-group">
-      <label for="cnh">CNH</label>
-      <input type="text" id="cnh" class="form-control" [(ngModel)]="cnh" name="cnh" />
-    </div>
-
-    <div class="form-group">
-      <label for="ctps">CTPS</label>
-      <input type="text" id="ctps" class="form-control" [(ngModel)]="ctps" name="ctps" />
-    </div>
-
-    <div class="form-group">
-      <label for="tituloEleitor">Título de Eleitor</label>
-      <input type="text" id="tituloEleitor" class="form-control" [(ngModel)]="tituloEleitor" name="tituloEleitor" />
-    </div>
-
-    <div class="form-group">
-      <label for="passaporte">Passaporte</label>
-      <input type="text" id="passaporte" class="form-control" [(ngModel)]="passaporte" name="passaporte" />
-    </div>
-
-    <!-- DADOS COMPLEMENTARES -->
-    <h4>Dados Complementares</h4>
 
     <div class="form-group">
       <label for="racaCor">Raça/Cor*</label>
@@ -161,6 +93,14 @@
         <option value="Indígena">Indígena</option>
       </select>
     </div>
+
+    <div class="form-group">
+      <label for="etnia">Etnia</label>
+      <input type="text" id="etnia" class="form-control" [(ngModel)]="etnia" name="etnia" />
+    </div>
+
+    <!-- DADOS EDUCACIONAIS E SOCIAIS -->
+    <h4>Dados Educacionais e Sociais</h4>
 
     <div class="form-group">
       <label for="frequentaEscola">Frequenta Escola</label>
@@ -186,20 +126,11 @@
       <input type="text" id="ocupacao" class="form-control" [(ngModel)]="ocupacao" name="ocupacao" />
     </div>
 
-    <div class="form-group">
-      <label for="utilizaAlgumaOPM">Utiliza alguma OPM?</label>
-      <select id="utilizaAlgumaOPM" class="form-control" [(ngModel)]="utilizaAlgumaOPM" name="utilizaAlgumaOPM">
-        <option value="">Selecione</option>
-        <option value="Sim">Sim</option>
-        <option value="Não">Não</option>
-      </select>
-    </div>
-
-    <!-- DEFICIÊNCIAS -->
-    <h4>Deficiências</h4>
+    <!-- DEFICIÊNCIAS E OPM -->
+    <h4>Deficiências e OPM</h4>
 
     <div class="form-group">
-      <label for="deficiente">Deficiente</label>
+      <label for="deficiente">Pessoa com Deficiência</label>
       <select id="deficiente" class="form-control" [(ngModel)]="deficiente" name="deficiente">
         <option value="">Selecione</option>
         <option value="Sim">Sim</option>
@@ -243,30 +174,156 @@
       </select>
     </div>
 
-    <!-- CONTATO -->
-    <h4>Contato</h4>
+    <div class="form-group">
+      <label for="opm">Utiliza alguma OPM?</label>
+      <select id="opm" class="form-control" [(ngModel)]="opm" name="opm">
+        <option value="">Selecione</option>
+        <option value="Sim">Sim</option>
+        <option value="Não">Não</option>
+      </select>
+    </div>
+
+    <!-- CONTATOS -->
+    <h4>Contatos</h4>
 
     <div class="form-group">
-      <label for="contatoCelular">Celular*</label>
-      <input type="text" id="contatoCelular" class="form-control" [(ngModel)]="contatoCelular" name="contatoCelular" required />
+      <label for="telefoneCelular">Telefone Celular*</label>
+      <input type="text" id="telefoneCelular" class="form-control" [(ngModel)]="telefoneCelular" name="telefoneCelular" required />
     </div>
 
     <div class="form-group">
-      <label for="contatoResidencial">Telefone Residencial</label>
-      <input type="text" id="contatoResidencial" class="form-control" [(ngModel)]="contatoResidencial" name="contatoResidencial" />
+      <label for="telefoneResidencial">Telefone Residencial</label>
+      <input type="text" id="telefoneResidencial" class="form-control" [(ngModel)]="telefoneResidencial" name="telefoneResidencial" />
     </div>
 
     <div class="form-group">
-      <label for="contatoComercial">Telefone Comercial</label>
-      <input type="text" id="contatoComercial" class="form-control" [(ngModel)]="contatoComercial" name="contatoComercial" />
+      <label for="telefoneComercial">Telefone Comercial</label>
+      <input type="text" id="telefoneComercial" class="form-control" [(ngModel)]="telefoneComercial" name="telefoneComercial" />
     </div>
 
     <div class="form-group">
-      <label for="contatoEmail">E-mail*</label>
-      <input type="email" id="contatoEmail" class="form-control" [(ngModel)]="contatoEmail" name="contatoEmail" required />
+      <label for="email">E-mail*</label>
+      <input type="email" id="email" class="form-control" [(ngModel)]="email" name="email" required />
     </div>
 
-    <button type="submit" class="btn btn-success mt-3">Salvar Paciente</button>
+    <div class="form-group">
+      <label for="contato">Contato</label>
+      <input type="text" id="contato" class="form-control" [(ngModel)]="contato" name="contato" />
+    </div>
+
+    <!-- ENDEREÇO -->
+    <h4>Endereço</h4>
+
+    <div class="form-group">
+      <label for="cep">CEP</label>
+      <input type="text" id="cep" class="form-control" [(ngModel)]="cep" name="cep" placeholder="00000-000" />
+    </div>
+
+    <div class="form-group">
+      <label for="logradouro">Logradouro</label>
+      <input type="text" id="logradouro" class="form-control" [(ngModel)]="logradouro" name="logradouro" />
+    </div>
+
+    <div class="form-group">
+      <label for="numero">Número</label>
+      <input type="text" id="numero" class="form-control" [(ngModel)]="numero" name="numero" />
+    </div>
+
+    <div class="form-group">
+      <label for="bairro">Bairro</label>
+      <input type="text" id="bairro" class="form-control" [(ngModel)]="bairro" name="bairro" />
+    </div>
+
+    <div class="form-group">
+      <label for="complemento">Complemento</label>
+      <input type="text" id="complemento" class="form-control" [(ngModel)]="complemento" name="complemento" />
+    </div>
+
+    <div class="form-group">
+      <label for="uf">UF</label>
+      <input type="text" id="uf" class="form-control" [(ngModel)]="uf" name="uf" maxlength="2" />
+    </div>
+
+    <div class="form-group">
+      <label for="municipioResidencia">Município de Residência</label>
+      <input type="text" id="municipioResidencia" class="form-control" [(ngModel)]="municipioResidencia" name="municipioResidencia" />
+    </div>
+
+    <div class="form-group">
+      <label for="distritoAdministrativo">Distrito Administrativo</label>
+      <input type="text" id="distritoAdministrativo" class="form-control" [(ngModel)]="distritoAdministrativo" name="distritoAdministrativo" />
+    </div>
+
+    <div class="form-group">
+      <label for="tipoLogradouro">Tipo de Logradouro</label>
+      <input type="text" id="tipoLogradouro" class="form-control" [(ngModel)]="tipoLogradouro" name="tipoLogradouro" />
+    </div>
+
+    <div class="form-group">
+      <label for="origemEndereco">Origem do Endereço</label>
+      <input type="text" id="origemEndereco" class="form-control" [(ngModel)]="origemEndereco" name="origemEndereco" />
+    </div>
+
+    <div class="form-group">
+      <label for="referencia">Referência</label>
+      <input type="text" id="referencia" class="form-control" [(ngModel)]="referencia" name="referencia" />
+    </div>
+
+    <!-- DOCUMENTOS -->
+    <h4>Documentos</h4>
+
+    <div class="form-group">
+      <label for="rg">RG</label>
+      <input type="text" id="rg" class="form-control" [(ngModel)]="rg" name="rg" />
+    </div>
+
+    <div class="form-group">
+      <label for="orgaoEmissor">Órgão Emissor</label>
+      <input type="text" id="orgaoEmissor" class="form-control" [(ngModel)]="orgaoEmissor" name="orgaoEmissor" />
+    </div>
+
+    <div class="form-group">
+      <label for="pisPasepNis">PIS/PASEP/NIS</label>
+      <input type="text" id="pisPasepNis" class="form-control" [(ngModel)]="pisPasepNis" name="pisPasepNis" />
+    </div>
+
+    <div class="form-group">
+      <label for="cnh">CNH</label>
+      <input type="text" id="cnh" class="form-control" [(ngModel)]="cnh" name="cnh" />
+    </div>
+
+    <div class="form-group">
+      <label for="ctps">CTPS</label>
+      <input type="text" id="ctps" class="form-control" [(ngModel)]="ctps" name="ctps" />
+    </div>
+
+    <div class="form-group">
+      <label for="tituloEleitor">Título de Eleitor</label>
+      <input type="text" id="tituloEleitor" class="form-control" [(ngModel)]="tituloEleitor" name="tituloEleitor" />
+    </div>
+
+    <div class="form-group">
+      <label for="passaporte">Passaporte</label>
+      <input type="text" id="passaporte" class="form-control" [(ngModel)]="passaporte" name="passaporte" />
+    </div>
+
+    <!-- VÍNCULOS E CADASTRO -->
+    <h4>Vínculos e Cadastro</h4>
+
+    <div class="form-group">
+      <label for="estabelecimentoVinculo">Estabelecimento de Vínculo</label>
+      <input type="text" id="estabelecimentoVinculo" class="form-control" [(ngModel)]="estabelecimentoVinculo" name="estabelecimentoVinculo" />
+    </div>
+
+    <div class="form-group">
+      <label for="estabelecimentoCadastro">Estabelecimento de Cadastro</label>
+      <input type="text" id="estabelecimentoCadastro" class="form-control" [(ngModel)]="estabelecimentoCadastro" name="estabelecimentoCadastro" />
+    </div>
+
+
+    <div *ngIf="erroMensagem" class="alert alert-danger mt-3 mb-0">{{ erroMensagem }}</div>
+
+    <button type="submit" class="btn btn-success mt-3" [disabled]="salvando">Salvar Paciente</button>
   </form>
 
   <!-- MODAL DE CONFIRMAÇÃO -->

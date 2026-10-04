@@ -1,0 +1,4 @@
+# Scripts executados dentro de containers Linux precisam de fim de linha LF.
+# Com CRLF (padrao do Git no Windows, core.autocrlf=true), o "#!/bin/sh\r"
+# nao e encontrado e o container cai com "not found" (codigo 127).
+*.sh text eol=lf

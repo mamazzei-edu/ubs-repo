@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router'; // <-- Adicionado RouterLink
+import { ActivatedRoute, Router, RouterLink } from '@angular/router'; // <-- Adicionado RouterLink
 import { PacienteService } from '../service/paciente.service';
+import { mensagemDoErro } from '../core/api';
+import { cpfValido, mascararCpf } from '../core/cpf';
 
 @Component({
   selector: 'app-lista',
@@ -19,13 +21,16 @@ export class ListaComponent implements OnInit {
   pacienteSelecionado: any = null;
   mostrarModalEditar: boolean = false;
   userRole: string = '';
+  cpfInvalido: boolean = false;
+  erroEdicao: string = '';
   
   // NOVO: Propriedade usada no *ngIf do HTML para o menu de Admin
   isAdmin: boolean = false; 
 
   constructor(
     private pacienteService: PacienteService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -36,8 +41,24 @@ export class ListaComponent implements OnInit {
     // Inclui ADMIN e SUPER_ADMIN, já que ambos são administradores
     this.isAdmin = this.userRole === 'ADMIN' || this.userRole === 'SUPER_ADMIN'; 
 
-    // 3. Carrega os pacientes (funcionalidade principal da tela)
-    this.carregarPacientes();
+    // 3. Carrega os pacientes (funcionalidade principal da tela). Vindo do
+    //    aviso de CPF duplicado do cadastro (?id=), já abre aquele paciente.
+    const idInformado = this.route.snapshot.queryParamMap.get('id');
+    if (idInformado) {
+      this.pesquisaId = idInformado;
+      this.pesquisarPacientePorId();
+    } else {
+      this.carregarPacientes();
+    }
+  }
+
+  formatarCpf(cpf: string | null | undefined): string {
+    return mascararCpf(cpf);
+  }
+
+  aoDigitarCpf(valor: string): void {
+    this.pacienteSelecionado.cpf = mascararCpf(valor);
+    this.cpfInvalido = false;
   }
   
   // NOVO: Função para verificar se o usuário é MEDICO/USER, se necessário
@@ -96,7 +117,9 @@ export class ListaComponent implements OnInit {
   }
 
   abrirModalEditar(paciente: any): void {
-    this.pacienteSelecionado = { ...paciente };
+    this.pacienteSelecionado = { ...paciente, cpf: mascararCpf(paciente.cpf) };
+    this.cpfInvalido = false;
+    this.erroEdicao = '';
     this.mostrarModalEditar = true;
   }
 
@@ -106,6 +129,12 @@ export class ListaComponent implements OnInit {
   }
 
   atualizarPaciente(): void {
+    this.erroEdicao = '';
+    if (!cpfValido(this.pacienteSelecionado.cpf)) {
+      this.cpfInvalido = true;
+      this.erroEdicao = 'Informe um CPF válido.';
+      return;
+    }
     this.pacienteService
       .editarPaciente(this.pacienteSelecionado.id, this.pacienteSelecionado)
       .subscribe({
@@ -113,8 +142,10 @@ export class ListaComponent implements OnInit {
           this.fecharModal();
           this.carregarPacientes();
         },
-        error: () => {
-          this.mensagem = 'Erro ao atualizar paciente.';
+        error: (err) => {
+          // 409 = o CPF digitado pertence a outro paciente; 400 = CPF inválido.
+          // O erro fica dentro do modal, que continua aberto para correção.
+          this.erroEdicao = mensagemDoErro(err, 'Erro ao atualizar paciente.');
         },
       });
   }

@@ -1,54 +1,73 @@
+// Espelha a entidade Paciente do backend: mesmas propriedades, mesma ordem.
+// Alterou a entidade? Alterar aqui, em cadastro.component.ts/.html e em
+// upload.component.html — as quatro listas precisam continuar iguais.
 export class Paciente {
- 
+
+  public id?: number;
+
   // Informações pessoais
-  pacienteSelecionado?: Paciente;
+  public nomeCompleto: string = '';
+  public nomeSocial?: string;
+  public nomeMae?: string;
+  public nomePai?: string;
+  public dataNascimento: string = '';
+  public sexo?: 'Masculino' | 'Feminino' | 'Outro';
+  public cpf: string = '';
+  public cns?: string;
+  public prontuario?: string;
+  public nacionalidade?: string;
+  public municipioNascimento?: string;
+  public racaCor?: 'Branca' | 'Preta' | 'Parda' | 'Amarela' | 'Indígena';
+  public etnia?: string;
 
-  public id?: number; // Código do paciente
-  public nomeCompleto: string = ''; // Nome completo
-  public nomeSocial?: string; // Nome social (opcional)
-  public nomeMae?: string; // Nome da mãe (opcional)
-  public nomePai?: string; // Nome do pai (opcional)
-
-  // Dados de nascimento
-  public dataNascimento: Date = new Date(); // Data de nascimento
-  public sexo: 'Masculino' | 'Feminino' | 'Outro' = 'Masculino'; // Sexo
-
-  // Localidade
-  public nacionalidade: string = ''; // Nacionalidade
-  public municipioNascimento: string = ''; // Município de nascimento
-
-  // Outros dados
-  public racaCor: 'Branca' | 'Preta' | 'Parda' | 'Amarela' | 'Indígena' = 'Branca'; // Raça/Cor
+  // Dados educacionais e sociais
   public frequentaEscola?: 'Sim' | 'Não';
-  public estabelecimentoVeiculo?: string; 
-  public estabelecimentoCadastro?: string; 
-  
+  public escolaridade?: string;
+  public situacaoFamiliar?: string;
+  public ocupacao?: string;
 
-  // Dados de deficiência
-  public deficiente?: 'Sim' | 'Não'; // Se o paciente possui deficiência
+  // Deficiências e OPM
+  public deficiente?: 'Sim' | 'Não';
   public visual?: 'Sim' | 'Não';
-  public auditiva?: 'Sim' | 'Não'; 
-  public motora?: 'Sim' | 'Não'; 
+  public auditiva?: 'Sim' | 'Não';
+  public motora?: 'Sim' | 'Não';
   public intelectual?: 'Sim' | 'Não';
+  public opm?: 'Sim' | 'Não';
 
-  // Dados de contato
-  
-    public telefoneCelular: string = '';  
-    public telefoneResidencial?: string; 
-    public telefoneComercial?: string;   
-    public email: string = '';       
-    public cpf: string = '';     
-    
-  //Prontuario
+  // Contatos
+  public telefoneCelular: string = '';
+  public telefoneResidencial?: string;
+  public telefoneComercial?: string;
+  public email: string = '';
+  public contato?: string;
 
-  public prontuarioPaciente: string = "";
-  
-  //CNS
+  // Endereço
+  public cep?: string;
+  public logradouro?: string;
+  public numero?: string;
+  public bairro?: string;
+  public complemento?: string;
+  public uf?: string;
+  public municipioResidencia?: string;
+  public distritoAdministrativo?: string;
+  public tipoLogradouro?: string;
+  public origemEndereco?: string;
+  public referencia?: string;
 
-  public cnsPaciente: string = "";
+  // Documentos
+  public rg?: string;
+  public orgaoEmissor?: string;
+  public pisPasepNis?: string;
+  public cnh?: string;
+  public ctps?: string;
+  public tituloEleitor?: string;
+  public passaporte?: string;
 
-  
+  // Vínculos e cadastro
+  public estabelecimentoVinculo?: string;
+  public estabelecimentoCadastro?: string;
+
   constructor(init?: Partial<Paciente>) {
-    Object.assign(this, init); 
+    Object.assign(this, init);
   }
 }

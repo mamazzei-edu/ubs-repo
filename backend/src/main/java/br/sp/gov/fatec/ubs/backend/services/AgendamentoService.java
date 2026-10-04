@@ -86,9 +86,9 @@ public class AgendamentoService {
         return agendamentoRepository.findByDataConsulta(data);
     }
     
-    // Listar agendamentos entre datas
+    // Listar agendamentos entre datas, em ordem cronológica
     public List<Agendamento> listarEntreDatas(LocalDateTime inicio, LocalDateTime fim) {
-        return agendamentoRepository.findByDataHoraConsultaBetween(inicio, fim);
+        return agendamentoRepository.findByDataHoraConsultaBetweenOrderByDataHoraConsultaAsc(inicio, fim);
     }
     
     // Atualizar status do agendamento

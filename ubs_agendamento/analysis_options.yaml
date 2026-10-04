@@ -1,0 +1,13 @@
+analyzer:
+  exclude:
+    - build/**
+    - android/**
+    - ios/**
+include: package:flutter_lints/flutter.yaml
+
+linter:
+  rules:
+    # Depois de um await a tela pode já ter sido fechada.
+    use_build_context_synchronously: true
+    prefer_single_quotes: true
+    always_declare_return_types: true

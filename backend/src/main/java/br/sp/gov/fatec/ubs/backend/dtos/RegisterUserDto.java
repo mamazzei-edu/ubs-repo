@@ -1,11 +1,45 @@
 package br.sp.gov.fatec.ubs.backend.dtos;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
+/**
+ * Dados de entrada do cadastro de usuário.
+ *
+ * A autenticação do sistema é feita pelo e-mail; o campo "nomeUsuario" é
+ * apenas um nome de exibição (ver User.getUsername(), que devolve o e-mail por
+ * exigência do contrato UserDetails).
+ *
+ * Os @JsonAlias aceitam os nomes antigos (fullName, username) na entrada.
+ *
+ * As restrições abaixo só são aplicadas onde o parâmetro estiver anotado com
+ * @Valid — ver AuthenticationController.register. Objetos montados em código,
+ * como no AdminSeeder, não passam por validação.
+ */
 public class RegisterUserDto {
+
+    @NotBlank(message = "O e-mail é obrigatório")
+    @Email(message = "E-mail inválido")
     private String email;
-    private String password;    
-    private String fullName;
+
+    @NotBlank(message = "A senha é obrigatória")
+    @Size(min = 6, message = "A senha deve ter ao menos 6 caracteres")
+    private String password;
+
+    @NotBlank(message = "O nome completo é obrigatório")
+    @JsonAlias("fullName")
+    private String nomeCompleto;
+
+    @NotBlank(message = "A matrícula é obrigatória")
     private String matricula;
-    private String username;
+
+    @NotBlank(message = "O nome de usuário é obrigatório")
+    @JsonAlias("username")
+    private String nomeUsuario;
+
     private String crm; // Campo opcional para médicos
 
     public String getEmail() {
@@ -24,14 +58,14 @@ public class RegisterUserDto {
         this.password = password;
     }
 
-    public String getFullName() {
-        return fullName;
+    public String getNomeCompleto() {
+        return nomeCompleto;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public void setNomeCompleto(String nomeCompleto) {
+        this.nomeCompleto = nomeCompleto;
     }
-    
+
     public String getMatricula() {
         return matricula;
     }
@@ -40,12 +74,12 @@ public class RegisterUserDto {
         this.matricula = matricula;
     }
 
-    public String getUsername() {
-        return username;
+    public String getNomeUsuario() {
+        return nomeUsuario;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setNomeUsuario(String nomeUsuario) {
+        this.nomeUsuario = nomeUsuario;
     }
 
     public String getCrm() {
@@ -55,8 +89,4 @@ public class RegisterUserDto {
     public void setCrm(String crm) {
         this.crm = crm;
     }
-
-    // getters and setters here...
-
-    
 }

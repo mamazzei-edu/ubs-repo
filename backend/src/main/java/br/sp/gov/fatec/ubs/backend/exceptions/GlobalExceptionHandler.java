@@ -1,58 +1,97 @@
 package br.sp.gov.fatec.ubs.backend.exceptions;
 
-import java.nio.file.AccessDeniedException;
-
-import org.springframework.http.HttpStatusCode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AccountStatusException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.security.SignatureException;
+import io.jsonwebtoken.JwtException;
 
 @RestControllerAdvice
-public class GlobalExceptionHandler {
+public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+
+    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
+    // Credenciais inválidas e usuário inexistente devolvem a MESMA resposta,
+    // para não permitir descobrir quais e-mails existem na base.
+    @ExceptionHandler({ BadCredentialsException.class, UsernameNotFoundException.class })
+    public ProblemDetail handleCredenciais(AuthenticationException ex) {
+        log.warn("Falha de autenticação: {}", ex.getMessage());
+        return problema(HttpStatus.UNAUTHORIZED, "Usuário ou senha inválidos");
+    }
+
+    @ExceptionHandler(AccountStatusException.class)
+    public ProblemDetail handleConta(AccountStatusException ex) {
+        log.warn("Conta indisponível: {}", ex.getMessage());
+        return problema(HttpStatus.FORBIDDEN, "Conta bloqueada ou desabilitada");
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ProblemDetail handleAcesso(AccessDeniedException ex) {
+        return problema(HttpStatus.FORBIDDEN, "Sem permissão para acessar este recurso");
+    }
+
+    // ExpiredJwtException e SignatureException descendem de JwtException.
+    @ExceptionHandler(JwtException.class)
+    public ProblemDetail handleJwt(JwtException ex) {
+        log.warn("JWT inválido: {}", ex.getMessage());
+        return problema(HttpStatus.UNAUTHORIZED, "Sessão expirada ou token inválido");
+    }
+
+    // CRM ja pertencente a outro medico: 409.
+    @ExceptionHandler(CrmDuplicadoException.class)
+    public ProblemDetail handleCrmDuplicado(CrmDuplicadoException ex) {
+        return problema(HttpStatus.CONFLICT, ex.getMessage());
+    }
+
+    // CPF ja pertencente a outro paciente: 409, com o id do paciente que ja
+    // existe para a tela poder abrir o cadastro dele.
+    @ExceptionHandler(CpfDuplicadoException.class)
+    public ProblemDetail handleCpfDuplicado(CpfDuplicadoException ex) {
+        ProblemDetail pd = problema(HttpStatus.CONFLICT, ex.getMessage());
+        pd.setProperty("pacienteExistenteId", ex.getPacienteExistenteId());
+        return pd;
+    }
+
+    // Ultima barreira contra duplicata: duas gravacoes simultaneas com o mesmo
+    // CPF (ou CRM, e-mail) passam pela checagem do servico e uma delas esbarra
+    // no indice unico do banco. Sem isto viraria 500.
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ProblemDetail handleIntegridade(DataIntegrityViolationException ex) {
+        log.warn("Violação de integridade: {}", ex.getMostSpecificCause().getMessage());
+        return problema(HttpStatus.CONFLICT, "Registro duplicado: já existe um cadastro com estes dados");
+    }
+
+    // E-mail ja existente no cadastro: 409, nao 500.
+    @ExceptionHandler(EmailJaCadastradoException.class)
+    public ProblemDetail handleEmailDuplicado(EmailJaCadastradoException ex) {
+        return problema(HttpStatus.CONFLICT, ex.getMessage());
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ProblemDetail handleArgumento(IllegalArgumentException ex) {
+        return problema(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
+
+    // Último recurso: registra o stack trace no log e devolve 500 genérico.
     @ExceptionHandler(Exception.class)
-    public ProblemDetail handleSecurityException(Exception exception) {
-        ProblemDetail errorDetail = null;
+    public ProblemDetail handleDesconhecida(Exception ex) {
+        log.error("Erro não tratado", ex);
+        return problema(HttpStatus.INTERNAL_SERVER_ERROR, "Erro interno do servidor");
+    }
 
-        // TODO send this stack trace to an observability tool
-        exception.printStackTrace();
-
-        if (exception instanceof BadCredentialsException) {
-            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(401), exception.getMessage());
-            errorDetail.setProperty("description", "The username or password is incorrect");
-
-            return errorDetail;
-        }
-
-        if (exception instanceof AccountStatusException) {
-            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(403), exception.getMessage());
-            errorDetail.setProperty("description", "The account is locked");
-        }
-
-        if (exception instanceof AccessDeniedException) {
-            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(403), exception.getMessage());
-            errorDetail.setProperty("description", "You are not authorized to access this resource");
-        }
-
-        if (exception instanceof SignatureException) {
-            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(403), exception.getMessage());
-            errorDetail.setProperty("description", "The JWT signature is invalid");
-        }
-
-        if (exception instanceof ExpiredJwtException) {
-            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(403), exception.getMessage());
-            errorDetail.setProperty("description", "The JWT token has expired");
-        }
-
-        if (errorDetail == null) {
-            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(500), exception.getMessage());
-            errorDetail.setProperty("description", "Unknown internal server error.");
-        }
-
-        return errorDetail;
+    private ProblemDetail problema(HttpStatus status, String detalhe) {
+        ProblemDetail pd = ProblemDetail.forStatusAndDetail(status, detalhe);
+        pd.setTitle(status.getReasonPhrase());
+        return pd;
     }
 }

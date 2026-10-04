@@ -2,6 +2,7 @@ package br.sp.gov.fatec.ubs.backend.bootstrap;
 
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +16,7 @@ import br.sp.gov.fatec.ubs.backend.repositories.UserRepository;
 import java.util.Optional;
 
 @Component
+@Order(2)
 public class AdminSeeder implements ApplicationListener<ContextRefreshedEvent> {
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
@@ -33,7 +35,7 @@ public class AdminSeeder implements ApplicationListener<ContextRefreshedEvent> {
 
     private void createSuperAdministrator() {
         RegisterUserDto userDto = new RegisterUserDto();
-        userDto.setFullName("Super Admin");
+        userDto.setNomeCompleto("Super Admin");
         userDto.setEmail("super.admin@email.com");
         userDto.setPassword("123456");
 
@@ -45,10 +47,10 @@ public class AdminSeeder implements ApplicationListener<ContextRefreshedEvent> {
         }
 
         var user = new User()
-            .setFullName(userDto.getFullName())
+            .setNomeCompleto(userDto.getNomeCompleto())
             .setEmail(userDto.getEmail())
             .setMatricula("000")
-            .setUsername("root")
+            .setNomeUsuario("root")
             .setPassword(passwordEncoder.encode(userDto.getPassword()))
             .setRole(optionalRole.get());
 

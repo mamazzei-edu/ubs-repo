@@ -1,0 +1,30 @@
+name: ubs_agendamento
+description: App mobile de agendamento de consultas da UBS. Consome a API REST do backend Spring.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.5.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  # Chamadas HTTP à API do backend.
+  http: ^1.2.2
+  # Token JWT guardado no Keystore (Android) / Keychain (iOS), nunca em texto puro.
+  flutter_secure_storage: ^9.2.2
+  # Endereço do servidor escolhido na tela de configuração (não é segredo).
+  shared_preferences: ^2.3.2
+  # Datas em português. "any" deixa o flutter_localizations escolher a versão.
+  intl: any
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true

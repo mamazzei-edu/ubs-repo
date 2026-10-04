@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -19,32 +20,48 @@ public class AgendamentoController {
     @Autowired
     private AgendamentoService agendamentoService;
     
-    // Criar novo agendamento
+    /**
+     * Criar novo agendamento.
+     *
+     * Sem try/catch: as regras de negócio do serviço ("Médico não disponível
+     * neste horário", "Não é possível agendar para horários no passado"...)
+     * sobem como IllegalArgumentException e o GlobalExceptionHandler devolve
+     * 400 COM a mensagem. Antes o corpo ia vazio e nenhuma tela sabia dizer
+     * ao usuário o que estava errado.
+     */
     @PostMapping
     public ResponseEntity<Agendamento> criarAgendamento(@RequestBody Map<String, Object> request) {
-        try {
-            Long pacienteId = Long.valueOf(request.get("pacienteId").toString());
-            Long medicoId = Long.valueOf(request.get("medicoId").toString()); // ALTERADO: agora Long
-            LocalDateTime dataHora = LocalDateTime.parse(request.get("dataHoraConsulta").toString());
-            String tipoConsulta = request.get("tipoConsulta").toString();
-            String observacoes = request.get("observacoes") != null ? request.get("observacoes").toString() : "";
-            
-            Agendamento agendamento = agendamentoService.criarAgendamento(pacienteId, medicoId, dataHora, tipoConsulta, observacoes);
-            return ResponseEntity.ok(agendamento);
-            
-        } catch (IllegalArgumentException e) {
-            // Retorna a mensagem de erro para o frontend
-            return ResponseEntity.badRequest().build();
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().build();
-        }
+        Long pacienteId = lerId(request, "pacienteId", "O paciente é obrigatório");
+        Long medicoId = lerId(request, "medicoId", "O médico é obrigatório");
+        LocalDateTime dataHora = lerDataHora(request.get("dataHoraConsulta"));
+        String tipoConsulta = lerTexto(request, "tipoConsulta", "O tipo de consulta é obrigatório");
+        String observacoes = request.get("observacoes") != null ? request.get("observacoes").toString() : "";
+
+        Agendamento agendamento = agendamentoService.criarAgendamento(pacienteId, medicoId, dataHora, tipoConsulta, observacoes);
+        return ResponseEntity.ok(agendamento);
     }
-    
+
     // Listar todos os agendamentos
     @GetMapping
     public ResponseEntity<List<Agendamento>> listarTodos() {
         List<Agendamento> agendamentos = agendamentoService.listarTodos();
         return ResponseEntity.ok(agendamentos);
+    }
+
+    /**
+     * Agendamentos entre duas datas/horas, em ordem cronológica.
+     * Usado pela agenda do dia do app mobile, que não precisa baixar tudo.
+     *
+     * Ex.: /api/agendamentos/periodo?inicio=2026-10-05T00:00:00&amp;fim=2026-10-05T23:59:59
+     */
+    @GetMapping("/periodo")
+    public ResponseEntity<List<Agendamento>> listarPorPeriodo(@RequestParam String inicio, @RequestParam String fim) {
+        LocalDateTime de = lerDataHora(inicio);
+        LocalDateTime ate = lerDataHora(fim);
+        if (ate.isBefore(de)) {
+            throw new IllegalArgumentException("O fim do período é anterior ao início");
+        }
+        return ResponseEntity.ok(agendamentoService.listarEntreDatas(de, ate));
     }
     
     // Buscar agendamento por ID
@@ -139,16 +156,12 @@ public class AgendamentoController {
         }
     }
     
-    // Reagendar consulta
+    // Reagendar consulta. Erros de regra sobem com mensagem (400), como no POST.
     @PutMapping("/{id}/reagendar")
     public ResponseEntity<Agendamento> reagendar(@PathVariable Long id, @RequestBody Map<String, String> request) {
-        try {
-            LocalDateTime novaDataHora = LocalDateTime.parse(request.get("dataHoraConsulta"));
-            Agendamento agendamento = agendamentoService.reagendar(id, novaDataHora);
-            return ResponseEntity.ok(agendamento);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().build();
-        }
+        LocalDateTime novaDataHora = lerDataHora(request.get("dataHoraConsulta"));
+        Agendamento agendamento = agendamentoService.reagendar(id, novaDataHora);
+        return ResponseEntity.ok(agendamento);
     }
     
     // Atualizar observações
@@ -185,6 +198,40 @@ public class AgendamentoController {
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    // ---- leitura do corpo, com mensagem clara em vez de NullPointerException ----
+
+    private static Long lerId(Map<String, Object> request, String campo, String mensagemSeAusente) {
+        Object valor = request.get(campo);
+        if (valor == null || valor.toString().isBlank()) {
+            throw new IllegalArgumentException(mensagemSeAusente);
+        }
+        try {
+            return Long.valueOf(valor.toString());
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Valor inválido para " + campo + ": " + valor);
+        }
+    }
+
+    private static String lerTexto(Map<String, Object> request, String campo, String mensagemSeAusente) {
+        Object valor = request.get(campo);
+        if (valor == null || valor.toString().isBlank()) {
+            throw new IllegalArgumentException(mensagemSeAusente);
+        }
+        return valor.toString().trim();
+    }
+
+    /** Aceita "2026-10-05T14:30" e "2026-10-05T14:30:00". */
+    private static LocalDateTime lerDataHora(Object valor) {
+        if (valor == null || valor.toString().isBlank()) {
+            throw new IllegalArgumentException("A data e a hora da consulta são obrigatórias");
+        }
+        try {
+            return LocalDateTime.parse(valor.toString().trim());
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException("Data/hora inválida: " + valor + " (formato esperado: aaaa-MM-ddTHH:mm)");
         }
     }
 }

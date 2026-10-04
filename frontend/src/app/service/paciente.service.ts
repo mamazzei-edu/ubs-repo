@@ -2,13 +2,14 @@ import { Injectable, Inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Paciente } from '../model/paciente.model';
+import { apiUrl } from '../core/api';
 
 @Injectable({
   providedIn: 'root',
 })
 
 export class PacienteService {
-  private apiUrl = 'http://localhost:8080/api/pacientes';  // URL do backend diretamente no código
+  private apiUrl = apiUrl('api/pacientes'); // 'http://localhost:8080/api/pacientes';  // URL do backend diretamente no código
 
   constructor(@Inject(HttpClient) private http: HttpClient) {}
 

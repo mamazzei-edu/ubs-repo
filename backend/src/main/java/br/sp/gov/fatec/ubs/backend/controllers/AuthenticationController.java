@@ -14,12 +14,13 @@ import br.sp.gov.fatec.ubs.backend.model.User;
 import br.sp.gov.fatec.ubs.backend.services.AuthenticationService;
 import br.sp.gov.fatec.ubs.backend.services.JwtService;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 
 @RequestMapping("/auth")
 @RestController
 public class AuthenticationController {
     private final JwtService jwtService;
-    
+
     private final AuthenticationService authenticationService;
 
     public AuthenticationController(JwtService jwtService, AuthenticationService authenticationService) {
@@ -27,60 +28,76 @@ public class AuthenticationController {
         this.authenticationService = authenticationService;
     }
 
+    // @Valid dispara as restrições do RegisterUserDto. Uma violação lança
+    // MethodArgumentNotValidException, tratada pelo ResponseEntityExceptionHandler
+    // que o GlobalExceptionHandler herda: 400 com a lista de campos inválidos.
     @PostMapping("/signup")
-    public ResponseEntity<User> register(@RequestBody RegisterUserDto registerUserDto) {
+    public ResponseEntity<User> register(@Valid @RequestBody RegisterUserDto registerUserDto) {
         User registeredUser = authenticationService.signup(registerUserDto);
 
         return ResponseEntity.ok(registeredUser);
     }
 
+    // Sem try/catch: credenciais inválidas sobem como BadCredentialsException e
+    // o GlobalExceptionHandler devolve 401. Capturar aqui devolvia 200 com corpo
+    // vazio, e o front não tinha como distinguir sucesso de falha.
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> authenticate(@RequestBody LoginUserDto loginUserDto, HttpServletResponse response) {
-//        String valor = loginUserDto.getEmail();
-//        System.out.print("Tentando autenticar com: " + valor);
-        try {
-            User authenticatedUser = authenticationService.authenticate(loginUserDto);
+    public ResponseEntity<LoginResponse> authenticate(@RequestBody LoginUserDto loginUserDto,
+            HttpServletResponse response) {
+        User authenticatedUser = authenticationService.authenticate(loginUserDto);
 
-            if (authenticatedUser == null) {
-                return ResponseEntity.status(401).build();
-            }
+        String jwtToken = jwtService.generateToken(authenticatedUser);
 
-            String jwtToken = jwtService.generateToken(authenticatedUser);
+        LoginResponse loginResponse = new LoginResponse();
+        loginResponse.setCreatedAt(System.currentTimeMillis());
+        loginResponse.setUserId(authenticatedUser.getId());
+        // loginResponse.setToken(jwtToken);
+        String[] roles = authenticatedUser.getAuthorities().stream()
+                .map(auth -> auth.getAuthority())
+                .toArray(String[]::new);
+        loginResponse.setRoles(roles);
+        loginResponse.setExpiresIn(System.currentTimeMillis() + jwtService.getExpirationTime());
 
-            LoginResponse loginResponse = new LoginResponse();
-            loginResponse.setCreatedAt(System.currentTimeMillis());
-            loginResponse.setUserId(authenticatedUser.getId());
-            // loginResponse.setToken(jwtToken);
-            String[] roles = new String[authenticatedUser.getAuthorities().size()];
-            int contador = 0;
-            for (String roleString : authenticatedUser.getAuthorities().stream().map(auth -> auth.getAuthority())
-                    .toList()) {
-                roles[contador] = roleString;
-                contador++;
-            }
-            loginResponse.setRoles(roles);
-            loginResponse.setExpiresIn(System.currentTimeMillis() + jwtService.getExpirationTime());
+        // Aqui é setado o cookie para a autenticação por cookies.
+        // maxAge é em SEGUNDOS e security.jwt.expiration-time em milissegundos.
+        ResponseCookie cookie = ResponseCookie.from("jwt", jwtToken)
+                .httpOnly(true)
+                .path("/")
+                .secure(true)
+                .maxAge(jwtService.getExpirationTime() / 1000)
+                .sameSite("Lax")
+                .build();
 
-            // Aqui é setado o cookie para a authenticação por cookies
-            ResponseCookie cookie = ResponseCookie.from("jwt", jwtToken)
-                    .httpOnly(true)
-                    .path("/")
-                    .secure(true)
-                    .maxAge(jwtService.getExpirationTime())
-                    .sameSite("Lax")
-                    .build();
+        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 
-            response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
-
-            return ResponseEntity.ok(loginResponse);
-
-        } catch (Exception e) {
-            LoginResponse loginResponse = new LoginResponse();
-            return ResponseEntity.ok(loginResponse);
-        }
-
+        return ResponseEntity.ok(loginResponse);
     }
 
+    /**
+     * Login dos clientes nativos (app mobile): devolve o JWT no corpo, para ir
+     * no cabeçalho "Authorization: Bearer ...", e NÃO grava cookie.
+     *
+     * Separado de /login de propósito. No navegador o token fica num cookie
+     * httpOnly, inacessível ao JavaScript — devolvê-lo no corpo de /login
+     * anularia essa proteção. O app guarda o token no armazenamento seguro do
+     * sistema (Keystore/Keychain), e o cookie "secure" não serviria a ele em
+     * redes sem HTTPS.
+     */
+    @PostMapping("/token")
+    public ResponseEntity<LoginResponse> token(@RequestBody LoginUserDto loginUserDto) {
+        User authenticatedUser = authenticationService.authenticate(loginUserDto);
+
+        LoginResponse loginResponse = new LoginResponse();
+        loginResponse.setCreatedAt(System.currentTimeMillis());
+        loginResponse.setUserId(authenticatedUser.getId());
+        loginResponse.setToken(jwtService.generateToken(authenticatedUser));
+        loginResponse.setRoles(authenticatedUser.getAuthorities().stream()
+                .map(auth -> auth.getAuthority())
+                .toArray(String[]::new));
+        loginResponse.setExpiresIn(System.currentTimeMillis() + jwtService.getExpirationTime());
+
+        return ResponseEntity.ok(loginResponse);
+    }
 
     @PostMapping("/logout")
     public ResponseEntity<LoginResponse> logout(HttpServletResponse response) {

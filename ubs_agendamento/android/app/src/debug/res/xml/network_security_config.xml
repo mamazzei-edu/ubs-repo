@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Somente DEBUG: libera http:// para testar contra o backend local
+  (ex.: http://10.0.2.2:8081/diretorio-api no emulador Android).
+  O release usa src/main/res/xml/network_security_config.xml, que exige HTTPS.
+-->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true" />
+</network-security-config>

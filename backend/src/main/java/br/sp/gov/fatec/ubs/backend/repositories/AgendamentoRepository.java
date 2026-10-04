@@ -26,7 +26,7 @@ public interface AgendamentoRepository extends JpaRepository<Agendamento, Long> 
     List<Agendamento> findByDataConsulta(@Param("data") LocalDateTime data);
     
     // Buscar agendamentos entre datas
-    List<Agendamento> findByDataHoraConsultaBetween(LocalDateTime inicio, LocalDateTime fim);
+    List<Agendamento> findByDataHoraConsultaBetweenOrderByDataHoraConsultaAsc(LocalDateTime inicio, LocalDateTime fim);
     
     // Verificar se médico tem disponibilidade no horário
     @Query("SELECT COUNT(a) FROM agendamento a WHERE a.medico.id = :medicoId AND a.dataHoraConsulta = :dataHora AND a.status != 'CANCELADO'")

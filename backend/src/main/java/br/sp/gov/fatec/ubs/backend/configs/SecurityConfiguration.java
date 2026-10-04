@@ -19,6 +19,9 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.Arrays;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @EnableWebSecurity
 @Configuration
 @EnableMethodSecurity
@@ -27,13 +30,18 @@ public class SecurityConfiguration {
     @Value("${spring.security.enabled}")
     private boolean securityEnabled;
 
+    // Origens liberadas no CORS, separadas por virgula. Vem de LISTA_HOSTS
+    // no .env (ver application.properties).
+    @Value("${lista.hosts}")
+    private String listaHosts;
+
+    private static final Logger logger = LoggerFactory.getLogger(SecurityConfiguration.class);
     private final JwtAuthenticationFilter jwtRequestFilter;
 
     @Autowired
     public SecurityConfiguration(JwtAuthenticationFilter jwtRequestFilter) {
         this.jwtRequestFilter = jwtRequestFilter;
     }
-
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -43,17 +51,15 @@ public class SecurityConfiguration {
                     .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                     .csrf(csrf -> csrf.disable())
                     .authorizeHttpRequests(auth -> auth
-                            .requestMatchers("/auth", "/error", "/auth/**").permitAll()
-                            .anyRequest().authenticated()
-                    )
-                    // make sure we use stateless session; session won't be used to store user's state.
+                            .requestMatchers("/auth", "/error", "/auth/**", "/status").permitAll()
+                            .anyRequest().authenticated())
+                    // make sure we use stateless session; session won't be used to store user's
+                    // state.
                     .sessionManagement(session -> session
-                            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                    )
+                            .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                     .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
                     .exceptionHandling(exception -> exception
-                            .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
-                    );
+                            .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)));
         } else {
             http.authorizeHttpRequests((requests) -> requests.anyRequest().permitAll())
                     .csrf(csrf -> csrf.disable());
@@ -64,9 +70,14 @@ public class SecurityConfiguration {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-//        configuration.setAllowedOrigins(List.of("*"));
-        List<String> allowedOrigins = Arrays.asList(System.getenv("LISTA_HOSTS").split(","));
-        System.out.println("Allowed origins: " + System.getenv("LISTA_HOSTS"));
+        // configuration.setAllowedOrigins(List.of("*"));
+        // Lido do Environment, e nao de System.getenv: com a variavel ausente o
+        // getenv devolvia null e a aplicacao nem subia (NullPointerException).
+        List<String> allowedOrigins = Arrays.stream(listaHosts.split(","))
+                .map(String::trim)
+                .filter(origem -> !origem.isEmpty())
+                .toList();
+        logger.debug("Allowed origins: " + allowedOrigins);
         configuration.setAllowedOriginPatterns(allowedOrigins);
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowCredentials(true); // para aceitar os login com cookies

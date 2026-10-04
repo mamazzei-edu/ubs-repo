@@ -8,13 +8,12 @@ import org.springframework.stereotype.Service;
 
 import br.sp.gov.fatec.ubs.backend.dtos.LoginUserDto;
 import br.sp.gov.fatec.ubs.backend.dtos.RegisterUserDto;
+import br.sp.gov.fatec.ubs.backend.exceptions.EmailJaCadastradoException;
 import br.sp.gov.fatec.ubs.backend.model.Role;
 import br.sp.gov.fatec.ubs.backend.model.RoleEnum;
 import br.sp.gov.fatec.ubs.backend.model.User;
 import br.sp.gov.fatec.ubs.backend.repositories.RoleRepository;
 import br.sp.gov.fatec.ubs.backend.repositories.UserRepository;
-
-import java.util.Optional;
 
 @Service
 public class AuthenticationService {
@@ -34,44 +33,64 @@ public class AuthenticationService {
         this.roleRepository = roleRepository;
     }
 
-    // Cadastro de novo usuário
+    // Cadastro de novo usuário, sempre com o papel USER.
     public User signup(RegisterUserDto input) {
-        // Validação de senha obrigatória
-        if (input.getPassword() == null || input.getPassword().trim().isEmpty()) {
-            throw new IllegalArgumentException("A senha é obrigatória para cadastro de usuário.");
+        // Rede de segurança: o @Valid do controller já barra estes casos, mas
+        // o serviço também é chamado de outros pontos do código.
+        exigir(input.getEmail(), "O e-mail é obrigatório.");
+        exigir(input.getPassword(), "A senha é obrigatória para cadastro de usuário.");
+        exigir(input.getNomeCompleto(), "O nome completo é obrigatório.");
+        exigir(input.getMatricula(), "A matrícula é obrigatória.");
+        exigir(input.getNomeUsuario(), "O nome de usuário é obrigatório.");
+
+        // A autenticação é pelo e-mail: normalizar evita cadastros que diferem
+        // apenas por espaços ou caixa das letras.
+        String email = input.getEmail().trim().toLowerCase();
+
+        // A coluna é unique; sem esta checagem a violação de integridade só
+        // apareceria como erro genérico 500.
+        if (userRepository.findByEmail(email).isPresent()) {
+            throw new EmailJaCadastradoException(email);
         }
 
-        Optional<Role> optionalRole = roleRepository.findByName(RoleEnum.USER);
-        if (optionalRole.isEmpty()) {
-            throw new RuntimeException("Role USER não encontrada no banco de dados.");
-        }
+        // Papel ausente é banco mal semeado, ou seja, defeito do servidor e não
+        // do cliente: IllegalStateException cai no handler genérico (500).
+        Role role = roleRepository.findByName(RoleEnum.USER)
+                .orElseThrow(() -> new IllegalStateException("Role USER não encontrada no banco de dados."));
 
+        // matricula e nomeUsuario são NOT NULL no modelo User: precisam vir do DTO.
         var user = new User()
-                .setFullName(input.getFullName())
-                .setEmail(input.getEmail())
+                .setNomeCompleto(input.getNomeCompleto().trim())
+                .setEmail(email)
                 .setPassword(passwordEncoder.encode(input.getPassword()))
-                .setRole(optionalRole.get());
+                .setMatricula(input.getMatricula().trim())
+                .setNomeUsuario(input.getNomeUsuario().trim())
+                .setRole(role);
+
+        if (input.getCrm() != null && !input.getCrm().isBlank()) {
+            user.setCrm(input.getCrm().trim());
+        }
 
         return userRepository.save(user);
     }
 
-    // Autenticação de usuário
+    // Autenticação de usuário. As exceções sobem para o GlobalExceptionHandler,
+    // que as traduz em 401/403 — capturá-las aqui apagaria a causa real.
     public User authenticate(LoginUserDto input) {
-        try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            input.getEmail(),
-                            input.getPassword()));
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        input.getEmail(),
+                        input.getPassword()));
 
-            // Busca usuário por email e trata Optional corretamente
-            Optional<User> optionalUser = userRepository.findByEmail(input.getEmail());
-            User usuario = optionalUser.orElseThrow(() ->
-                    new UsernameNotFoundException("Usuário não encontrado"));
+        return userRepository.findByEmail(input.getEmail())
+                .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
+    }
 
-            return usuario;
-
-        } catch (Exception e) {
-            throw new UsernameNotFoundException("Usuário não encontrado");
+    // Campo obrigatório ausente é erro do cliente: IllegalArgumentException
+    // é traduzida em 400 pelo GlobalExceptionHandler.
+    private void exigir(String valor, String mensagem) {
+        if (valor == null || valor.isBlank()) {
+            throw new IllegalArgumentException(mensagem);
         }
     }
 }

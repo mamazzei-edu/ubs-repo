@@ -2,14 +2,15 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Medico } from '../model/medico.model';
+import { apiUrl } from '../core/api';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MedicoService {
-  private apiUrl = 'http://localhost:8080/api/medicos';
+  private apiUrl = apiUrl('api/medicos');
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   listarTodos(): Observable<Medico[]> {
     return this.http.get<Medico[]>(this.apiUrl);

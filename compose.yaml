@@ -13,31 +13,29 @@ services:
     restart: always
     depends_on:
       - mysql_server
+    # Cada variavel tem o MESMO nome dos dois lados e o mesmo do .env.exemplo
+    # e do application.properties. Os ":-${...}" aceitam os nomes antigos
+    # (DB_*) so para nao quebrar quem ainda tem .env antigo.
     environment:
-      SPRING_JPA_HIBERNATE_DDL_AUTO: ${SPRING_JPA_HIBERNATE_DDL_AUTO}
-      NODE_ENV: production
       SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
       SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
       SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
-      SPRING_DATASOURCE_DRIVER_CLASS_NAME: ${SPRING_DATASOURCE_DRIVER_CLASS_NAME}      
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: ${SPRING_DATASOURCE_DRIVER_CLASS_NAME}
       SPRING_JPA_DATABASE_PLATFORM: ${SPRING_JPA_DATABASE_PLATFORM}
+      SPRING_JPA_HIBERNATE_DDL_AUTO: ${SPRING_JPA_HIBERNATE_DDL_AUTO}
       SPRING_JPA_GENERATE_DDL: ${SPRING_JPA_GENERATE_DDL}
-      SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA: ${SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA}      
+      SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA: ${SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA}
       SPRING_JPA_SHOW_SQL: ${SPRING_JPA_SHOW_SQL}
 
       SERVER_PORT: ${SERVER_PORT}
       SPRING_SECURITY_ENABLED: ${SPRING_SECURITY_ENABLED}
+      # Antes ia como SPRING_JWT_SECRET_KEY: um valor com dois nomes.
+      SECURITY_JWT_SECRET_KEY: ${SECURITY_JWT_SECRET_KEY}
       SECURITY_JWT_EXPIRATION_TIME: ${SECURITY_JWT_EXPIRATION_TIME}
-      SPRING_JWT_SECRET_KEY: ${SECURITY_JWT_SECRET_KEY}
-  
-      DB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
-      DB_NAME: ${DB_NAME}
-      DB_USER: ${DB_USER}
-      DB_HOST: ${DB_HOST}
-      DB_PORT: ${DB_PORT}
-      DB_SCHEMA: ${DB_SCHEMA}
-      DB_PASSWORD: ${DB_PASSWORD}
+      # Origens liberadas no CORS (parametro interno do projeto).
       LISTA_HOSTS: ${LISTA_HOSTS}
+      # Prefixo publico da API. Vira server.servlet.context-path.
+      API_BASE_PATH: ${API_BASE_PATH}
 
     ports:
       - "8080:8080"
@@ -47,27 +45,52 @@ services:
   mysql_server:
     image: mysql:latest
     restart: always
+    # Somente variaveis que a imagem oficial do MySQL reconhece. MYSQL_HOST,
+    # MYSQL_PORT e MYSQL_SCHEMA nao existem na imagem e eram ignoradas.
     environment:
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${DB_NAME}
-      MYSQL_USER: ${DB_USER}
-      MYSQL_HOST: ${DB_HOST}
-      MYSQL_PORT: ${DB_PORT}
-      MYSQL_SCHEMA: ${DB_SCHEMA}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-${DB_ROOT_PASSWORD:-}}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-${DB_NAME:-ubs}}
     ports:
-      - "3307:3306"
+      - "3306:3306"
     volumes:
       - mysql-data:/var/lib/mysql
     networks:
       - app-network
 
+# O antigo servico "frontend" (porta 4200) foi removido: o nginx-ubs serve
+# o app Angular e faz o proxy da API sob o mesmo dominio.
 
-  frontend:
-    build: ./frontend
+  # ---------------------------------------------------------------------------
+  # nginx-ubs: serve o app Angular JA COMPILADO na porta 8081.
+  #
+  # Pre-requisito (executar antes do "docker compose build"):
+  #     cd frontend && npm ci && npm run build
+  # O build gera frontend/dist/frontend/browser, que e copiado para dentro
+  # da imagem pelo arquivo nginx-ubs/Dockerfile.
+  #
+  # O contexto de build e a raiz do repositorio (".") porque o Dockerfile
+  # precisa enxergar tanto nginx-ubs/ quanto frontend/dist/.
+  # ---------------------------------------------------------------------------
+  nginx-ubs:
+    build:
+      context: .
+      dockerfile: nginx-ubs/Dockerfile
+      args:
+        NGINX_VERSION: alpine3.22
+    container_name: nginx-ubs
+    # Caminhos publicos lidos na PARTIDA do container, a partir do .env.
+    # Trocar qualquer um deles e "docker compose up -d", sem rebuild.
+    environment:
+      FRONT_BASE_PATH: ${FRONT_BASE_PATH}
+      API_BASE_PATH: ${API_BASE_PATH}
+      # Restringe o envsubst do entrypoint a estas duas variaveis, para
+      # que ele nao toque nas variaveis do proprio nginx no template.
+      NGINX_ENVSUBST_FILTER: "^(FRONT_BASE_PATH|API_BASE_PATH)$$"
     restart: always
+    depends_on:
+      - backend
     ports:
-      - "4200:8080"
+      - "8081:8081"
     networks:
       - app-network
 

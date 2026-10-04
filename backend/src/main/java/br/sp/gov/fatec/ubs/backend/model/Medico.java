@@ -40,6 +40,12 @@ public class Medico {
     
     @Column
     private boolean ativo = true;
+
+    // Vinculo com o usuario de login criado na tela de cadastro de usuarios.
+    // Guardado como id simples, e nao como @OneToOne, para nao arrastar o User
+    // (que serializa a senha) para dentro do JSON de /api/medicos.
+    @Column(name = "user_id", unique = true)
+    private Integer userId;
     
     @CreationTimestamp
     @Column(updatable = false, name = "created_at")
@@ -153,5 +159,13 @@ public class Medico {
                 ", crm='" + crm + '\'' +
                 ", email='" + email + '\'' +
                 '}';
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 }

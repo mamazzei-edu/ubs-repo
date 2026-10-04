@@ -17,12 +17,13 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
+            "baseHref": "/outro-diretorio/",
             "browser": "src/main.ts",
             "polyfills": [
               "zone.js"
             ],
             "allowedCommonJsDependencies": [
-                  "moment"
+              "moment"
             ],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
@@ -62,6 +63,10 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
+          "options": {
+            "servePath": "/outro-diretorio/",
+            "proxyConfig": "proxy.conf.json"
+          },
           "configurations": {
             "production": {
               "buildTarget": "frontend:build:production"

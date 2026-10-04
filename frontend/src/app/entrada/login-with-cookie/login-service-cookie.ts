@@ -3,6 +3,7 @@ import { LoginClienteCookie } from './login-cliente-cookie';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { LoginResponseCookie } from './login-models-cookie';
+import { apiUrl } from '../../core/api';
 
 
 @Injectable({
@@ -10,7 +11,7 @@ import { LoginResponseCookie } from './login-models-cookie';
 })
 
 export class LoginServiceCookie {
-  private apiUrl = 'http://localhost:8080/auth/logincookie';
+  private apiUrl = apiUrl('auth/logincookie'); //'http://localhost:8080/auth/logincookie';
   constructor(private http: HttpClient) { }
 
   logar(loginCliente: LoginClienteCookie): Observable<LoginResponseCookie> {

@@ -3,6 +3,7 @@ package br.sp.gov.fatec.ubs.backend.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -30,6 +31,12 @@ public class Paciente {
     private String dataNascimento;
 
     private String sexo;
+    // CPF e a chave de negocio do paciente: nao pode repetir na base.
+    // Gravado sempre normalizado, somente digitos (ValidaCPF.normalizar),
+    // senao "123.456.789-00" e "12345678900" passariam como registros diferentes.
+    // Vazio vira null, porque o MySQL aceita varios NULL num indice unico mas
+    // nao aceita varias strings vazias.
+    @Column(unique = true, length = 14)
     private String cpf;
     private String cns;
     private String prontuario;
@@ -63,6 +70,8 @@ public class Paciente {
     private String telefoneResidencial;
     private String telefoneComercial;
     private String email;
+    // Campo "Contato" da ficha, extraido da celula ao lado do e-mail.
+    private String contato;
 
     // ==========================
     // ENDEREÇO
@@ -182,6 +191,9 @@ public class Paciente {
 
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
+
+    public String getContato() { return contato; }
+    public void setContato(String contato) { this.contato = contato; }
 
     public String getCep() { return cep; }
     public void setCep(String cep) { this.cep = cep; }

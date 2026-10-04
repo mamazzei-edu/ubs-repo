@@ -17,6 +17,18 @@ public class ValidaCRM {
     );
     
     private ValidaCRM() {}
+
+    /**
+     * Forma única de gravar o CRM: maiúsculo e sem separadores.
+     * "123456-sp", "123456/SP" e " 123456 sp " viram todos "123456SP" — sem
+     * isso o mesmo médico passava pelo índice único com grafias diferentes.
+     */
+    public static String normalizar(String crm) {
+        if (crm == null) {
+            return null;
+        }
+        return crm.replaceAll("[\\s./-]", "").toUpperCase();
+    }
     
     /**
      * Método público e estático que valida o formato e o estado de um CRM.
@@ -28,8 +40,8 @@ public class ValidaCRM {
             return false;
         }
         
-        // Remove espaços em branco e converte para maiúsculo
-        crm = crm.trim().toUpperCase();
+        // Remove espaços e separadores e converte para maiúsculo
+        crm = normalizar(crm);
         
         // 1. Validação de formato
         if (!CRM_PADRAO.matcher(crm).matches()) {
@@ -42,7 +54,7 @@ public class ValidaCRM {
     }
     
     /**
-     * Formata o CRM removendo espaços e colocando em maiúsculo
+     * Formata o CRM removendo espaços e separadores e colocando em maiúsculo
      * @param crm CRM a ser formatado
      * @return CRM formatado ou null se inválido
      */
@@ -50,6 +62,6 @@ public class ValidaCRM {
         if (!isValid(crm)) {
             return null;
         }
-        return crm.trim().toUpperCase();
+        return normalizar(crm);
     }
 }

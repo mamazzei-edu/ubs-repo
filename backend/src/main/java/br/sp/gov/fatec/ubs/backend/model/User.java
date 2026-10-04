@@ -21,8 +21,10 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private Integer id;
 
-    @Column(nullable = false)
-    private String fullName;
+    // Mesmo nome de Paciente e Medico. A coluna continua "full_name" para nao
+    // exigir migracao da base.
+    @Column(name = "full_name", nullable = false)
+    private String nomeCompleto;
 
     @Column(unique = true, length = 200, nullable = false)
     private String email;
@@ -33,8 +35,10 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String matricula;
 
-    @Column(nullable = false)
-    private String username;
+    // Nome de exibicao. A coluna continua "username"; o campo nao, porque
+    // getUsername() do UserDetails devolve o e-mail (ver abaixo).
+    @Column(name = "username", nullable = false)
+    private String nomeUsuario;
 
     @Column(nullable = true) // para cadastro dos usuários médicos
     private String crm;
@@ -62,14 +66,30 @@ public class User implements UserDetails {
         return List.of(authority);
     }
 
+    // Sem @JsonIgnore a senha (ainda que criptografada) ia no JSON de
+    // /api/usuarios, /users/me e /auth/signup.
+    @JsonIgnore
     @Override
     public String getPassword() {
         return password;
     }
 
+    /**
+     * Contrato do UserDetails: a autenticacao e feita pelo e-mail.
+     * NAO e a coluna "username" — para ela, ver getNomeUsuario().
+     * Com @JsonIgnore para o JSON nao expor duas propriedades "username"
+     * com valores diferentes, que era o que fazia a tela mostrar o e-mail
+     * no campo "Nome do usuario".
+     */
+    @JsonIgnore
     @Override
     public String getUsername() {
         return email;
+    }
+
+    /** O valor da coluna "username" — o getUsername() acima devolve o e-mail. */
+    public String getNomeUsuario() {
+        return nomeUsuario;
     }
 
     @Override
@@ -102,12 +122,12 @@ public class User implements UserDetails {
         this.id = id;
     }
 
-    public String getFullName() {
-        return fullName;
+    public String getNomeCompleto() {
+        return nomeCompleto;
     }
 
-    public User setFullName(String fullName) {
-        this.fullName = fullName;
+    public User setNomeCompleto(String nomeCompleto) {
+        this.nomeCompleto = nomeCompleto;
         return this;
     }
 
@@ -168,8 +188,8 @@ public class User implements UserDetails {
         return this;
     }
 
-    public User setUsername(String username) {
-        this.username = username;
+    public User setNomeUsuario(String nomeUsuario) {
+        this.nomeUsuario = nomeUsuario;
         return this;
     }
 }

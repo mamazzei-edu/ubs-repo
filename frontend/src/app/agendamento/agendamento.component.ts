@@ -23,6 +23,7 @@ import { MedicoService } from '../service/medico.service';
 import { Agendamento, AgendamentoRequest, StatusAgendamento, TIPOS_CONSULTA } from '../model/agendamento.model';
 import { Paciente } from '../model/paciente.model';
 import { Medico } from '../model/medico.model';
+import { mensagemDoErro } from '../core/api';
 
 export const MY_FORMATS = {
   parse: { dateInput: 'DD/MM/YYYY' },
@@ -222,7 +223,8 @@ export class AgendamentoComponent implements OnInit, AfterViewInit {
                 });
                 this.carregarAgendamentos();
               },
-              error: () => this.mostrarMensagem('Erro ao criar agendamento.')
+              // O backend devolve o motivo (horário no passado, médico inativo...).
+              error: (err) => this.mostrarMensagem(mensagemDoErro(err, 'Erro ao criar agendamento.'))
             });
           } else {
             this.mostrarMensagem('Horário indisponível. Escolha outro horário.');

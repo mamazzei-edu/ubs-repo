@@ -51,10 +51,13 @@
 			<artifactId>thymeleaf-extras-springsecurity6</artifactId>
 		</dependency>
 
+		<!-- Bean Validation: o starter traz a API E a implementacao
+		     (Hibernate Validator). Sem ele, as anotacoes @NotBlank/@Email
+		     compilam mas sao ignoradas em tempo de execucao. A versao e
+		     gerenciada pelo parent do Spring Boot. -->
 		<dependency>
-    		<groupId>jakarta.validation</groupId>
-    		<artifactId>jakarta.validation-api</artifactId>
-    		<version>3.0.2</version> <!-- Or the latest stable version -->
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
 
 		<!-- dependency>
