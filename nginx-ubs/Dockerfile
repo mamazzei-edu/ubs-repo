@@ -30,6 +30,19 @@ COPY nginx-ubs/default.conf.template /etc/nginx/templates/default.conf.template
 # Script de partida: regera index.html e config.js a partir das variaveis.
 COPY --chmod=0755 nginx-ubs/30-configura-app.sh /docker-entrypoint.d/30-configura-app.sh
 
+# Remove eventuais finais de linha do Windows (CRLF) dos dois arquivos de
+# texto acima. Um clone feito no Windows traz CRLF, e um script com CRLF tem
+# o shebang "#!/bin/sh\r": o kernel procura o interpretador "/bin/sh\r", nao
+# encontra, e a partida falha com "30-configura-app.sh: not found".
+# O .gitattributes da raiz evita a conversao no clone; este passo garante a
+# imagem correta mesmo a partir de um clone antigo ou de um editor que
+# tenha gravado CRLF.
+RUN tr -d '\r' < /docker-entrypoint.d/30-configura-app.sh > /tmp/configura-app.sh \
+    && mv /tmp/configura-app.sh /docker-entrypoint.d/30-configura-app.sh \
+    && chmod 0755 /docker-entrypoint.d/30-configura-app.sh \
+    && tr -d '\r' < /etc/nginx/templates/default.conf.template > /tmp/default.conf \
+    && mv /tmp/default.conf /etc/nginx/templates/default.conf.template
+
 # Conteudo estatico do build. O Angular 20 (@angular/build:application) grava
 # a saida em dist/<nome-do-projeto>/browser -> dist/frontend/browser.
 COPY frontend/dist/*/browser/ /usr/share/nginx/html/
