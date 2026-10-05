@@ -1,0 +1,46 @@
+# =============================================================================
+# Normalizacao de finais de linha.
+#
+# Sem este arquivo, o Git for Windows (core.autocrlf=true, que e o padrao)
+# grava os arquivos com CRLF ao clonar. Um script de shell com CRLF tem o
+# shebang "#!/bin/sh\r": dentro do container o kernel procura o interpretador
+# "/bin/sh\r", nao encontra, e a partida falha com
+#
+#     /docker-entrypoint.d/30-configura-app.sh: not found
+#
+# Depois de alterar este arquivo, renormalize o que ja esta versionado:
+#     git add --renormalize .
+#     git commit -m "Normaliza finais de linha"
+# =============================================================================
+
+# Padrao: o Git decide o que e texto e guarda sempre com LF no repositorio.
+* text=auto
+
+# Estes SEMPRE com LF na extracao, em qualquer sistema operacional,
+# porque sao lidos dentro de containers Linux.
+*.sh           text eol=lf
+*.template     text eol=lf
+*.conf         text eol=lf
+*.yaml         text eol=lf
+*.yml          text eol=lf
+Dockerfile     text eol=lf
+*.Dockerfile   text eol=lf
+.env.example   text eol=lf
+mvnw           text eol=lf
+gradlew        text eol=lf
+
+# Scripts do Windows: sempre CRLF.
+*.ps1          text eol=crlf
+*.bat          text eol=crlf
+*.cmd          text eol=crlf
+
+# Binarios: nunca converter.
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.gif   binary
+*.ico   binary
+*.pdf   binary
+*.jar   binary
+*.woff  binary
+*.woff2 binary
