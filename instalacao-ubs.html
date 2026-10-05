@@ -1,0 +1,846 @@
+<title>Instalação do Projeto UBS</title>
+<link rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@500;600&display=swap">
+<style>
+  /* Layout: coluna única de leitura, passos numerados ancorados numa trilha à
+     esquerda; blocos de comando rolam sozinhos e nunca empurram a página. */
+  :root {
+    --bg: #f7f8f7;
+    --surface: #ffffff;
+    --surface-2: #eef2f1;
+    --fg: #15201e;
+    --fg-muted: #576662;
+    --line: #d7e0dd;
+    --accent: #0c7f6e;
+    /* o verde-água da própria interface do UBS */
+    --accent-soft: #e2f2ef;
+    --warn: #8a5a00;
+    --warn-soft: #fdf3dd;
+    --warn-line: #e8cf99;
+    --code-bg: #10201d;
+    --code-fg: #e7efec;
+    --code-dim: #7f9a93;
+
+    --display: "IBM Plex Serif", Georgia, "Times New Roman", serif;
+    --body: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0e1513;
+      --surface: #161f1d;
+      --surface-2: #1d2a27;
+      --fg: #e8efed;
+      --fg-muted: #9bada8;
+      --line: #2a3835;
+      --accent: #58c9b4;
+      --accent-soft: #12332d;
+      --warn: #e8bd6a;
+      --warn-soft: #2e2512;
+      --warn-line: #5a4719;
+      --code-bg: #0a1210;
+      --code-fg: #dce8e4;
+      --code-dim: #6d857f;
+      color-scheme: dark;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #0e1513;
+    --surface: #161f1d;
+    --surface-2: #1d2a27;
+    --fg: #e8efed;
+    --fg-muted: #9bada8;
+    --line: #2a3835;
+    --accent: #58c9b4;
+    --accent-soft: #12332d;
+    --warn: #e8bd6a;
+    --warn-soft: #2e2512;
+    --warn-line: #5a4719;
+    --code-bg: #0a1210;
+    --code-fg: #dce8e4;
+    --code-dim: #6d857f;
+    color-scheme: dark;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--body);
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .pagina {
+    max-width: 50rem;
+    margin-inline: auto;
+    padding-inline: 20px;
+    padding-block: 3rem 5rem;
+  }
+
+  /* ---------- cabeçalho ---------- */
+  .cabecalho {
+    border-bottom: 2px solid var(--fg);
+    padding-bottom: 1.75rem;
+  }
+
+  .eyebrow {
+    font-size: .72rem;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 0 0 .6rem;
+  }
+
+  h1 {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: clamp(2rem, 6vw, 2.9rem);
+    line-height: 1.1;
+    margin: 0;
+    text-wrap: balance;
+    letter-spacing: -.015em;
+  }
+
+  .resumo {
+    color: var(--fg-muted);
+    font-size: 1.06rem;
+    margin: 1rem 0 0;
+    max-width: 42rem;
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem 1.5rem;
+    margin-top: 1.5rem;
+    font-size: .85rem;
+    color: var(--fg-muted);
+  }
+
+  .meta b {
+    color: var(--fg);
+    font-weight: 600;
+  }
+
+  /* ---------- seções ---------- */
+  h2 {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 1.45rem;
+    margin: 3.5rem 0 1rem;
+    line-height: 1.25;
+    text-wrap: balance;
+  }
+
+  h3 {
+    font-size: .95rem;
+    font-weight: 600;
+    margin: 2rem 0 .6rem;
+    letter-spacing: .01em;
+  }
+
+  p {
+    margin: 0 0 1rem;
+  }
+
+  a {
+    color: var(--accent);
+  }
+
+  a:focus-visible,
+  button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 3px;
+  }
+
+  /* ---------- passos ---------- */
+  .passo {
+    display: grid;
+    grid-template-columns: 2.6rem 1fr;
+    gap: 0 1.1rem;
+    margin-top: 3.25rem;
+  }
+
+  .passo-num {
+    font-family: var(--mono);
+    font-size: .95rem;
+    font-weight: 500;
+    color: var(--accent);
+    background: var(--accent-soft);
+    border-radius: 999px;
+    width: 2.2rem;
+    height: 2.2rem;
+    display: grid;
+    place-items: center;
+    margin-top: .15rem;
+  }
+
+  .passo>h2 {
+    margin: 0;
+    grid-column: 2;
+    align-self: center;
+  }
+
+  .passo-corpo {
+    grid-column: 2;
+    margin-top: .9rem;
+    min-width: 0;
+  }
+
+  @media (max-width: 480px) {
+    .passo {
+      grid-template-columns: 1fr;
+      gap: .75rem;
+    }
+
+    .passo>h2,
+    .passo-corpo {
+      grid-column: 1;
+    }
+  }
+
+  /* ---------- código ---------- */
+  .bloco {
+    position: relative;
+    margin: 1.1rem 0 1.3rem;
+  }
+
+  pre {
+    background: var(--code-bg);
+    color: var(--code-fg);
+    font-family: var(--mono);
+    font-size: .845rem;
+    line-height: 1.7;
+    padding: 1rem 1.1rem;
+    margin: 0;
+    border-radius: 8px;
+    overflow-x: auto;
+    white-space: pre;
+  }
+
+  pre .c {
+    color: var(--code-dim);
+  }
+
+  code {
+    font-family: var(--mono);
+    font-size: .86em;
+    background: var(--surface-2);
+    padding: .12em .35em;
+    border-radius: 4px;
+  }
+
+  .copiar {
+    position: absolute;
+    top: .55rem;
+    right: .55rem;
+    font: 500 .72rem/1 var(--body);
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: var(--code-dim);
+    background: transparent;
+    border: 1px solid currentColor;
+    border-radius: 5px;
+    padding: .38rem .55rem;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity .15s, color .15s;
+  }
+
+  .bloco:hover .copiar,
+  .copiar:focus-visible {
+    opacity: 1;
+  }
+
+  .copiar:hover {
+    color: var(--code-fg);
+  }
+
+  .copiar[data-ok="1"] {
+    color: var(--accent);
+    opacity: 1;
+  }
+
+  @media (hover: none) {
+    .copiar {
+      opacity: 1;
+    }
+  }
+
+  /* ---------- avisos ---------- */
+  .aviso {
+    background: var(--warn-soft);
+    border: 1px solid var(--warn-line);
+    border-radius: 8px;
+    padding: .9rem 1.1rem;
+    margin: 1.2rem 0;
+    font-size: .94rem;
+  }
+
+  .aviso b {
+    color: var(--warn);
+  }
+
+  .aviso p:last-child {
+    margin-bottom: 0;
+  }
+
+  .nota {
+    border-left: 3px solid var(--accent);
+    background: var(--accent-soft);
+    border-radius: 0 8px 8px 0;
+    padding: .85rem 1.1rem;
+    margin: 1.2rem 0;
+    font-size: .94rem;
+  }
+
+  .nota p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* ---------- tabelas ---------- */
+  .rolagem {
+    overflow-x: auto;
+    margin: 1.2rem 0;
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: .92rem;
+  }
+
+  th,
+  td {
+    text-align: left;
+    padding: .6rem .8rem;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+
+  th {
+    font-size: .74rem;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+    font-weight: 600;
+    border-bottom-color: var(--fg-muted);
+  }
+
+  td:first-child {
+    white-space: nowrap;
+  }
+
+  .num {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ---------- credenciais ---------- */
+  .credenciais {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 1.1rem 1.25rem;
+    margin: 1.2rem 0;
+    display: grid;
+    gap: .55rem;
+  }
+
+  .credenciais dl {
+    display: grid;
+    grid-template-columns: 5.5rem 1fr;
+    gap: .35rem .8rem;
+    margin: 0;
+  }
+
+  .credenciais dt {
+    color: var(--fg-muted);
+    font-size: .9rem;
+  }
+
+  .credenciais dd {
+    margin: 0;
+    font-family: var(--mono);
+    font-size: .9rem;
+  }
+
+  ul,
+  ol {
+    margin: 0 0 1rem;
+    padding-left: 1.3rem;
+  }
+
+  li {
+    margin-bottom: .45rem;
+  }
+
+  li>ul {
+    margin-top: .45rem;
+  }
+
+  .rodape {
+    margin-top: 4rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line);
+    color: var(--fg-muted);
+    font-size: .88rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      transition: none !important;
+      animation: none !important;
+    }
+  }
+</style>
+
+<div class="pagina">
+
+  <header class="cabecalho">
+    <p class="eyebrow">Guia de instalação</p>
+    <h1>Projeto UBS</h1>
+    <p class="resumo">
+      Sistema de cadastro e agendamento para Unidade Básica de Saúde, com backend
+      Spring Boot, frontend Angular e banco MySQL, todos em contêineres Docker.
+      Este roteiro leva da clonagem do repositório até a aplicação no ar.
+    </p>
+    <p class="meta">
+      <span><b>Tempo</b> 15 a 25 minutos</span>
+      <span><b>Maior parte</b> esperando downloads</span>
+      <span><b>Requer</b> Docker e Node.js</span>
+    </p>
+  </header>
+
+  <!-- 1 -->
+  <section class="passo">
+    <div class="passo-num">1</div>
+    <h2>Instalar os pré-requisitos</h2>
+    <div class="passo-corpo">
+      <div class="rolagem">
+        <table>
+          <thead>
+            <tr>
+              <th>Programa</th>
+              <th>Versão</th>
+              <th>Para quê</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><b>Git</b></td>
+              <td>qualquer recente</td>
+              <td>clonar o repositório</td>
+            </tr>
+            <tr>
+              <td><b>Docker Desktop</b></td>
+              <td>com Compose v2</td>
+              <td>executar os contêineres</td>
+            </tr>
+            <tr>
+              <td><b>Node.js</b></td>
+              <td class="num">20.19+ ou 22.12+</td>
+              <td>compilar o frontend Angular</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        Java e Maven não são necessários: o backend é compilado dentro da própria
+        imagem Docker. Confira a instalação:
+      </p>
+      <div class="bloco">
+        <pre>git --version
+docker --version
+docker compose version
+node --version</pre>
+      </div>
+      <p>
+        O Docker Desktop precisa estar <b>em execução</b> antes dos passos 5 e 6.
+      </p>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section class="passo">
+    <div class="passo-num">2</div>
+    <h2>Clonar o repositório</h2>
+    <div class="passo-corpo">
+      <div class="bloco">
+        <pre>git clone https://github.com/mamazzei-edu/ubs-repo.git
+cd ubs-repo
+git fetch --all
+git switch feat/nginx-usb-8081
+</pre>
+      </div>
+      <p>
+        Todos os comandos seguintes partem desta pasta, salvo quando indicado o
+        contrário.
+      </p>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section class="passo">
+    <div class="passo-num">3</div>
+    <h2>Criar o arquivo <code>.env</code></h2>
+    <div class="passo-corpo">
+      <p>
+        É o passo mais importante. O <code>.env</code> guarda as senhas e por isso
+        não vai para o repositório — <b>sem ele nada funciona</b>. O repositório traz
+        um modelo pronto:
+      </p>
+      <div class="bloco">
+        <pre><span class="c"># Linux / macOS</span>
+cp .env.example .env
+
+<span class="c"># Windows</span>
+copy .env.example .env</pre>
+      </div>
+      <p>
+        Abra o <code>.env</code> num editor de texto e substitua os quatro valores
+        marcados com <code>ALTERAR</code>. O próprio arquivo explica cada variável.
+      </p>
+
+      <div class="aviso">
+        <p><b>Quatro armadilhas que derrubam a partida:</b></p>
+        <ul>
+          <li>
+            <code>SECURITY_JWT_SECRET_KEY</code> precisa de <b>no mínimo 64
+              caracteres</b> aleatórios. Chave curta impede o backend de subir.
+          </li>
+          <li>
+            <code>DB_USER</code> <b>não pode ser <code>root</code></b> — a imagem
+            oficial do MySQL recusa subir nesse caso.
+          </li>
+          <li>
+            <code>SPRING_DATASOURCE_PASSWORD</code> tem que ser <b>igual</b> a
+            <code>DB_ROOT_PASSWORD</code>: o backend conecta como <code>root</code>.
+          </li>
+          <li>
+            Sem espaços em volta do <code>=</code> e sem aspas nos valores.
+          </li>
+        </ul>
+      </div>
+
+      <h3>Gerar a chave JWT</h3>
+      <div class="bloco">
+        <pre><span class="c"># Linux / macOS</span>
+openssl rand -base64 64 | tr -d '\n='
+
+<span class="c"># Windows PowerShell</span>
+-join ((48..57)+(65..90)+(97..122) | Get-Random -Count 72 | ForEach-Object {[char]$_})</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section class="passo">
+    <div class="passo-num">4</div>
+    <h2>Ajustar os caminhos públicos</h2>
+    <div class="passo-corpo">
+      <p>
+        A aplicação responde sob um prefixo, definido por duas variáveis do
+        <code>.env</code>. Os valores padrão são <code>/ubs</code> e
+        <code>/ubs-api</code>; use-os como estão se não houver motivo para mudar.
+      </p>
+      <p>
+        <b>Se você alterar esses valores</b>, dois arquivos do frontend precisam
+        acompanhar. Eles valem apenas para o modo de desenvolvimento — o contêiner
+        lê os caminhos direto do <code>.env</code>.
+      </p>
+
+      <h3><code>frontend/angular.json</code> — com barra no final</h3>
+      <div class="bloco">
+        <pre>"baseHref": "/ubs/",
+...
+"servePath": "/ubs/",</pre>
+      </div>
+
+      <h3><code>frontend/proxy.conf.json</code> — sem barra no final</h3>
+      <div class="bloco">
+        <pre>{
+  "/ubs-api": {
+    "target": "http://localhost:8080",
+    "secure": false,
+    "changeOrigin": true
+  }
+}</pre>
+      </div>
+
+      <div class="nota">
+        <p>
+          Os três valores — <code>.env</code>, <code>angular.json</code> e
+          <code>proxy.conf.json</code> — precisam combinar. Divergência entre eles é
+          a causa mais comum de “a tela abre em branco” e “o login não responde”.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section class="passo">
+    <div class="passo-num">5</div>
+    <h2>Compilar o frontend</h2>
+    <div class="passo-corpo">
+      <p>
+        O contêiner do Nginx <b>copia o resultado da compilação</b>; ele não compila
+        o Angular. Por isso este passo vem antes de subir os contêineres.
+      </p>
+      <div class="bloco">
+        <pre>cd frontend
+npm ci
+npm run build
+cd ..</pre>
+      </div>
+      <p>
+        A compilação cria a pasta <code>frontend/dist/frontend/browser</code>. Se ela
+        não existir, o passo 6 falha com erro de <code>COPY</code>. Repita este passo
+        sempre que alterar o código do frontend.
+      </p>
+    </div>
+  </section>
+
+  <!-- 6 -->
+  <section class="passo">
+    <div class="passo-num">6</div>
+    <h2>Subir a aplicação</h2>
+    <div class="passo-corpo">
+      <div class="bloco">
+        <pre>docker compose up -d --build</pre>
+      </div>
+      <p>
+        A primeira execução baixa as imagens e compila o backend — pode levar vários
+        minutos. Acompanhe até aparecer
+        <code>Started BackendApplication in … seconds</code>:
+      </p>
+      <div class="bloco">
+        <pre>docker compose ps
+docker compose logs -f backend</pre>
+      </div>
+      <p>
+        <code>Ctrl+C</code> encerra o acompanhamento sem derrubar os contêineres.
+      </p>
+    </div>
+  </section>
+
+  <!-- 7 -->
+  <section class="passo">
+    <div class="passo-num">7</div>
+    <h2>Acessar e entrar</h2>
+    <div class="passo-corpo">
+      <p>
+        Abra o navegador em <code>http://localhost:8081/ubs/</code>, trocando
+        <code>/ubs</code> pelo valor que você usou em <code>FRONT_BASE_PATH</code>.
+        A raiz <code>http://localhost:8081/</code> redireciona para lá
+        automaticamente.
+      </p>
+
+      <div class="credenciais">
+        <dl>
+          <dt>E-mail</dt>
+          <dd>super.admin@email.com</dd>
+          <dt>Senha</dt>
+          <dd>123456</dd>
+        </dl>
+      </div>
+      <p>
+        Esse usuário é criado automaticamente na primeira partida do backend.
+      </p>
+
+      <div class="aviso">
+        <p>
+          <b>Troque esta senha antes de usar o sistema com dados reais.</b>
+          Ela está escrita no código-fonte e é pública.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <h2>Comandos do dia a dia</h2>
+  <div class="bloco">
+    <pre><span class="c"># Parar e religar (os dados do banco são preservados)</span>
+docker compose stop
+docker compose start
+
+<span class="c"># Derrubar os contêineres, mantendo os dados</span>
+docker compose down
+
+<span class="c"># Ver o que está rodando / logs de um serviço</span>
+docker compose ps
+docker compose logs -f backend
+
+<span class="c"># Depois de alterar o código do FRONTEND</span>
+cd frontend &amp;&amp; npm run build &amp;&amp; cd ..
+docker compose build nginx-ubs &amp;&amp; docker compose up -d nginx-ubs
+
+<span class="c"># Depois de alterar o código do BACKEND</span>
+docker compose build backend &amp;&amp; docker compose up -d backend
+
+<span class="c"># Depois de alterar APENAS os caminhos no .env (sem recompilar nada)</span>
+docker compose up -d
+
+<span class="c"># APAGAR o banco e recomeçar do zero — perde todos os dados</span>
+docker compose down -v</pre>
+  </div>
+
+  <h2>Portas utilizadas</h2>
+  <div class="rolagem">
+    <table>
+      <thead>
+        <tr>
+          <th>Porta</th>
+          <th>Serviço</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="num">8081</td>
+          <td>Nginx — é por aqui que a aplicação é acessada</td>
+        </tr>
+        <tr>
+          <td class="num">8080</td>
+          <td>Backend Spring Boot</td>
+        </tr>
+        <tr>
+          <td class="num">3306</td>
+          <td>MySQL</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p>
+    Se alguma delas já estiver ocupada — é comum haver um MySQL local na 3306 —,
+    altere o lado esquerdo do mapeamento no <code>compose.yaml</code>:
+  </p>
+  <div class="bloco">
+    <pre>    ports:
+      - "3307:3306"</pre>
+  </div>
+  <p>
+    Só o lado de fora muda. A configuração do backend continua apontando para
+    <code>mysql_server:3306</code>, que é o endereço interno da rede do Docker.
+  </p>
+
+  <h2>Se algo der errado</h2>
+
+  <h3>O backend reinicia sem parar</h3>
+  <p>Rode <code>docker compose logs backend</code> e procure:</p>
+  <ul>
+    <li>
+      <code>Communications link failure</code> — a <code>SPRING_DATASOURCE_URL</code>
+      não aponta para <code>mysql_server:3306</code>, ou a senha não confere com
+      <code>DB_ROOT_PASSWORD</code>.
+    </li>
+    <li>
+      erro de chave fraca — <code>SECURITY_JWT_SECRET_KEY</code> curta demais.
+    </li>
+  </ul>
+
+  <h3>A página abre em branco, ou os arquivos <code>.js</code> dão 404</h3>
+  <p>
+    Os caminhos não estão combinando. Confira <code>FRONT_BASE_PATH</code> no
+    <code>.env</code> e o <code>baseHref</code> no <code>angular.json</code>, e
+    lembre que a URL precisa terminar com barra: <code>/ubs/</code>, não
+    <code>/ubs</code>.
+  </p>
+
+  <h3>A tela abre mas o login não responde</h3>
+  <p>
+    Abra o console do navegador com <code>F12</code>. Erro de CORS significa que o
+    endereço usado não está em <code>LISTA_HOSTS</code>. Erro 404 nas chamadas
+    significa que <code>API_BASE_PATH</code> não está combinando entre o
+    <code>.env</code> e o <code>proxy.conf.json</code>.
+  </p>
+
+  <h3><code>docker compose up</code> falha no <code>COPY frontend/dist</code></h3>
+  <p>
+    O passo 5 não foi executado, ou falhou. Rode <code>npm run build</code> dentro de
+    <code>frontend</code> e confira se a pasta
+    <code>frontend/dist/frontend/browser</code> existe.
+  </p>
+
+  <h3>Porta já em uso</h3>
+  <p>
+    Mensagem <code>bind: address already in use</code>. Veja a seção de portas acima.
+  </p>
+
+  <h2>Trabalhar no código (opcional)</h2>
+  <p>
+    Para mexer no frontend com recarga automática, sem reconstruir a imagem a cada
+    alteração:
+  </p>
+  <div class="bloco">
+    <pre><span class="c"># Terminal 1 — sobe só o backend e o banco</span>
+docker compose up -d backend mysql_server
+
+<span class="c"># Terminal 2 — servidor de desenvolvimento do Angular</span>
+cd frontend
+npm start</pre>
+  </div>
+  <p>
+    A aplicação fica em <code>http://localhost:4200/ubs/</code>, e o
+    <code>proxy.conf.json</code> encaminha as chamadas da API para o backend na 8080.
+  </p>
+
+  <p class="rodape">
+    Repositório:
+    <a href="https://github.com/mamazzei-edu/ubs-repo" target="_blank"
+      rel="noopener">github.com/mamazzei-edu/ubs-repo</a>
+  </p>
+
+</div>
+
+<script>
+  // Botão de copiar em cada bloco de comando. O texto copiado ignora os
+  // comentários marcados, para o comando colar limpo no terminal.
+  document.querySelectorAll('.bloco').forEach(function (bloco) {
+    var pre = bloco.querySelector('pre');
+    if (!pre) return;
+
+    var botao = document.createElement('button');
+    botao.type = 'button';
+    botao.className = 'copiar';
+    botao.textContent = 'Copiar';
+    botao.setAttribute('aria-label', 'Copiar comandos');
+
+    botao.addEventListener('click', function () {
+      var texto = pre.innerText;
+      var confirmar = function (ok) {
+        botao.textContent = ok ? 'Copiado' : 'Selecionado';
+        botao.dataset.ok = '1';
+        setTimeout(function () {
+          botao.textContent = 'Copiar';
+          delete botao.dataset.ok;
+        }, 1800);
+      };
+      try {
+        navigator.clipboard.writeText(texto).then(function () {
+          confirmar(true);
+        }, function () {
+          selecionar(pre);
+          confirmar(false);
+        });
+      } catch (e) {
+        selecionar(pre);
+        confirmar(false);
+      }
+    });
+
+    bloco.appendChild(botao);
+  });
+
+  function selecionar(elemento) {
+    try {
+      var intervalo = document.createRange();
+      intervalo.selectNodeContents(elemento);
+      var selecao = window.getSelection();
+      selecao.removeAllRanges();
+      selecao.addRange(intervalo);
+    } catch (e) { /* sem seleção disponível */ }
+  }
+</script>
