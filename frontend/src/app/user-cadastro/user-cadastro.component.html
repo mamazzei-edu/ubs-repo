@@ -59,6 +59,9 @@
           <button type="button" class="btn-close" (click)="fecharModal()"></button>
         </div>
         <div class="modal-body">
+          <div class="alert alert-danger" role="alert" *ngIf="erroModal">
+            {{ erroModal }}
+          </div>
           <form (ngSubmit)="atualizarUsuario()" #form="ngForm">
             <div class="row g-3">
               <div class="col-md-12">
@@ -128,6 +131,9 @@
           <button type="button" class="btn-close" (click)="fecharModal()"></button>
         </div>
         <div class="modal-body">
+          <div class="alert alert-danger" role="alert" *ngIf="erroModal">
+            {{ erroModal }}
+          </div>
           <form (ngSubmit)="salvarUsuario()" #form="ngForm">
             <div class="row g-3">
               <div class="col-md-12">

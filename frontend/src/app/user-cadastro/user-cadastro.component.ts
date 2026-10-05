@@ -17,6 +17,15 @@ export class UserCadastroComponent implements OnInit {
   usuarios: any[] = [];
   roles: Role[] = [];
   mensagem: string = '';
+
+  /**
+   * Erro exibido DENTRO do modal aberto.
+   *
+   * Separado de "mensagem" porque esta última é renderizada na área da
+   * listagem, atrás do modal: um erro gravado ali ficava invisível justamente
+   * quando o usuário mais precisava dele — com o formulário ainda na tela.
+   */
+  erroModal: string = '';
   pesquisaId: string = '';
   usuarioSelecionado: any = null;
   mostrarModalEditar: boolean = false;
@@ -110,6 +119,7 @@ export class UserCadastroComponent implements OnInit {
   }
 
   abrirModalEditar(usuario: any): void {
+    this.erroModal = '';
     this.usuarioSelecionado = { ...usuario };
     this.roleSelecionado = this.roles.find(role => role.id === this.usuarioSelecionado.role?.id) || undefined;
     // A senha fica em branco: deixar assim mantém a atual (ver UserService).
@@ -119,6 +129,7 @@ export class UserCadastroComponent implements OnInit {
 
   abrirModalCadastro(): void {
     // Limpa o formulário: sem isto, o modal reabria com o que sobrou do anterior.
+    this.erroModal = '';
     this.fullName = '';
     this.matricula = '';
     this.email = '';
@@ -132,6 +143,7 @@ export class UserCadastroComponent implements OnInit {
   }
 
   fecharModal(): void {
+    this.erroModal = '';
     this.mostrarModalCadastro = false;
     this.mostrarModalEditar = false;
     this.usuarioSelecionado = null;
@@ -154,7 +166,8 @@ export class UserCadastroComponent implements OnInit {
         this.carregarUsuarios();
       },
       error: (erro) => {
-        this.mensagem = this.mensagemDeErro(erro, 'Erro ao atualizar usuario.');
+        // No modal, e não em "mensagem": o modal continua aberto depois do erro.
+        this.erroModal = this.mensagemDeErro(erro, 'Erro ao atualizar usuário.');
       }
     });
   }
@@ -180,13 +193,30 @@ export class UserCadastroComponent implements OnInit {
         this.mensagem = 'Usuário cadastrado com sucesso.';
       },
       error: (erro) => {
-        this.mensagem = this.mensagemDeErro(erro, 'Erro ao cadastrar usuário.');
+        // No modal, e não em "mensagem": o modal continua aberto depois do erro.
+        this.erroModal = this.mensagemDeErro(erro, 'Erro ao cadastrar usuário.');
       }
     });
   }
 
-  /** O backend devolve ProblemDetail; o campo detail traz a causa real. */
+  /**
+   * O backend devolve ProblemDetail (RFC 7807): "detail" traz a causa já em
+   * texto corrido e "erros" o mapa campo -> mensagem, quando a recusa veio de
+   * Bean Validation. Usamos o detail; os campos ficam como reserva para o caso
+   * de uma resposta sem detail.
+   */
   private mensagemDeErro(erro: any, padrao: string): string {
-    return erro?.error?.detail || padrao;
+    const detalhe = erro?.error?.detail;
+    if (detalhe) {
+      return detalhe;
+    }
+    const campos = erro?.error?.erros;
+    if (campos && typeof campos === 'object') {
+      const mensagens = Object.values(campos).filter(Boolean);
+      if (mensagens.length) {
+        return mensagens.join(' ');
+      }
+    }
+    return padrao;
   }
 }

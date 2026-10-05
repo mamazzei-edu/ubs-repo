@@ -26,8 +26,13 @@ public class Medico {
     @Column(nullable = false)
     private String especialidade;
     
+    // Última barreira, já no INSERT. A validação de verdade (formato + sigla
+    // de um estado existente) é feita por ValidaCRM, em UserService, antes de
+    // chegar aqui — lá a recusa vira 400 com mensagem para o usuário.
+    // A mensagem abaixo descreve o que esta anotação realmente verifica: a
+    // anterior dizia "formato válido", mas @Size só mede o comprimento.
     @NotBlank(message = "CRM é obrigatório")
-    @Size(min = 6, max = 9, message = "CRM deve ter formato válido (ex: 12345SP)")
+    @Size(min = 6, max = 9, message = "CRM deve ter entre 6 e 9 caracteres, no formato 12345SP")
     @Column(nullable = false, unique = true)
     private String crm;
     

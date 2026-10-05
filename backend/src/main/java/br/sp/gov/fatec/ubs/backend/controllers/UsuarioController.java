@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import br.sp.gov.fatec.ubs.backend.dtos.UsuarioDto;
 import br.sp.gov.fatec.ubs.backend.services.UserService;
 
+import jakarta.validation.Valid;
+
 import java.util.List;
 
 /**
@@ -42,13 +44,13 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public ResponseEntity<UsuarioDto> criarUsuario(@RequestBody UsuarioDto usuario) {
+    public ResponseEntity<UsuarioDto> criarUsuario(@Valid @RequestBody UsuarioDto usuario) {
         return new ResponseEntity<>(userService.salvarUsuario(usuario, null), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<UsuarioDto> atualizarUsuario(@PathVariable Long id,
-            @RequestBody UsuarioDto usuario) {
+            @Valid @RequestBody UsuarioDto usuario) {
         UsuarioDto salvo = userService.salvarUsuario(usuario, id);
         if (salvo == null) {
             return ResponseEntity.notFound().build();

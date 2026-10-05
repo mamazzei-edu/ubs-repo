@@ -1,6 +1,8 @@
 package br.sp.gov.fatec.ubs.backend.dtos;
 
 import br.sp.gov.fatec.ubs.backend.model.Role;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Size;
 
 /**
  * Contrato da tela de cadastro de usuários.
@@ -15,9 +17,15 @@ import br.sp.gov.fatec.ubs.backend.model.Role;
 public class UsuarioDto {
 
     private Integer id;
+
+    @Size(max = 100, message = "O nome completo deve ter no máximo 100 caracteres.")
     private String fullName;
+
     private String matricula;
+
+    @Email(message = "Informe um e-mail válido.")
     private String email;
+
     private String username;
 
     /**
@@ -30,7 +38,10 @@ public class UsuarioDto {
 
     // ---- específicos da função MEDICO ----
     private String crm;
+
+    @Size(min = 2, max = 50, message = "A especialidade deve ter entre 2 e 50 caracteres.")
     private String especialidade;
+
     private String telefone;
     private Boolean ativo;
 

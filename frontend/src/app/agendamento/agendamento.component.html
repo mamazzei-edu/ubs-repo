@@ -36,9 +36,9 @@
         <mat-error *ngIf="agendamentoForm.get('dataConsulta')?.hasError('required')">Data é obrigatória</mat-error>
       </mat-form-field>
       <mat-form-field appearance="outline">
-        <mat-label>Hora da Consulta</mat-label>
-        <input matInput type="time" formControlName="horaConsulta" required />
-        <mat-error *ngIf="agendamentoForm.get('horaConsulta')?.hasError('required')">Hora é obrigatória</mat-error>
+        <mat-label>Hora da Consulta (opcional)</mat-label>
+        <input matInput type="time" formControlName="horaConsulta" />
+        <mat-hint>Em branco, o agendamento fica com o horário a definir</mat-hint>
       </mat-form-field>
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Observações</mat-label>
@@ -82,7 +82,7 @@
       <table mat-table [dataSource]="dataSource" class="mat-elevation-z2">
         <ng-container matColumnDef="paciente"><th mat-header-cell *matHeaderCellDef>Paciente</th><td mat-cell *matCellDef="let ag"> {{ ag.paciente?.nomeCompleto || 'N/A' }} </td></ng-container>
         <ng-container matColumnDef="medico"><th mat-header-cell *matHeaderCellDef>Médico</th><td mat-cell *matCellDef="let ag"> {{ ag.medico?.nomeCompleto || 'N/A' }} </td></ng-container>
-        <ng-container matColumnDef="dataHora"><th mat-header-cell *matHeaderCellDef>Data e Hora</th><td mat-cell *matCellDef="let ag"> {{ formatarDataHora(ag.dataHoraConsulta) }} </td></ng-container>
+        <ng-container matColumnDef="dataHora"><th mat-header-cell *matHeaderCellDef>Data e Hora</th><td mat-cell *matCellDef="let ag"> {{ formatarDataHora(ag.dataHoraConsulta, ag.horarioDefinido) }} </td></ng-container>
         <ng-container matColumnDef="tipoConsulta"><th mat-header-cell *matHeaderCellDef>Tipo</th><td mat-cell *matCellDef="let ag"> {{ ag.tipoConsulta }} </td></ng-container>
         <ng-container matColumnDef="status"><th mat-header-cell *matHeaderCellDef>Status</th><td mat-cell *matCellDef="let ag"><mat-chip-listbox><mat-chip [color]="getStatusColor(ag.status)" selected>{{ ag.status }}</mat-chip></mat-chip-listbox></td></ng-container>
         <ng-container matColumnDef="acoes">

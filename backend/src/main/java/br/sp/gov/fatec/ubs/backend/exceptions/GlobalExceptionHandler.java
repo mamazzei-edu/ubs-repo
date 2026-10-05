@@ -1,9 +1,18 @@
 package br.sp.gov.fatec.ubs.backend.exceptions;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ProblemDetail;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AccountStatusException;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -14,6 +23,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import io.jsonwebtoken.JwtException;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
@@ -67,6 +78,67 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     public ProblemDetail handleArgumento(IllegalArgumentException ex) {
         return problema(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
+
+    /**
+     * Violação de Bean Validation disparada FORA do controlador — tipicamente
+     * pelo Hibernate, no momento do INSERT/UPDATE (o "during persist time" do
+     * log). Sem este tratamento a exceção caía no handler genérico de Exception
+     * e virava um 500 "Erro interno do servidor", escondendo da tela o motivo
+     * real da recusa.
+     *
+     * A resposta passa a ser 400 com as mensagens das anotações no campo
+     * "detail" (que é o que o frontend exibe) e, em "erros", o mapa
+     * campo -> mensagem, para quem quiser destacar o campo no formulário.
+     */
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ProblemDetail handleViolacoes(ConstraintViolationException ex) {
+        Map<String, String> erros = new LinkedHashMap<>();
+        for (ConstraintViolation<?> violacao : ex.getConstraintViolations()) {
+            erros.merge(violacao.getPropertyPath().toString(),
+                    violacao.getMessage(), (a, b) -> a + " " + b);
+        }
+
+        String detalhe = erros.isEmpty() ? "Dados inválidos."
+                : String.join(" ", erros.values());
+        log.warn("Dados inválidos: {}", detalhe);
+
+        ProblemDetail pd = problema(HttpStatus.BAD_REQUEST, detalhe);
+        pd.setProperty("erros", erros);
+        return pd;
+    }
+
+    /**
+     * Violação de @Valid no corpo da requisição.
+     *
+     * O comportamento padrão do ResponseEntityExceptionHandler devolve 400 com
+     * detail "Invalid request content.", que não diz nada a quem está
+     * preenchendo o formulário. Aqui o detail passa a trazer as mensagens dos
+     * campos recusados.
+     */
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(
+            MethodArgumentNotValidException ex, HttpHeaders headers,
+            HttpStatusCode status, WebRequest request) {
+
+        Map<String, String> erros = new LinkedHashMap<>();
+        ex.getBindingResult().getFieldErrors().forEach(
+                erro -> erros.merge(erro.getField(), mensagemDe(erro), (a, b) -> a + " " + b));
+        ex.getBindingResult().getGlobalErrors().forEach(
+                erro -> erros.merge(erro.getObjectName(), mensagemDe(erro), (a, b) -> a + " " + b));
+
+        String detalhe = erros.isEmpty() ? "Dados inválidos."
+                : String.join(" ", erros.values());
+        log.warn("Requisição inválida: {}", detalhe);
+
+        ProblemDetail pd = problema(HttpStatus.BAD_REQUEST, detalhe);
+        pd.setProperty("erros", erros);
+        return ResponseEntity.badRequest().body(pd);
+    }
+
+    private String mensagemDe(ObjectError erro) {
+        String mensagem = erro.getDefaultMessage();
+        return (mensagem == null || mensagem.isBlank()) ? "valor inválido" : mensagem;
     }
 
     // Último recurso: registra o stack trace no log e devolve 500 genérico.

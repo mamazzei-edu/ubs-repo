@@ -76,7 +76,9 @@ export class AgendamentoComponent implements OnInit, AfterViewInit {
     this.agendamentoForm = this.fb.group({
       pacienteInput: [''], pacienteId: ['', Validators.required],
       tipoConsulta: ['', Validators.required], medicoId: ['', Validators.required],
-      dataConsulta: ['', Validators.required], horaConsulta: ['', Validators.required],
+      dataConsulta: ['', Validators.required],
+      // Hora opcional: em branco, o agendamento fica sem horário definido.
+      horaConsulta: [''],
       observacoes: ['']
     });
 
@@ -264,11 +266,27 @@ export class AgendamentoComponent implements OnInit, AfterViewInit {
     }
   }
 
-  formatarDataHora(s: string): string { return new Date(s).toLocaleString('pt-BR'); }
+  /**
+   * Agendamento sem hora marcada é gravado à meia-noite; nesse caso mostramos
+   * só a data. O backend informa isso em "horarioDefinido"; a verificação da
+   * meia-noite fica como reserva para registros antigos, anteriores ao campo.
+   */
+  formatarDataHora(s: string, horarioDefinido?: boolean): string {
+    const quando = new Date(s);
+    const semHora = horarioDefinido === false
+      || (horarioDefinido === undefined
+          && quando.getHours() === 0 && quando.getMinutes() === 0);
+
+    return semHora
+      ? `${quando.toLocaleDateString('pt-BR')} — horário a definir`
+      : quando.toLocaleString('pt-BR');
+  }
   private _montarRequest(): AgendamentoRequest {
     const f = this.agendamentoForm.value;
     const dataSelecionada = new Date(f.dataConsulta);
-    const hora = f.horaConsulta;
+    // Hora em branco vira meia-noite: é assim que o backend representa um
+    // agendamento sem horário definido.
+    const hora = (f.horaConsulta || '').trim() || '00:00';
     dataSelecionada.setMinutes(dataSelecionada.getMinutes() - dataSelecionada.getTimezoneOffset());
     const dataISO = dataSelecionada.toISOString().slice(0, 10);
     const dataHoraParaBackend = `${dataISO}T${hora}`;

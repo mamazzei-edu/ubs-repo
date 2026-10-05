@@ -16,6 +16,8 @@ export interface Agendamento {
   dataHoraConsulta: string;
   status: StatusAgendamento;
   tipoConsulta: string;
+  /** false quando a hora foi deixada em branco no cadastro. Vem do backend. */
+  horarioDefinido?: boolean;
   observacoes?: string;
   createdAt?: string;
   updatedAt?: string;

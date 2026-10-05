@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import br.sp.gov.fatec.ubs.backend.dtos.RegisterUserDto;
 import br.sp.gov.fatec.ubs.backend.dtos.UsuarioDto;
 import br.sp.gov.fatec.ubs.backend.exceptions.CrmDuplicadoException;
+import br.sp.gov.fatec.ubs.backend.exceptions.ValidaCRM;
 import br.sp.gov.fatec.ubs.backend.model.Medico;
 import br.sp.gov.fatec.ubs.backend.model.Role;
 import br.sp.gov.fatec.ubs.backend.model.RoleEnum;
@@ -112,9 +113,22 @@ public class UserService {
         exigir(dto.getEmail(), "O e-mail é obrigatório.");
         exigir(dto.getMatricula(), "A matrícula é obrigatória.");
         exigir(dto.getUsername(), "O nome de usuário é obrigatório.");
+        String crmNormalizado = null;
         if (ehMedico) {
             exigir(dto.getCrm(), "O CRM é obrigatório para a função MEDICO.");
             exigir(dto.getEspecialidade(), "A especialidade é obrigatória para a função MEDICO.");
+
+            // ValidaCRM confere o formato (4 a 7 dígitos + sigla) E se a sigla
+            // corresponde a um estado existente, devolvendo o valor já em
+            // maiúsculo e sem espaços. Validar aqui, e não apenas pelas
+            // anotações da entidade, é o que permite recusar com 400 e uma
+            // mensagem útil, em vez de deixar o Hibernate estourar no INSERT.
+            crmNormalizado = ValidaCRM.format(dto.getCrm());
+            if (crmNormalizado == null) {
+                throw new IllegalArgumentException(
+                        "CRM inválido: \"" + dto.getCrm().trim() + "\". Informe de 4 a 7 dígitos "
+                        + "seguidos da sigla do estado, sem espaços nem pontuação. Exemplo: 12345SP.");
+            }
         }
 
         User user = id == null ? new User() : findById(id);
@@ -138,10 +152,10 @@ public class UserService {
             user.setPassword(passwordEncoder.encode(dto.getPassword()));
         }
 
-        user.setCrm(ehMedico ? dto.getCrm().trim() : null);
+        user.setCrm(crmNormalizado);
 
         User salvo = userRepository.save(user);
-        sincronizarMedico(salvo, dto, ehMedico);
+        sincronizarMedico(salvo, dto, crmNormalizado);
         return paraDto(salvo);
     }
 
@@ -151,10 +165,10 @@ public class UserService {
      * Deixar de ser médico NÃO apaga o registro: ele pode estar referenciado
      * por agendamentos. O médico é apenas marcado como inativo.
      */
-    private void sincronizarMedico(User user, UsuarioDto dto, boolean ehMedico) {
+    private void sincronizarMedico(User user, UsuarioDto dto, String crm) {
         Optional<Medico> vinculado = medicoRepository.findByUserId(user.getId());
 
-        if (!ehMedico) {
+        if (crm == null) {
             vinculado.ifPresent(medico -> {
                 medico.setAtivo(false);
                 medicoRepository.save(medico);
@@ -162,7 +176,8 @@ public class UserService {
             return;
         }
 
-        String crm = dto.getCrm().trim();
+        // O crm chega pronto de salvarUsuario: já validado por ValidaCRM e
+        // normalizado (sem espaços, em maiúsculo).
         Medico medico = vinculado.orElseGet(
                 () -> medicoRepository.findByCrm(crm).orElseGet(Medico::new));
 

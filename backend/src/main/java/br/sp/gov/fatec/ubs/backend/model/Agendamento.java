@@ -5,7 +5,10 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Date;
 
 @Entity(name = "agendamento")
@@ -138,6 +141,25 @@ public class Agendamento {
         this.updatedAt = updatedAt;
     }
     
+    /**
+     * O agendamento tem hora marcada?
+     *
+     * A hora da consulta é opcional na tela. Quando não é informada, o
+     * agendamento é gravado à MEIA-NOITE do dia escolhido, e a meia-noite é a
+     * marca de "horário a definir" — a unidade não atende às 00:00. Com isso a
+     * coluna dataHoraConsulta continua NOT NULL e não foi preciso alterar o
+     * esquema do banco nem os agendamentos já existentes.
+     *
+     * Vai no JSON como "horarioDefinido" para que a tela não precise repetir
+     * esta regra.
+     */
+    @Transient
+    @JsonProperty("horarioDefinido")
+    public boolean isHorarioDefinido() {
+        return dataHoraConsulta != null
+                && !LocalTime.MIDNIGHT.equals(dataHoraConsulta.toLocalTime());
+    }
+
     @Override
     public String toString() {
         return "Agendamento{" +

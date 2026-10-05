@@ -9,7 +9,9 @@ import br.sp.gov.fatec.ubs.backend.repositories.PacienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,14 +45,27 @@ public class AgendamentoService {
             throw new IllegalArgumentException("Médico não está ativo para agendamentos");
         }
         
-        // Verificar se médico tem disponibilidade
-        Long conflitos = agendamentoRepository.countByMedicoAndDataHora(medicoId, dataHora);
-        if (conflitos > 0) {
-            throw new IllegalArgumentException("Médico não disponível neste horário");
+        // A hora da consulta é opcional. Sem ela, o agendamento chega à
+        // meia-noite do dia escolhido: a marca de "horário a definir".
+        boolean semHorario = semHorarioDefinido(dataHora);
+
+        // Verificar se médico tem disponibilidade. Sem horário marcado não há
+        // o que conflitar — o agendamento não ocupa um ponto da agenda.
+        if (!semHorario) {
+            Long conflitos = agendamentoRepository.countByMedicoAndDataHora(medicoId, dataHora);
+            if (conflitos > 0) {
+                throw new IllegalArgumentException("Médico não disponível neste horário");
+            }
         }
-        
-        // Verificar se o horário não é no passado
-        if (dataHora.isBefore(LocalDateTime.now())) {
+
+        // Verificar se não é no passado. Sem horário marcado a comparação é só
+        // de data: um agendamento para HOJE seria recusado se comparássemos com
+        // o instante atual, já que a meia-noite de hoje sempre ficou para trás.
+        if (semHorario) {
+            if (dataHora.toLocalDate().isBefore(LocalDate.now())) {
+                throw new IllegalArgumentException("Não é possível agendar para uma data no passado");
+            }
+        } else if (dataHora.isBefore(LocalDateTime.now())) {
             throw new IllegalArgumentException("Não é possível agendar para horários no passado");
         }
         
@@ -145,8 +160,20 @@ public class AgendamentoService {
     
     // Verificar disponibilidade do médico
     public boolean verificarDisponibilidade(Long medicoId, LocalDateTime dataHora) {
+        // Sem horário definido o agendamento não disputa um ponto da agenda.
+        if (semHorarioDefinido(dataHora)) {
+            return true;
+        }
         Long conflitos = agendamentoRepository.countByMedicoAndDataHora(medicoId, dataHora);
         return conflitos == 0;
+    }
+
+    /**
+     * Meia-noite é a marca de "horário a definir", gravada quando a hora é
+     * deixada em branco na tela (ver Agendamento#isHorarioDefinido).
+     */
+    private boolean semHorarioDefinido(LocalDateTime dataHora) {
+        return dataHora != null && LocalTime.MIDNIGHT.equals(dataHora.toLocalTime());
     }
     
     // Reagendar consulta
