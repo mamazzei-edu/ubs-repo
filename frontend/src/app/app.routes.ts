@@ -11,7 +11,7 @@ import { AuthGuard } from './auth-guard';
 import { CadastroComponent } from './cadastro/cadastro.component';
 import { UserCadastroComponent } from './user-cadastro/user-cadastro.component';
 import { UploadComponent } from './upload/upload.component';
-import { A } from '@angular/cdk/keycodes';
+import { ImcComponent } from './imc/imc.component';
 
 
 export const routes: Routes = [
@@ -50,6 +50,11 @@ export const routes: Routes = [
     {
         path: 'agendamento',
         component: AgendamentoComponent,
+        canActivate: [AuthGuard]
+    },
+    {
+        path: 'imc',
+        component: ImcComponent,
         canActivate: [AuthGuard]
     }
 
