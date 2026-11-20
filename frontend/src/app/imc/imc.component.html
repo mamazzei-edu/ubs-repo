@@ -1,0 +1,56 @@
+<section class="imc-page" aria-labelledby="imc-title">
+  <mat-card class="imc-card">
+    <mat-card-header>
+      <mat-icon mat-card-avatar aria-hidden="true">monitor_weight</mat-icon>
+      <mat-card-title id="imc-title">Calculadora de IMC</mat-card-title>
+      <mat-card-subtitle>Informe peso e altura para obter uma classificação indicativa.</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="imcForm" (ngSubmit)="calcular()" class="imc-form">
+        <mat-form-field appearance="outline">
+          <mat-label>Peso</mat-label>
+          <input matInput type="number" min="1" max="500" step="0.1" formControlName="peso" />
+          <span matTextSuffix>kg</span>
+          @if (imcForm.controls.peso.hasError('required') || imcForm.controls.peso.hasError('min')) {
+            <mat-error>Informe um peso maior que zero.</mat-error>
+          } @else if (imcForm.controls.peso.hasError('max')) {
+            <mat-error>O peso máximo aceito é 500 kg.</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Altura</mat-label>
+          <input matInput type="number" min="0.5" max="2.5" step="0.01" formControlName="altura" />
+          <span matTextSuffix>m</span>
+          @if (imcForm.controls.altura.hasError('required') || imcForm.controls.altura.hasError('min')) {
+            <mat-error>Informe a altura em metros, por exemplo 1,70.</mat-error>
+          } @else if (imcForm.controls.altura.hasError('max')) {
+            <mat-error>A altura máxima aceita é 2,50 m.</mat-error>
+          }
+        </mat-form-field>
+
+        <div class="form-actions">
+          <button mat-flat-button type="submit" [disabled]="imcForm.invalid">
+            <mat-icon>calculate</mat-icon>
+            Calcular
+          </button>
+          <button mat-button type="button" (click)="limpar()">Limpar</button>
+        </div>
+      </form>
+
+      @if (resultado; as dados) {
+        <div class="resultado" [class]="'resultado resultado--' + dados.classe" role="status" aria-live="polite">
+          <span class="resultado__rotulo">Seu IMC</span>
+          <strong class="resultado__valor">{{ dados.valor | number:'1.1-1' }}</strong>
+          <span class="resultado__classificacao">{{ dados.classificacao }}</span>
+        </div>
+      }
+
+      <p class="aviso">
+        <mat-icon aria-hidden="true">info</mat-icon>
+        O IMC é apenas uma referência e não substitui avaliação de um profissional de saúde.
+      </p>
+    </mat-card-content>
+  </mat-card>
+</section>

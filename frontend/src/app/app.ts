@@ -1,11 +1,10 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { RouterLink } from '@angular/router';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from './entrada/logado/auth-service';
 import { CookieService } from 'ngx-cookie-service';
-import { H } from '@angular/cdk/keycodes';
 import { LogoutService } from './entrada/login/logout-service';
 import { PacienteService } from './service/paciente.service';
 
@@ -13,7 +12,7 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, MatToolbarModule, RouterLink, MatIconModule],
+  imports: [RouterOutlet, MatToolbarModule, RouterLink, RouterLinkActive, MatIconModule],
   templateUrl: './app.html',
   styleUrl: './app.scss',
   providers: [AuthService, LogoutService, CookieService, PacienteService]
