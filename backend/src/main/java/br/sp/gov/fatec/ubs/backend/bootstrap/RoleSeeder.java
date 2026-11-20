@@ -7,9 +7,10 @@ import br.sp.gov.fatec.ubs.backend.repositories.RoleRepository;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
-
+import org.springframework.core.annotation.Order;
 import java.util.*;
 
+@Order(1)
 @Component
 public class RoleSeeder implements ApplicationListener<ContextRefreshedEvent> {
     private final RoleRepository roleRepository;

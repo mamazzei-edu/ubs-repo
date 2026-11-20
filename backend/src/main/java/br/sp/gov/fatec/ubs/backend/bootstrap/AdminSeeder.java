@@ -11,9 +11,10 @@ import br.sp.gov.fatec.ubs.backend.model.RoleEnum;
 import br.sp.gov.fatec.ubs.backend.model.User;
 import br.sp.gov.fatec.ubs.backend.repositories.RoleRepository;
 import br.sp.gov.fatec.ubs.backend.repositories.UserRepository;
-
+import org.springframework.core.annotation.Order;
 import java.util.Optional;
 
+@Order(2)
 @Component
 public class AdminSeeder implements ApplicationListener<ContextRefreshedEvent> {
     private final RoleRepository roleRepository;
