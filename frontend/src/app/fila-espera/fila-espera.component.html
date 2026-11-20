@@ -1,0 +1,111 @@
+
+<div class="fila-container">
+
+  <div class="cabecalho">
+    <div>
+      <h1>Fila de Espera</h1>
+      <p>Gerenciamento de pacientes aguardando atendimento.</p>
+    </div>
+
+    <div class="contador">
+      <span>{{ fila.length }}</span>
+      <small>Pacientes aguardando</small>
+    </div>
+  </div>
+
+  <div class="mensagem"
+       *ngIf="mensagem"
+       [class.sucesso]="tipoMensagem === 'sucesso'"
+       [class.erro]="tipoMensagem === 'erro'">
+    {{ mensagem }}
+  </div>
+
+  <section class="card adicionar-card">
+    <h2>Adicionar paciente</h2>
+
+    <div class="formulario">
+      <select
+        [(ngModel)]="pacienteSelecionadoId"
+        name="paciente"
+      >
+        <option [ngValue]="null">
+          Selecione um paciente cadastrado
+        </option>
+
+        <option
+          *ngFor="let paciente of pacientes"
+          [ngValue]="paciente.id"
+        >
+          {{ paciente.nomeCompleto }}
+        </option>
+      </select>
+
+      <button
+        class="botao-adicionar"
+        (click)="adicionarPaciente()"
+      >
+        + Adicionar à fila
+      </button>
+    </div>
+  </section>
+
+  <section class="card fila-card">
+
+    <div class="fila-titulo">
+      <div>
+        <h2>Pacientes aguardando</h2>
+        <p>Ordem de chegada dos pacientes.</p>
+      </div>
+
+      <button
+        class="botao-proximo"
+        (click)="chamarProximo()"
+        [disabled]="fila.length === 0"
+      >
+        Chamar próximo
+      </button>
+    </div>
+
+    <div *ngIf="fila.length === 0" class="fila-vazia">
+      <h3>Nenhum paciente na fila</h3>
+      <p>Adicione um paciente para iniciar a fila de espera.</p>
+    </div>
+
+    <div *ngFor="let paciente of fila; let i = index"
+         class="paciente-item">
+
+      <div class="posicao">
+        {{ i + 1 }}
+      </div>
+
+      <div class="paciente-info">
+        <strong>{{ paciente.nomeCompleto }}</strong>
+
+        <span *ngIf="i === 0">
+          Próximo para atendimento
+        </span>
+
+        <span *ngIf="i !== 0">
+          Aguardando atendimento
+        </span>
+      </div>
+
+      <button
+        class="botao-remover"
+        (click)="removerPaciente(paciente.id)"
+      >
+        Remover
+      </button>
+
+    </div>
+
+  </section>
+
+  <div class="aviso">
+    <strong>Importante:</strong>
+    A fila segue a ordem de chegada (FIFO).
+    A prioridade clínica deve ser respeitada conforme a classificação
+    de risco da unidade.
+  </div>
+
+</div>
